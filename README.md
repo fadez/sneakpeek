@@ -1,4 +1,6 @@
-<p align="center"><img src="public/favicon.svg" width="100" alt="Laravel Logo"></p>
+<div align="center">
+    <img src="public/logo.svg" width="100" alt="SneakPeek logo">
+</div>
 
 # About SneakPeek
 
@@ -40,7 +42,7 @@ SneakPeek is a demonstration of my full-stack development skills, combining mode
 
 # How to install
 
-Clone the repo and simply run the included install script:
+Clone the repo and run the included install script:
 
 ```bash
 sh install.sh
