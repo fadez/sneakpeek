@@ -47,3 +47,9 @@ sh install.sh
 ```
 
 If you're using **[Laravel Valet](https://laravel.com/docs/master/valet)**, access the app at **[sneakpeek.test](http://sneakpeek.test)**.
+
+# UI Preview
+
+<div align="center">
+    <img src="preview.gif" alt="UI Preview">
+</div>
