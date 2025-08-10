@@ -10,6 +10,10 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 
 SneakPeek is a demonstration of my full-stack development skills, combining modern frameworks and best practices to deliver a secure, scalable, and modern web application.
 
+# Live Demo
+
+**[sneakpeek.alexfadez.com](https://sneakpeek.alexfadez.com)**
+
 # Features
 
 ### Backend
@@ -45,10 +49,10 @@ SneakPeek is a demonstration of my full-stack development skills, combining mode
 Clone the repo and run the included install script:
 
 ```bash
-sh install.sh
+bash install.sh
 ```
 
-If you're using **[Laravel Valet](https://laravel.com/docs/master/valet)**, access the app at **[sneakpeek.test](http://sneakpeek.test)**.
+If you're using **[Laravel Valet](https://laravel.com/docs/master/valet)** you'll be able to access the app at **[sneakpeek.test](http://sneakpeek.test)**.
 
 # UI Preview
 
