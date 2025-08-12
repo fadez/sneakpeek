@@ -42,7 +42,9 @@ const handleRevealSecretButtonClick = async () => {
 };
 
 const handleCopySecretButtonClick = () => {
-    navigator.clipboard.writeText(secretContent.value);
+    navigator.clipboard.writeText(secretContent.value).then(() => {
+        alert('Copied to clipboard!');
+    });
 };
 </script>
 

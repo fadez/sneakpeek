@@ -49,7 +49,8 @@ const handleCreateLinkButtonClick = async () => {
         </div>
         <BaseCard>
             <div class="p-4 grid grid-cols-1 gap-4">
-                <div class="flex flex-col">
+                <div class="flex flex-col gap-2">
+                    <BaseLabel :required="true">Content</BaseLabel>
                     <BaseTextarea placeholder="Secret content goes here..." rows="7" maxlength="10000" v-model="content"></BaseTextarea>
                 </div>
 
@@ -59,7 +60,7 @@ const handleCreateLinkButtonClick = async () => {
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <BaseLabel>Expiration Time</BaseLabel>
+                    <BaseLabel :required="true">Expiration Time</BaseLabel>
                     <BaseSelect v-model="ttl">
                         <option value="60">Expires in 1 minute</option>
                         <option value="180">Expires in 30 minutes</option>

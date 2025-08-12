@@ -37,7 +37,9 @@ const secretUrl = computed(() => {
 });
 
 const handleCopyUrlButtonClick = () => {
-    navigator.clipboard.writeText(secretUrl.value);
+    navigator.clipboard.writeText(secretUrl.value).then(() => {
+        alert('Copied to clipboard!');
+    });
 }
 
 const hasActions = computed(() => {

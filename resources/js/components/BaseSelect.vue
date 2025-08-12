@@ -21,6 +21,8 @@ const classes = computed(() => [
     'focus:outline-hidden',
     'focus:border-sky-500',
     'cursor-pointer',
+    'appearance-none',
+    'select-none',
     'transition-all',
 ].join(' '));
 
@@ -33,11 +35,14 @@ const handleChange = (event) => {
 </script>
 
 <template>
-    <select
-        :class="classes"
-        :value="modelValue"
-        @change="handleChange"
-    >
-        <slot></slot>
-    </select>
+    <div class="relative">
+        <select
+            :class="classes"
+            :value="modelValue"
+            @change="handleChange"
+        >
+            <slot></slot>
+        </select>
+        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400 dark:text-zinc-500"></i>
+    </div>
 </template>
