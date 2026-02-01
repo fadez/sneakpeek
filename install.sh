@@ -33,8 +33,8 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
-# Install PHP dependencies
-echo "Installing PHP dependencies..."
+# Install Composer dependencies
+echo "Installing Composer dependencies..."
 composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Install Node.js dependencies

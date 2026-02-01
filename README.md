@@ -6,7 +6,7 @@
 
 > Secure, one-time secret sharing made simple.
 
-Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com)** using **[Laravel](https://laravel.com)**, **[Vue.js](https://vuejs.org)** and **[Tailwind](https://tailwindcss.com)**.
+Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com)** using **[Laravel](https://laravel.com)**, **[Vue.js](https://vuejs.org)** and **[Tailwind CSS](https://tailwindcss.com)**.
 
 SneakPeek is a demonstration of my full-stack development skills, combining modern frameworks and best practices to deliver a secure, scalable, and modern web application.
 
@@ -38,7 +38,7 @@ SneakPeek is a demonstration of my full-stack development skills, combining mode
     - Vue Router
     - Component-based architecture
     - Reactive state management
-- **TailwindCSS**
+- **Tailwind CSS**
     - Responsive and beautiful UI
     - Auto-switching light/dark mode support
 - **Vite**
@@ -46,13 +46,44 @@ SneakPeek is a demonstration of my full-stack development skills, combining mode
 
 # How to install
 
-Clone the repo and run the included install script:
+### Prerequisites
+You need to have PHP, Node.js and Composer installed globally on your system.
 
-```bash
-bash install.sh
+I recommend using **[Laravel Herd](https://herd.laravel.com)** as your development environment.
+
+### Cloning the repository
+
+Go to your **[Laravel Valet](https://laravel.com/docs/master/valet)** or **[Laravel Herd](https://herd.laravel.com)** sites folder and clone the repository via:
+
+```sh
+git clone https://github.com/fadez/sneakpeek.git
 ```
 
-If you're using **[Laravel Valet](https://laravel.com/docs/master/valet)** you'll be able to access the app at **[sneakpeek.test](http://sneakpeek.test)**.
+Then run the included installation script:
+
+```sh
+sh install.sh
+```
+
+### Securing site with TLS
+
+Then you need to secure the site with TLS.
+
+If you're using **[Laravel Valet](https://laravel.com/docs/master/valet)** you can do this via:
+
+```sh
+valet secure sneakpeek
+```
+
+If you're using **[Laravel Herd](https://herd.laravel.com)** you can do this via:
+
+```sh
+herd secure sneakpeek
+```
+
+### Visiting the site
+
+You can access the app at **[sneakpeek.test](https://sneakpeek.test)**.
 
 # UI Preview
 
