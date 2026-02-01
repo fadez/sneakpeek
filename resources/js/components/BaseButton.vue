@@ -94,7 +94,7 @@ const buttonClasses = computed(() => {
     >
         <i
             v-if="iconBefore"
-            class="fa-fw mr-1"
+            class="mr-1"
             :class="iconBefore"
         />
         <span>

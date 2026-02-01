@@ -68,7 +68,7 @@ const iconClasses = computed(() => {
 
 <template>
     <div :class="messageClasses">
-        <i class="fa-fw" :class="iconClasses"></i>
+        <i :class="iconClasses"></i>
         <div>
             <slot></slot>
         </div>
