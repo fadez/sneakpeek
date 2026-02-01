@@ -35,11 +35,11 @@ fi
 
 # Install Composer dependencies
 echo "Installing Composer dependencies..."
-composer install --no-interaction --prefer-dist --optimize-autoloader
+composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader
 
 # Install Node.js dependencies
 echo "Installing Node.js dependencies..."
-npm ci
+npm ci --no-audit
 
 # Generate application key
 echo "Generating application key..."
