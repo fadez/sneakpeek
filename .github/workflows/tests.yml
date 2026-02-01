@@ -1,0 +1,60 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.4]
+        node: [22]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer, pint
+        extensions: ctype, curl, dom, fileinfo, filter, hash, libxml, mbstring, openssl, pcntl, pcre, pdo, pdo_sqlite, session, sqlite3, tokenizer, xml, zip
+        coverage: none
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ matrix.node }}
+        cache: 'npm'
+
+    - name: Copy environment file
+      run: cp .env.example .env
+
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install Composer dependencies
+      run: composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader
+
+    - name: Generate app key
+      run: php artisan key:generate
+
+    - name: Install Node.js dependencies
+      run: npm ci
+
+    - name: Compile assets
+      run: npm run build
+
+    - name: Execute tests
+      run: composer test
