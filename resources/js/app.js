@@ -1,7 +1,8 @@
 import { createApp } from 'vue';
-import App from '@/App.vue';
 import { createWebHistory, createRouter } from 'vue-router';
+import App from '@/App.vue';
 import routes from '@/routes';
+import { appName } from '@/config';
 
 const app = createApp(App);
 
@@ -21,3 +22,5 @@ const router = createRouter({
 
 app.use(router);
 app.mount('#app');
+
+console.log(`👋 Welcome to ${appName}!`);
