@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,9 +14,11 @@
 |
 */
 
-pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
-    ->in('Feature');
+pest()->extend(TestCase::class)->use(RefreshDatabase::class)->group('feature')->in('Feature');
+
+pest()->extend(TestCase::class)->use(RefreshDatabase::class)->group('browser')->in('Browser');
+
+pest()->group('unit')->in('Unit');
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +46,14 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+// Returns a clean version of the current test's name
+function test_name()
 {
-    // ..
+    return str_replace('__pest_evaluable_', '', test()->name());
+}
+
+// Returns a screenshot filename prefixed with the clean test name
+function screenshot_name($name)
+{
+    return test_name().'_'.$name;
 }

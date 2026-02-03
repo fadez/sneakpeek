@@ -51,7 +51,7 @@ const handleCreateLinkButtonClick = async () => {
             <div class="p-4 grid grid-cols-1 gap-4">
                 <div class="flex flex-col gap-2">
                     <BaseLabel :required="true">Content</BaseLabel>
-                    <BaseTextarea placeholder="Secret content goes here..." rows="7" maxlength="10000" v-model="content"></BaseTextarea>
+                    <BaseTextarea data-test="content-input" placeholder="Secret content goes here..." rows="7" maxlength="10000" v-model="content"></BaseTextarea>
                 </div>
 
                 <div class="flex flex-col gap-2">
@@ -86,6 +86,7 @@ const handleCreateLinkButtonClick = async () => {
 
             <template #actions>
                 <BaseButton
+                    data-test="submit-btn"
                     icon-before="fa-solid fa-lock"
                     :disabled="!content.trim() || isLoading"
                     @click="handleCreateLinkButtonClick"

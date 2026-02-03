@@ -111,7 +111,7 @@ const handleDeleteSecretButtonClick = async () => {
             <section class="p-4">
                 <div class="flex flex-col gap-2">
                     <BaseLabel>Secret Link</BaseLabel>
-                    <BaseInput :value="secretUrl" readonly @click="$event.target.select()" />
+                    <BaseInput data-test="secret-link" :value="secretUrl" readonly @click="$event.target.select()" />
                 </div>
             </section>
 

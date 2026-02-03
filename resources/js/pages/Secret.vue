@@ -61,7 +61,7 @@ const handleCopySecretButtonClick = () => {
             </section>
 
             <section class="border-t-2 border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 p-4">
-                <BaseTextarea v-model="secretContent" rows="7" readonly />
+                <BaseTextarea data-test="secret-content" v-model="secretContent" rows="7" readonly />
             </section>
 
             <template #actions>
@@ -108,6 +108,7 @@ const handleCopySecretButtonClick = () => {
 
                 <BaseButton
                     v-if="!isLoading"
+                    data-test="reveal-secret-btn"
                     type="primary"
                     :disabled="secret.is_passphrase_protected && !passphrase"
                     @click="handleRevealSecretButtonClick"

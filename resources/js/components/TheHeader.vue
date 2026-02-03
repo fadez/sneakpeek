@@ -2,6 +2,7 @@
 
 <template>
     <header
+        data-test="header"
         class="bg-white dark:bg-transparent border-b-2 border-zinc-200 dark:border-zinc-700 mb-4"
     >
         <div class="container max-w-3xl mx-auto p-4">

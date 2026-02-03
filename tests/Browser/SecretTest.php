@@ -1,0 +1,30 @@
+<?php
+
+it('can create and reveal a secret without passphrase', function () {
+    $secretText = Str::random(16);
+
+    // Create the secret
+    $page = visit('/')
+        ->type('@content-input', $secretText)
+        ->pressAndWaitFor('@submit-btn', 0.2)
+        ->assertPresent('@secret-link');
+
+    // Get the URL that allows us to reveal the secret we just created
+    $secretUrl = $page->value('@secret-link');
+
+    $page->screenshot(filename: screenshot_name('1_secret_created'));
+
+    // Now let’s reveal the secret.
+    $page->navigate($secretUrl)
+        ->assertPresent('@reveal-secret-btn')
+        ->pressAndWaitFor('@reveal-secret-btn', 0.2)
+        ->assertValue('@secret-content', $secretText);
+
+    $page->screenshot(filename: screenshot_name('2_secret_revealed'));
+
+    // Check that the secret is no longer accessible and the user was redirected back to the home page
+    $page->refresh()
+        ->assertPathIs('/');
+
+    $page->screenshot(filename: screenshot_name('3_secret_no_longer_exists_user_redirected_to_home_page'));
+});
