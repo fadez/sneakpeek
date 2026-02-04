@@ -70,7 +70,7 @@ git clone https://github.com/fadez/sneakpeek.git && cd sneakpeek && sh install.s
 
 ### Securing site with TLS
 
-SneakPeek can only be accessed over HTTPS, so we need to enable TLS before we can access it.
+SneakPeek should always be accessed over a secure connection. Let's enable TLS to ensure this.
 
 If you're using **[Laravel Herd](https://herd.laravel.com)** run:
 
@@ -86,4 +86,4 @@ valet secure
 
 ### Visiting the site
 
-You can now access the app at **[sneakpeek.test](https://sneakpeek.test)**.
+If you're using **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/master/valet)**, you can now access the app at **[sneakpeek.test](http://sneakpeek.test)**.
