@@ -28,7 +28,7 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
     - RESTful API with clean controllers and rate-limited routes
     - Eloquent ORM with custom scopes, accessors, and API Resources
     - Database migrations with proper indexing for performance and integrity
-    - Scheduled command to auto-delete expired secrets
+    - A scheduled command to permanently wipe expired secrets from the database
 - **Security-first design**
     - End-to-end privacy — no authentication, no logs
     - Secrets can only be accessed once, then wiped permanently
@@ -56,16 +56,19 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
 
 ### Prerequisites
 
-You need to have PHP, Node.js and Composer installed globally on your system.
+Before beginning installation, make sure that your local machine has:
+- **[PHP](https://php.net)** v8.3+
+- **[Node.js and npm](https://nodejs.org)** v18+
+- **[Composer](https://getcomposer.org)**
 
-I recommend using **[Laravel Herd](https://herd.laravel.com)** as your development environment.
+I highly recommend using **[Laravel Herd](https://herd.laravel.com)** as your local development environment as it includes everything you need.
 
 ### Setting up the project
 
-Go to your **[Laravel Valet](https://laravel.com/docs/master/valet)** or **[Laravel Herd](https://herd.laravel.com)** sites folder and run:
+Go to your **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/master/valet)** sites folder and run:
 
 ```sh
-git clone https://github.com/fadez/sneakpeek.git && cd sneakpeek && sh install.sh
+git clone https://github.com/fadez/sneakpeek.git && cd sneakpeek && composer setup
 ```
 
 ### Securing site with TLS

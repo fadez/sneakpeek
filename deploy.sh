@@ -7,7 +7,7 @@ php artisan down
 git pull --ff-only
 
 # Install composer dependencies
-composer install --optimize-autoloader --prefer-dist --no-dev --no-interaction
+composer install --no-progress --no-interaction --no-dev --prefer-dist --optimize-autoloader
 
 # Build assets
 npm ci
@@ -36,6 +36,11 @@ fi
 # Reload php8.4-fpm if running
 if systemctl is-active --quiet php8.4-fpm; then
     sudo systemctl reload php8.4-fpm
+fi
+
+# Reload php8.5-fpm if running
+if systemctl is-active --quiet php8.5-fpm; then
+    sudo systemctl reload php8.5-fpm
 fi
 
 # Reload nginx if running
