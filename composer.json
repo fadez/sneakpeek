@@ -60,6 +60,7 @@
         "test:types": "./vendor/bin/phpstan analyse --ansi",
         "test": [
             "@test:lint",
+            "@test:types",
             "@php artisan config:clear --ansi",
             "@test:pest"
         ],
