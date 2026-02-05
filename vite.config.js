@@ -3,6 +3,10 @@ import laravel from 'laravel-vite-plugin';
 import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
+import { execSync } from 'child_process';
+
+// Get the current short Git commit hash to embed in the Vite build
+const commitHash = (() => { try { return execSync('git rev-parse --short HEAD').toString().trim(); } catch { return null; } })();
 
 export default defineConfig({
     resolve: {
@@ -19,4 +23,7 @@ export default defineConfig({
         tailwindcss(),
         vue(),
     ],
+    define: {
+        __COMMIT_HASH__: JSON.stringify(commitHash),
+      }
 });
