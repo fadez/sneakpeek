@@ -14,7 +14,7 @@ class SecretController extends Controller
     public function __construct(protected SecretService $secretService) {}
 
     /**
-     * Create a new secret.
+     * Store a new secret.
      */
     public function store(StoreSecretRequest $request)
     {
@@ -30,23 +30,23 @@ class SecretController extends Controller
     }
 
     /**
-     * Show general information about a secret.
-     * Passphrase is not required for this route.
+     * Get general information about a secret.
+     * A passphrase is not required for this route.
      */
     public function show(string $secretKey)
     {
-        $secret = $this->secretService->findAvailableSecretBySecretKey($secretKey);
+        $secret = $this->secretService->findActive(secretKey: $secretKey);
 
         return new SecretResource($secret);
     }
 
     /**
      * Reveal a secret and wipe its content.
-     * If the secret is passphrase protected, the passphrase must be provided.
+     * If the secret is passphrase-protected, the passphrase must be provided.
      */
     public function reveal(Request $request, string $secretKey)
     {
-        $secret = $this->secretService->findAvailableSecretBySecretKey($secretKey);
+        $secret = $this->secretService->findActive(secretKey: $secretKey);
 
         $this->secretService->validatePassphrase($request, $secret);
 
@@ -63,7 +63,7 @@ class SecretController extends Controller
      */
     public function destroy(Request $request, string $secretKey)
     {
-        $secret = $this->secretService->findAvailableSecretBySecretKey($secretKey);
+        $secret = $this->secretService->findActive(secretKey: $secretKey);
 
         $this->secretService->validatePassphrase($request, $secret);
 

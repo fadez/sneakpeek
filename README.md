@@ -37,7 +37,10 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
     - Optional expiration time for secrets
 - **Clean architecture**
     - Readable, maintainable code with scoped responsibilities
-    - SOLID principles applied throughout
+    - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
+- **Quality Assurance**
+    - A comprehensive suite of unit, feature, and browser tests using **[Pest](https://pestphp.com)**
+    - Strict code consistency and PSR-12 compliance enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
 
 ### Frontend
 
@@ -52,6 +55,10 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
 - **Vite**
     - Fast builds, hot module replacement, production optimization
 
+### CI/CD
+- **Continuous Integration**
+    - Automated CI tests via GitHub Actions on every push
+
 # Installation
 
 ### Prerequisites
@@ -60,12 +67,13 @@ Before beginning installation, make sure that your local machine has:
 - **[PHP](https://php.net)** v8.3+
 - **[Node.js and npm](https://nodejs.org)** v18+
 - **[Composer](https://getcomposer.org)**
+- **[Git](https://git-scm.com)**
 
-I highly recommend using **[Laravel Herd](https://herd.laravel.com)** as your local development environment as it includes everything you need.
+I highly recommend using **[Laravel Herd](https://herd.laravel.com)** as your local development environment.
 
 ### Setting up the project
 
-Go to your **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/master/valet)** sites folder and run:
+Go to your **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/valet)** sites folder and run:
 
 ```sh
 git clone https://github.com/fadez/sneakpeek.git && cd sneakpeek && composer setup
@@ -81,7 +89,7 @@ If you're using **[Laravel Herd](https://herd.laravel.com)** run:
 herd secure
 ```
 
-If you're using **[Laravel Valet](https://laravel.com/docs/master/valet)** run:
+If you're using **[Laravel Valet](https://laravel.com/docs/valet)** run:
 
 ```sh
 valet secure
@@ -89,4 +97,4 @@ valet secure
 
 ### Visiting the site
 
-If you're using **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/master/valet)**, you can now access the app at **[sneakpeek.test](http://sneakpeek.test)**.
+If you're using **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/valet)**, you can now access the app at **[sneakpeek.test](http://sneakpeek.test)**.

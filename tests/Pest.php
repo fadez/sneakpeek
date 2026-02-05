@@ -14,11 +14,11 @@ use Tests\TestCase;
 |
 */
 
+pest()->extend(TestCase::class)->use(RefreshDatabase::class)->group('unit')->in('Unit');
+
 pest()->extend(TestCase::class)->use(RefreshDatabase::class)->group('feature')->in('Feature');
 
 pest()->extend(TestCase::class)->use(RefreshDatabase::class)->group('browser')->in('Browser');
-
-pest()->group('unit')->in('Unit');
 
 /*
 |--------------------------------------------------------------------------

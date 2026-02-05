@@ -43,13 +43,13 @@ class SecretService
     }
 
     /**
-     * Find available secret by its key.
+     * Find an active secret by its secret key.
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function findAvailableSecretBySecretKey(string $secretKey): Secret
+    public function findActive(string $secretKey): Secret
     {
-        return Secret::where('secret_key', $secretKey)->available()->firstOrFail();
+        return Secret::where('secret_key', $secretKey)->active()->firstOrFail();
     }
 
     /**

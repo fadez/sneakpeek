@@ -10,15 +10,6 @@ use Illuminate\Support\Facades\Hash;
 class Secret extends Model
 {
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'key', 'secret_key', 'content', 'passphrase', 'expires_at', 'revealed_at',
-    ];
-
-    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<string>
@@ -51,15 +42,11 @@ class Secret extends Model
     }
 
     /**
-     * Scope a query to only include available secrets.
+     * Scope a query to only include unrevealed secrets that haven't expired.
      */
-    public function scopeAvailable(Builder $query): Builder
+    public function scopeActive(Builder $query): Builder
     {
-        return $query->where(function ($query) {
-            $query->whereNull('expires_at')
-                ->orWhere('expires_at', '>=', now());
-        })
-            ->whereNull('revealed_at');
+        return $query->notExpired()->unrevealed();
     }
 
     /**
@@ -72,6 +59,25 @@ class Secret extends Model
     }
 
     /**
+     * Scope a query to only include secrets that haven't expired.
+     */
+    public function scopeNotExpired(Builder $query): Builder
+    {
+        return $query->where(function ($query) {
+            $query->whereNull('expires_at')
+                ->orWhere('expires_at', '>=', now());
+        });
+    }
+
+    /**
+     * Scope a query to only include unrevealed secrets.
+     */
+    public function scopeUnrevealed(Builder $query): Builder
+    {
+        return $query->whereNull('revealed_at');
+    }
+
+    /**
      * Scope a query to only include expired secrets that need to be wiped.
      */
     public function scopeToBeWiped(Builder $query): Builder
@@ -80,7 +86,7 @@ class Secret extends Model
     }
 
     /**
-     * Verify if the passphrase matches the hashed passphrase.
+     * Verify if the provided passphrase matches the hashed passphrase.
      */
     public function checkPassphrase(?string $passphrase = null): bool
     {
@@ -101,7 +107,7 @@ class Secret extends Model
     }
 
     /**
-     * Check if the secret is passphrase protected.
+     * Determine if the secret is protected by a passphrase.
      */
     public function isPassphraseProtected(): Attribute
     {
@@ -111,7 +117,7 @@ class Secret extends Model
     }
 
     /**
-     * Check if the secret has expired.
+     * Determine if the secret has expired.
      */
     protected function isExpired(): Attribute
     {
@@ -121,7 +127,7 @@ class Secret extends Model
     }
 
     /**
-     * Check if the secret has been revealed.
+     * Determine if the secret has been revealed.
      */
     public function isRevealed(): Attribute
     {
