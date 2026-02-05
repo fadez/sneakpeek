@@ -2,17 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @property-read bool $is_passphrase_protected
+ * @property-read bool $is_expired
+ * @property-read bool $is_revealed
+ */
 class Secret extends Model
 {
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = [
         'secret_key', 'content', 'passphrase',
@@ -21,7 +27,7 @@ class Secret extends Model
     /**
      * The accessors to append to the model's array form.
      *
-     * @var array
+     * @var list<string>
      */
     protected $appends = [
         'is_passphrase_protected', 'is_expired', 'is_revealed',
@@ -43,16 +49,24 @@ class Secret extends Model
 
     /**
      * Scope a query to only include unrevealed secrets that haven't expired.
+     *
+     * @param  Builder<Secret>  $query
+     * @return Builder<Secret>
      */
-    public function scopeActive(Builder $query): Builder
+    #[Scope]
+    protected function scopeActive(Builder $query): Builder
     {
-        return $query->notExpired()->unrevealed();
+        return $query->unrevealed()->notExpired();
     }
 
     /**
      * Scope a query to only include expired secrets.
+     *
+     * @param  Builder<Secret>  $query
+     * @return Builder<Secret>
      */
-    public function scopeExpired(Builder $query): Builder
+    #[Scope]
+    protected function scopeExpired(Builder $query): Builder
     {
         return $query->whereNotNull('expires_at')
             ->where('expires_at', '<', now());
@@ -60,8 +74,12 @@ class Secret extends Model
 
     /**
      * Scope a query to only include secrets that haven't expired.
+     *
+     * @param  Builder<Secret>  $query
+     * @return Builder<Secret>
      */
-    public function scopeNotExpired(Builder $query): Builder
+    #[Scope]
+    protected function scopeNotExpired(Builder $query): Builder
     {
         return $query->where(function ($query) {
             $query->whereNull('expires_at')
@@ -71,16 +89,24 @@ class Secret extends Model
 
     /**
      * Scope a query to only include unrevealed secrets.
+     *
+     * @param  Builder<Secret>  $query
+     * @return Builder<Secret>
      */
-    public function scopeUnrevealed(Builder $query): Builder
+    #[Scope]
+    protected function scopeUnrevealed(Builder $query): Builder
     {
         return $query->whereNull('revealed_at');
     }
 
     /**
      * Scope a query to only include expired secrets that need to be wiped.
+     *
+     * @param  Builder<Secret>  $query
+     * @return Builder<Secret>
      */
-    public function scopeToBeWiped(Builder $query): Builder
+    #[Scope]
+    protected function scopeToBeWiped(Builder $query): Builder
     {
         return $query->whereNotNull('content')->expired();
     }
@@ -90,8 +116,14 @@ class Secret extends Model
      */
     public function checkPassphrase(?string $passphrase = null): bool
     {
+        // Return true if the secret doesn't require a passphrase
         if ($this->passphrase === null) {
             return true;
+        }
+
+        // Return false if a passphrase is not provided when the secret requires one
+        if ($passphrase === null) {
+            return false;
         }
 
         return Hash::check($passphrase, $this->passphrase);
@@ -108,8 +140,10 @@ class Secret extends Model
 
     /**
      * Determine if the secret is protected by a passphrase.
+     *
+     * @return Attribute<bool, never>
      */
-    public function isPassphraseProtected(): Attribute
+    protected function isPassphraseProtected(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->passphrase !== null,
@@ -118,6 +152,8 @@ class Secret extends Model
 
     /**
      * Determine if the secret has expired.
+     *
+     * @return Attribute<bool, never>
      */
     protected function isExpired(): Attribute
     {
@@ -128,8 +164,10 @@ class Secret extends Model
 
     /**
      * Determine if the secret has been revealed.
+     *
+     * @return Attribute<bool, never>
      */
-    public function isRevealed(): Attribute
+    protected function isRevealed(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->revealed_at !== null,

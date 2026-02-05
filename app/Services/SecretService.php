@@ -23,8 +23,8 @@ class SecretService
             'key' => Str::random(64),
             'secret_key' => Str::random(64),
             'content' => $request->input('content'),
-            'passphrase' => $request->filled('passphrase') ? Hash::make($request->input('passphrase')) : null,
-            'expires_at' => $request->filled('ttl') ? now()->addSeconds((int) $request->input('ttl')) : null,
+            'passphrase' => $request->filled('passphrase') ? Hash::make($request->string('passphrase')) : null,
+            'expires_at' => $request->filled('ttl') ? now()->addSeconds($request->integer('ttl')) : null,
         ]);
     }
 
@@ -61,7 +61,7 @@ class SecretService
             return;
         }
 
-        if (! $secret->checkPassphrase($request->input('passphrase'))) {
+        if (! $secret->checkPassphrase(passphrase: $request->string('passphrase'))) {
             throw ValidationException::withMessages([
                 'passphrase' => ['The passphrase is incorrect.'],
             ]);

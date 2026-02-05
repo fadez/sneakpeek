@@ -25,7 +25,7 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
 ### Backend
 
 - **Laravel framework**
-    - RESTful API with clean controllers and rate-limited routes
+    - RESTful API using Laravel API Resources with clean controllers and rate-limited routes
     - Eloquent ORM with custom scopes, accessors, and API Resources
     - Database migrations with proper indexing for performance and integrity
     - A scheduled command to permanently wipe expired secrets from the database
@@ -40,7 +40,8 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
 - **Quality Assurance**
     - A comprehensive suite of unit, feature, and browser tests using **[Pest](https://pestphp.com)**
-    - Strict code consistency and PSR-12 compliance enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
+    - Strict code consistency and PSR-12 compliance, enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
+    - Strict static analysis with maximum type safety — 100% coverage with **[PHPStan](https://phpstan.org)** level 10, enforced by **[Larastan](https://github.com/larastan/larastan)**
 
 ### Frontend
 

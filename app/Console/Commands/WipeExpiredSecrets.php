@@ -24,7 +24,7 @@ class WipeExpiredSecrets extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $wipedCount = 0;
 
