@@ -1,17 +1,12 @@
 <div align="center">
     <img src="public/logo.svg" width="100" alt="SneakPeek logo">
+    <div align="center">
+        <a href="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml/badge.svg"></a>
+        <a href="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml"><img alt="CD status" src="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml/badge.svg"></a>
+    </div>
 </div>
 
-<div align="center">
-    <a href="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml">
-        <img src="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml/badge.svg" alt="CI status">
-    </a>
-    <a href="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml">
-        <img src="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml/badge.svg" alt="CD status">
-    </a>
-</div>
-
-# About SneakPeek
+------
 
 > Secure, one-time secret sharing made simple.
 
