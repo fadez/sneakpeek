@@ -6,7 +6,8 @@ set -e
 php artisan down
 
 # Pull the latest updates
-git pull --ff-only
+git fetch origin main
+git reset --hard origin/main
 
 # Install composer dependencies
 composer install --no-progress --no-interaction --no-dev --prefer-dist --optimize-autoloader
