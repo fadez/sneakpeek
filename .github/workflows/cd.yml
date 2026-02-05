@@ -21,4 +21,4 @@ jobs:
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             cd /var/www/sneakpeek
-            ./deploy.sh
+            bash deploy.sh
