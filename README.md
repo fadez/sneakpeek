@@ -3,8 +3,11 @@
 </div>
 
 <div align="center">
-    <a href="https://github.com/fadez/sneakpeek/actions/workflows/tests.yml">
-        <img src="https://github.com/fadez/sneakpeek/actions/workflows/tests.yml/badge.svg" alt="Build Status">
+    <a href="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml">
+        <img src="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml/badge.svg" alt="CI status">
+    </a>
+    <a href="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml">
+        <img src="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml/badge.svg" alt="CD status">
     </a>
 </div>
 
