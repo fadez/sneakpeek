@@ -57,8 +57,14 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
     - Fast builds, hot module replacement, production optimization
 
 ### CI/CD
-- **Continuous Integration**
+- **Continuous Integration (CI)**
     - Automated CI tests via GitHub Actions on every push
+
+### Deployment & DX
+- **Deployment**
+    - Zero-friction deployment with included deployment script and **[nginx](https://nginx.org)** configuration template
+- **Developer Experience (DX)**
+    - Automated onboarding via a single command that handles environment setup, SQLite database creation, and dependency installation
 
 # Installation
 
@@ -78,22 +84,6 @@ Go to your **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](htt
 
 ```sh
 git clone https://github.com/fadez/sneakpeek.git && cd sneakpeek && composer setup
-```
-
-### Securing site with TLS
-
-SneakPeek should always be accessed over a secure connection. Let's enable TLS to ensure this.
-
-If you're using **[Laravel Herd](https://herd.laravel.com)** run:
-
-```sh
-herd secure
-```
-
-If you're using **[Laravel Valet](https://laravel.com/docs/valet)** run:
-
-```sh
-valet secure
 ```
 
 ### Visiting the site
