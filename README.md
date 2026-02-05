@@ -36,7 +36,7 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
 - **Clean architecture**
     - Readable, maintainable code with scoped responsibilities
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
-- **Quality Assurance**
+- **Quality Assurance (QA)**
     - A comprehensive suite of unit, feature, and browser tests using **[Pest](https://pestphp.com)**
     - Strict code consistency and PSR-12 compliance, enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
     - Strict static analysis with maximum type safety — 100% coverage with **[PHPStan](https://phpstan.org)** level 10, enforced by **[Larastan](https://github.com/larastan/larastan)**
@@ -55,10 +55,15 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
     - Fast builds, hot module replacement, production optimization
 
 ### CI/CD
+
 - **Continuous Integration (CI)**
-    - Automated CI tests via GitHub Actions on every push
+    - Automated CI tests using **[Laravel Pint](https://laravel.com/docs/pint)**, **[PHPStan](https://phpstan.org)**, **[Pest](https://pestphp.com)** and **[Playwright](https://playwright.dev)** via GitHub Actions on every push
+- **Continuous Deployment (CD)**
+    - Automated CD pipeline that deploys to a **[Google Cloud](https://cloud.google.com)** Compute Engine instance via SSH
+    - Secure SSH orchestration via encrypted GitHub Secrets and SSH key-pairing for automated remote deployment
 
 ### Deployment & DX
+
 - **Deployment**
     - Zero-friction deployment with included deployment script and **[nginx](https://nginx.org)** configuration template
 - **Developer Experience (DX)**
