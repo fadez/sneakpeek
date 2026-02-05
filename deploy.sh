@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Put app into maintenance mode
 php artisan down
 
@@ -23,25 +25,12 @@ php artisan config:cache
 # Run Laravel migrations
 php artisan migrate --force
 
-# Reload php8.2-fpm if running
-if systemctl is-active --quiet php8.2-fpm; then
-    sudo systemctl reload php8.2-fpm
-fi
-
-# Reload php8.3-fpm if running
-if systemctl is-active --quiet php8.3-fpm; then
-    sudo systemctl reload php8.3-fpm
-fi
-
-# Reload php8.4-fpm if running
-if systemctl is-active --quiet php8.4-fpm; then
-    sudo systemctl reload php8.4-fpm
-fi
-
-# Reload php8.5-fpm if running
-if systemctl is-active --quiet php8.5-fpm; then
-    sudo systemctl reload php8.5-fpm
-fi
+# Note: Ensure user has NOPASSWD sudo rights for these
+for version in 8.3 8.4 8.5; do
+    if systemctl is-active --quiet "php${version}-fpm"; then
+        sudo systemctl reload "php${version}-fpm"
+    fi
+done
 
 # Reload nginx if running
 if systemctl is-active --quiet nginx; then
