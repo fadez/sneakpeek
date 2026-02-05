@@ -1,4 +1,5 @@
 name: CD
+run-name: CD - ${{ github.event.workflow_run.head_commit.message }}
 
 on:
   workflow_run:
@@ -12,7 +13,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Execute remote deployment script
+      - name: Deploy to production
         uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{ secrets.SSH_HOST }}
