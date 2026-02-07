@@ -57,9 +57,9 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
 ### CI/CD
 
 - **Continuous Integration (CI)**
-    - Automated CI tests using **[Laravel Pint](https://laravel.com/docs/pint)**, **[PHPStan](https://phpstan.org)**, **[Pest](https://pestphp.com)** and **[Playwright](https://playwright.dev)** via GitHub Actions on every push
+    - **[Automated CI tests](.github/workflows/ci.yml)** using **[Laravel Pint](https://laravel.com/docs/pint)**, **[PHPStan](https://phpstan.org)**, **[Pest](https://pestphp.com)** and **[Playwright](https://playwright.dev)** via GitHub Actions on every push
 - **Continuous Deployment (CD)**
-    - Automated CD pipeline that deploys to a **[Google Cloud](https://cloud.google.com)** Compute Engine instance via SSH
+    - **[Automated CD pipeline](.github/workflows/cd.yml)** that deploys to a **[Google Cloud](https://cloud.google.com)** Compute Engine instance via SSH
     - Secure SSH orchestration via encrypted GitHub Secrets and SSH key-pairing for automated remote deployment
 
 ### Deployment & DX
@@ -68,6 +68,7 @@ SneakPeek serves as a showcase of my full-stack development skills, combining mo
     - Zero-friction deployment with included deployment script and **[nginx](https://nginx.org)** configuration template
 - **Developer Experience (DX)**
     - Automated onboarding via a single command that handles environment setup, SQLite database creation, and dependency installation
+    - **[Laravel Boost](https://laravel.com/ai/boost)** integration for **[Cursor](https://cursor.com)** via **[MCP (Model Context Protocol)](https://modelcontextprotocol.io)** server accelerates AI-assisted development by providing the essential context and structure that AI needs
 
 # Installation
 
