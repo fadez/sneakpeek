@@ -1,10 +1,10 @@
-<div align="center">
+<p align="center">
     <img src="public/logo.svg" width="100" alt="SneakPeek">
-    <div align="center">
+    <p align="center">
         <a href="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml/badge.svg"></a>
         <a href="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml"><img alt="CD status" src="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml/badge.svg"></a>
-    </div>
-</div>
+    </p>
+</p>
 
 ------
 
