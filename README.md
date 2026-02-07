@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="public/logo.svg" width="100" alt="SneakPeek logo">
+    <img src="public/logo.svg" width="100" alt="SneakPeek">
     <div align="center">
         <a href="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml/badge.svg"></a>
         <a href="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml"><img alt="CD status" src="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml/badge.svg"></a>
@@ -12,7 +12,7 @@
 
 Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com)** using **[Laravel](https://laravel.com)**, **[Vue.js](https://vuejs.org)** and **[Tailwind CSS](https://tailwindcss.com)**.
 
-SneakPeek serves as a showcase of my full-stack development skills, combining modern frameworks and best practices to deliver a secure, scalable, and modern web application.
+**SneakPeek** showcases my full-stack development skills and workflow, combining modern frameworks and best practices to deliver a secure, scalable, and production-quality web application.
 
 # Live demo
 
