@@ -22,17 +22,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- OpenGraph -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ config('app.url') }}">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
     <meta property="og:title" content="{{ config('app.name') }}">
     <meta property="og:description" content="Secure, one-time secret sharing made simple.">
     <meta property="og:image" content="{{ asset('social.png') }}">
+    <meta property="og:url" content="{{ config('app.url') }}">
+    <meta property="og:type" content="website">
 
     <!-- OpenGraph: X (Twitter) -->
-    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ config('app.name') }}">
     <meta name="twitter:description" content="Secure, one-time secret sharing made simple.">
     <meta name="twitter:image" content="{{ asset('social.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
 
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
