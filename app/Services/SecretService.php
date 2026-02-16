@@ -23,7 +23,7 @@ class SecretService
             'key' => Str::random(64),
             'secret_key' => Str::random(64),
             'content' => $request->input('content'),
-            'passphrase' => $request->filled('passphrase') ? Hash::make($request->string('passphrase')) : null,
+            'passphrase' => $request->input('passphrase') ? Hash::make($request->string('passphrase')) : null,
             'expires_at' => $request->filled('ttl') ? now()->addSeconds($request->integer('ttl')) : null,
         ]);
     }
