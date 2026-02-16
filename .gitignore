@@ -1,3 +1,4 @@
+# Laravel .gitignore (Source: https://github.com/laravel/laravel/blob/HEAD/.gitignore)
 *.log
 .DS_Store
 .env
@@ -18,10 +19,10 @@
 /public/storage
 /storage/*.key
 /storage/pail
-/tests/Browser/Screenshots
 /vendor
 Homestead.json
 Homestead.yaml
-npm-debug.log
 Thumbs.db
-yarn-error.log
+
+# Custom rules
+/tests/Browser/Screenshots
