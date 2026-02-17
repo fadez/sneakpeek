@@ -26,9 +26,5 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-    <input
-        :class="classes"
-        :value="modelValue"
-        @input="emit('update:modelValue', $event.target.value)"
-    />
+    <input :class="classes" :value="modelValue" @input="emit('update:modelValue', $event.target.value)" />
 </template>

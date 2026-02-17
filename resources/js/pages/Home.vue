@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import { useToast } from 'vue-toastification';
+import axios from '@/axios';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
@@ -11,6 +12,7 @@ import BaseSelect from '@/components/BaseSelect.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 
 const router = useRouter();
+const toast = useToast();
 
 const isLoading = ref(false);
 const content = ref('');
@@ -20,38 +22,46 @@ const passphrase = ref('');
 const handleCreateLinkButtonClick = async () => {
     isLoading.value = true;
 
-    const response = await axios.post('/api/secrets', {
-        content: content.value,
-        ttl: ttl.value,
-        passphrase: passphrase.value,
-    });
+    try {
+        const response = await axios.post('/api/secrets', {
+            content: content.value,
+            ttl: ttl.value,
+            passphrase: passphrase.value,
+        });
 
-    isLoading.value = false;
+        toast.success('Secret has been created.');
 
-    router.push({
-        name: 'receipt',
-        params: { key: response.data.data.key },
-        state: { secret: response.data.data },
-        replace: true,
-    });
-}
+        router.push({
+            name: 'receipt',
+            params: { key: response.data.data.key },
+            state: { secret: response.data.data },
+            replace: true,
+        });
+    } catch (error) {
+        //
+    } finally {
+        isLoading.value = false;
+    }
+};
 </script>
 
 <template>
     <div>
-        <div class="text-center mb-4 sm:my-8">
-            <div class="mb-2 font-semibold text-2xl text-zinc-600 dark:text-zinc-100">
-                Paste a password, secret message or private link below.
-            </div>
-            <div class="text-zinc-600 dark:text-zinc-300">
-                Keep sensitive data out of your messages or inbox.
-            </div>
+        <div class="mb-4 text-center sm:my-8">
+            <div class="mb-2 text-2xl font-semibold text-zinc-600 dark:text-zinc-100">Paste a password, secret message or private link below.</div>
+            <div class="text-zinc-600 dark:text-zinc-300">Keep sensitive data out of your messages or inbox.</div>
         </div>
         <BaseCard>
-            <div class="p-4 grid grid-cols-1 gap-4">
+            <div class="grid grid-cols-1 gap-4 p-4">
                 <div class="flex flex-col gap-2">
                     <BaseLabel :required="true">Content</BaseLabel>
-                    <BaseTextarea data-test="content-input" placeholder="Secret content goes here..." rows="7" maxlength="10000" v-model="content"></BaseTextarea>
+                    <BaseTextarea
+                        data-test="content-input"
+                        placeholder="Secret content goes here..."
+                        rows="7"
+                        maxlength="10000"
+                        v-model="content"
+                    ></BaseTextarea>
                 </div>
 
                 <div class="flex flex-col gap-2">
@@ -75,22 +85,13 @@ const handleCreateLinkButtonClick = async () => {
                     </BaseSelect>
                 </div>
 
-                <BaseMessage v-if="!ttl" type="warning">
-                    Without an expiration, the secret will remain on our servers until it's revealed.
-                </BaseMessage>
+                <BaseMessage v-if="!ttl" type="warning">Without an expiration, the secret will remain on our servers until it's revealed.</BaseMessage>
 
-                <BaseMessage type="info">
-                    Your message will self-destruct after being revealed.
-                </BaseMessage>
+                <BaseMessage type="info"> Your message will self-destruct after being revealed.</BaseMessage>
             </div>
 
             <template #actions>
-                <BaseButton
-                    data-test="submit-btn"
-                    icon-before="fa-solid fa-lock"
-                    :disabled="!content.trim() || isLoading"
-                    @click="handleCreateLinkButtonClick"
-                >
+                <BaseButton data-test="submit-btn" icon-before="fa-solid fa-lock" :disabled="!content.trim() || isLoading" @click="handleCreateLinkButtonClick">
                     Create Link
                 </BaseButton>
             </template>

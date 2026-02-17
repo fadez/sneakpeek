@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
+import { useToast } from 'vue-toastification';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
+import axios from '@/axios';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
@@ -11,6 +12,7 @@ import BaseLabel from '@/components/BaseLabel.vue';
 
 const route = useRoute();
 const router = useRouter();
+const toast = useToast();
 
 const secret = ref(null);
 const passphrase = ref('');
@@ -22,7 +24,7 @@ watchEffect(async () => {
     try {
         const response = await axios.get(`/api/receipts/${key}`);
         secret.value = response.data.data;
-    } catch (e) {
+    } catch (error) {
         router.push({ name: 'home' });
     }
 });
@@ -30,7 +32,7 @@ watchEffect(async () => {
 const secretUrl = computed(() => {
     const path = router.resolve({
         name: 'secret',
-        params: { secretKey: secret.value.secret_key }
+        params: { secretKey: secret.value.secret_key },
     }).href;
 
     return `${window.location.origin}${path}`;
@@ -38,13 +40,9 @@ const secretUrl = computed(() => {
 
 const handleCopyUrlButtonClick = () => {
     navigator.clipboard.writeText(secretUrl.value).then(() => {
-        alert('Copied to clipboard!');
+        toast.info("Secret link copied! You're ready to share.");
     });
-}
-
-const hasActions = computed(() => {
-    return !secret.value.is_revealed && !secret.value.is_expired;
-});
+};
 
 const handleDeleteSecretButtonClick = async () => {
     // We need to show the passphrase input first if the secret is passphrase-protected
@@ -55,14 +53,21 @@ const handleDeleteSecretButtonClick = async () => {
 
     try {
         await axios.delete(`/api/secrets/${secret.value.secret_key}`, {
-            data: { passphrase: passphrase.value }
+            data: { passphrase: passphrase.value },
         });
 
+        toast.success('Secret has been deleted.');
+
         router.push({ name: 'home' });
-    } catch (e) {
-        console.error(e);
+    } catch (error) {
+        passphrase.value = '';
     }
-}
+};
+
+const handleCancelDeleteSecretButtonClick = () => {
+    isShowingPassphraseInput.value = false;
+    passphrase.value = '';
+};
 </script>
 
 <template>
@@ -73,34 +78,31 @@ const handleDeleteSecretButtonClick = async () => {
         <BaseCard>
             <section class="p-4">
                 <BaseMessage v-if="secret.is_revealed" type="success">
-                    Your secret has been revealed.
+                    Your secret has been revealed on {{ new Date(secret.revealed_at).toLocaleString() }}.
                 </BaseMessage>
-                <BaseMessage v-else-if="secret.is_expired" type="warning">
-                    Your secret has expired without being revealed.
-                </BaseMessage>
+                <BaseMessage v-else-if="secret.is_expired" type="warning">Your secret has expired without being revealed.</BaseMessage>
                 <BaseMessage v-else-if="secret.expires_at" type="info">
-                    Your secret is available until {{ new Date(secret.expires_at).toLocaleString() }}.
+                    Your secret is not yet revealed. It is available until {{ new Date(secret.expires_at).toLocaleString() }}.
                 </BaseMessage>
-                <BaseMessage v-else type="info">
-                    Your secret is available and will never expire.
-                </BaseMessage>
+                <BaseMessage v-else type="info">Your secret is available and will never expire.</BaseMessage>
             </section>
 
-            <section
-                class="border-y-2 border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 p-4"
-            >
-                <div class="flex items-center justify-between py-2 font-mono gap-2 select-none">
-                    <div class="flex flex-1 items-center min-w-0">
-                        <span class="truncate blur-sm text-black dark:text-white">
+            <section :class="['border-t-2 border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-700 dark:bg-zinc-800', !secret.is_active ? 'rounded-b-sm' : '']">
+                <div class="flex items-center justify-between gap-2 py-2 font-mono select-none">
+                    <div class="flex min-w-0 flex-1 items-center">
+                        <span class="truncate text-zinc-950 blur-sm dark:text-white">
                             ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
                         </span>
                     </div>
-                    <div class="flex flex-row gap-2 items-end shrink-0 text-zinc-400 dark:text-zinc-500">
+                    <div class="flex shrink-0 flex-row items-end gap-2 text-zinc-400 dark:text-zinc-500">
                         <span class="flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-1 text-xs font-medium dark:bg-zinc-700">
                             <i class="fa-solid fa-lock"></i>
                             Encrypted
                         </span>
-                        <span v-if="secret.is_passphrase_protected" class="flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-1 text-xs font-medium dark:bg-zinc-700">
+                        <span
+                            v-if="secret.is_passphrase_protected"
+                            class="flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-1 text-xs font-medium dark:bg-zinc-700"
+                        >
                             <i class="fa-solid fa-key"></i>
                             Passphrase-protected
                         </span>
@@ -108,24 +110,22 @@ const handleDeleteSecretButtonClick = async () => {
                 </div>
             </section>
 
-            <section class="p-4">
+            <section v-if="secret.is_active" class="border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
                 <div class="flex flex-col gap-2">
                     <BaseLabel>Secret Link</BaseLabel>
                     <BaseInput data-test="secret-link" :value="secretUrl" readonly @click="$event.target.select()" />
                 </div>
             </section>
 
-            <template v-if="hasActions" #actions>
-                <BaseInput v-if="secret.is_passphrase_protected && isShowingPassphraseInput" type="password" v-model="passphrase" placeholder="Enter passphrase..." />
+            <template v-if="secret.is_active" #actions>
+                <BaseInput
+                    v-if="secret.is_passphrase_protected && isShowingPassphraseInput"
+                    type="password"
+                    v-model="passphrase"
+                    placeholder="Enter passphrase..."
+                />
 
-                <BaseButton
-                    v-if="!isShowingPassphraseInput"
-                    type="primary"
-                    icon-before="fa-solid fa-copy"
-                    @click="handleCopyUrlButtonClick"
-                >
-                    Copy Secret Link
-                </BaseButton>
+                <BaseButton v-if="!isShowingPassphraseInput" icon-before="fa-solid fa-copy" @click="handleCopyUrlButtonClick">Copy Secret Link</BaseButton>
 
                 <BaseButton
                     type="danger"
@@ -135,13 +135,7 @@ const handleDeleteSecretButtonClick = async () => {
                 >
                     Delete Secret
                 </BaseButton>
-                <BaseButton
-                    v-if="isShowingPassphraseInput"
-                    type="outline-secondary"
-                    @click="isShowingPassphraseInput = false"
-                >
-                    Cancel
-                </BaseButton>
+                <BaseButton v-if="isShowingPassphraseInput" type="outline-secondary" @click="handleCancelDeleteSecretButtonClick">Cancel</BaseButton>
             </template>
         </BaseCard>
     </div>

@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
-import { createWebHistory, createRouter } from 'vue-router';
-import App from '@/App.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 import routes from '@/routes';
-import { appName } from '@/config';
+import toastNotifications from '@/toasts';
+import App from '@/App.vue';
 
 const app = createApp(App);
 
@@ -21,6 +21,7 @@ const router = createRouter({
 });
 
 app.use(router);
-app.mount('#app');
 
-console.log(`👋 Welcome to ${appName}!`);
+app.use(toastNotifications);
+
+app.mount('#app');

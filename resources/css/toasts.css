@@ -1,0 +1,99 @@
+@import 'vue-toastification/dist/index.css';
+
+.Vue-Toastification__close-button {
+    all: unset;
+}
+
+.Vue-Toastification__container {
+    @apply pointer-events-none box-border flex min-h-full w-full flex-col p-0 px-4 text-white opacity-98;
+}
+
+.Vue-Toastification__container.top-left,
+.Vue-Toastification__container.top-center,
+.Vue-Toastification__container.top-right {
+    @apply top-4;
+}
+
+.Vue-Toastification__container.bottom-left,
+.Vue-Toastification__container.bottom-center,
+.Vue-Toastification__container.bottom-right {
+    @apply bottom-0;
+}
+
+.Vue-Toastification__container.top-left,
+.Vue-Toastification__container.bottom-left {
+    @apply left-0;
+}
+
+.Vue-Toastification__container.top-center,
+.Vue-Toastification__container.bottom-center {
+    @apply left-0 mx-auto;
+}
+
+.Vue-Toastification__container.top-right,
+.Vue-Toastification__container.bottom-right {
+    @apply right-0;
+}
+
+.Vue-Toastification__toast {
+    @apply mb-4 flex min-h-[56px] max-w-[392px] min-w-[392px] items-center rounded-md border-2 p-3 font-[inherit] shadow-none;
+}
+
+.Vue-Toastification__toast-body {
+    @apply flex items-center;
+}
+
+/* toast: default  */
+.Vue-Toastification__toast--default {
+    @apply border-zinc-950 bg-white;
+}
+
+.Vue-Toastification__toast--default .Vue-Toastification__toast-body {
+    @apply text-zinc-950;
+}
+
+/* toast: info */
+.Vue-Toastification__toast--info {
+    @apply border-sky-500 bg-white;
+}
+
+.Vue-Toastification__toast--info .Vue-Toastification__toast-body {
+    @apply text-sky-500;
+}
+
+/* toast: success */
+.Vue-Toastification__toast--success {
+    @apply border-emerald-500 bg-white;
+}
+
+.Vue-Toastification__toast--success .Vue-Toastification__toast-body {
+    @apply text-emerald-500;
+}
+
+/* toast: warning */
+.Vue-Toastification__toast--warning {
+    @apply border-yellow-500 bg-white;
+}
+
+.Vue-Toastification__toast--warning .Vue-Toastification__toast-body {
+    @apply text-yellow-500;
+}
+
+/* toast: error */
+.Vue-Toastification__toast--error {
+    @apply border-red-500 bg-white;
+}
+
+.Vue-Toastification__toast--error .Vue-Toastification__toast-body {
+    @apply text-red-500;
+}
+
+@media only screen and (max-width: 600px) {
+    .Vue-Toastification__container {
+        @apply right-0 left-0;
+    }
+
+    .Vue-Toastification__toast {
+        @apply w-full max-w-full min-w-full;
+    }
+}

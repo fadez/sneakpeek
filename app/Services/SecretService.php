@@ -54,6 +54,8 @@ class SecretService
 
     /**
      * Validate the passphrase for a secret if required.
+     *
+     * @throws ValidationException
      */
     public function validatePassphrase(Request $request, Secret $secret): void
     {

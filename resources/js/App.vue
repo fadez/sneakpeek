@@ -6,7 +6,7 @@ import TheFooter from '@/components/TheFooter.vue';
 <template>
     <TheHeader />
 
-    <div class="container max-w-3xl mx-auto px-4">
+    <div class="container mx-auto max-w-4xl px-4">
         <RouterView />
     </div>
 

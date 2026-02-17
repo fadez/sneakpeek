@@ -5,7 +5,7 @@ const commitHash = __COMMIT_HASH__;
 </script>
 
 <template>
-    <footer data-test="footer" class="container mx-auto my-4 max-w-3xl px-4">
+    <footer data-test="footer" class="container mx-auto my-4 max-w-4xl px-4">
         <div class="text-center text-zinc-700 dark:text-zinc-400">
             Built with ❤️ in 🇺🇦 by
             <BaseLink href="https://github.com/fadez" target="_blank">@fadez</BaseLink>

@@ -9,6 +9,7 @@ const props = defineProps({
     },
 });
 
+// prettier-ignore
 const messageClasses = computed(() => {
     const baseClasses = [
         'px-4',

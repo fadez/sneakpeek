@@ -32,9 +32,5 @@ const handleInput = (event) => {
 </script>
 
 <template>
-    <textarea
-        :class="classes"
-        :value="modelValue"
-        @input="handleInput"
-    ></textarea>
+    <textarea :class="classes" :value="modelValue" @input="handleInput"></textarea>
 </template>

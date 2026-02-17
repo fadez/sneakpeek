@@ -6,15 +6,10 @@ const hasActions = computed(() => slots.actions?.());
 </script>
 
 <template>
-    <div
-        class="bg-white dark:bg-black rounded-md border-2 border-zinc-200 dark:border-zinc-700"
-    >
+    <div class="rounded-md border-2 border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
         <slot></slot>
 
-        <section
-            v-if="hasActions"
-            class="p-4 border-t-2 border-zinc-200 dark:border-zinc-700 flex flex-col sm:flex-row gap-2 justify-between"
-        >
+        <section v-if="hasActions" class="flex flex-col justify-between gap-2 border-t-2 border-zinc-200 p-4 sm:flex-row dark:border-zinc-700">
             <slot name="actions"></slot>
         </section>
     </div>

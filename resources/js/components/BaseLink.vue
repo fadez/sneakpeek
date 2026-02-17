@@ -26,12 +26,7 @@ const isRouterLink = computed(() => !!props.to);
 </script>
 
 <template>
-    <component
-        :is="isRouterLink ? RouterLink : 'a'"
-        :to="isRouterLink ? props.to : undefined"
-        :class="linkClasses"
-        v-bind="attrs"
-    >
+    <component :is="isRouterLink ? RouterLink : 'a'" :to="isRouterLink ? props.to : undefined" :class="linkClasses" v-bind="attrs">
         <slot />
     </component>
 </template>
