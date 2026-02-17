@@ -29,6 +29,7 @@ class SecretResource extends JsonResource
             'is_passphrase_protected' => $this->is_passphrase_protected,
             'is_expired' => $this->is_expired,
             'is_revealed' => $this->is_revealed,
+            'is_active' => $this->is_active,
         ];
     }
 }

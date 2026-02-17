@@ -2,19 +2,27 @@
 
 namespace App\Models;
 
+use Database\Factories\SecretFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 /**
+ * @property string $key
+ * @property string $secret_key
  * @property-read bool $is_passphrase_protected
  * @property-read bool $is_expired
  * @property-read bool $is_revealed
+ * @property-read bool $is_active
  */
 class Secret extends Model
 {
+    /** @use HasFactory<SecretFactory> */
+    use HasFactory;
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -30,7 +38,7 @@ class Secret extends Model
      * @var list<string>
      */
     protected $appends = [
-        'is_passphrase_protected', 'is_expired', 'is_revealed',
+        'is_passphrase_protected', 'is_expired', 'is_revealed', 'is_active',
     ];
 
     /**
@@ -171,6 +179,18 @@ class Secret extends Model
     {
         return Attribute::make(
             get: fn () => $this->revealed_at !== null,
+        );
+    }
+
+    /**
+     * Determine if the secret is unrevealed and haven't expired.
+     *
+     * @return Attribute<bool, never>
+     */
+    protected function isActive(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ! $this->is_expired && ! $this->is_revealed,
         );
     }
 }

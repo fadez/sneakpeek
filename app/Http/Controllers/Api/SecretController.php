@@ -9,6 +9,7 @@ use App\Models\Secret;
 use App\Services\SecretService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SecretController extends Controller
 {
@@ -62,7 +63,7 @@ class SecretController extends Controller
      * Delete a secret.
      * Only secrets that have not been revealed can be deleted.
      */
-    public function destroy(Request $request, string $secretKey): JsonResponse
+    public function destroy(Request $request, string $secretKey): Response
     {
         $secret = $this->secretService->findActive(secretKey: $secretKey);
 
@@ -70,6 +71,6 @@ class SecretController extends Controller
 
         $secret->delete();
 
-        return response()->json(['message' => 'Secret has been deleted.']);
+        return response()->noContent();
     }
 }
