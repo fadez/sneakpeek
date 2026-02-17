@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * @property string $key
  * @property string $secret_key
+ * @property string|null $content
  * @property-read bool $is_passphrase_protected
  * @property-read bool $is_expired
  * @property-read bool $is_revealed
@@ -50,6 +51,7 @@ class Secret extends Model
     {
         return [
             'content' => 'encrypted',
+            'passphrase' => 'hashed',
             'expires_at' => 'datetime',
             'revealed_at' => 'datetime',
         ];
@@ -139,6 +141,8 @@ class Secret extends Model
 
     /**
      * Wipe the content of the secret from the database permanently.
+     *
+     * The Secret model is preserved so the creator can still view its status on the receipt page.
      */
     public function wipeContent(): void
     {

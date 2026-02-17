@@ -41,7 +41,7 @@ class SecretFactory extends Factory
     public function expired(): static
     {
         return $this->state(fn (array $attributes) => [
-            'expires_at' => now()->subHour(),
+            'expires_at' => now()->subSecond(),
         ]);
     }
 
@@ -63,6 +63,26 @@ class SecretFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'expires_at' => now()->addSeconds($seconds),
+        ]);
+    }
+
+    /**
+     * Indicate that the secret expires at the current moment.
+     */
+    public function expiresNow(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'expires_at' => now(),
+        ]);
+    }
+
+    /**
+     * Indicate that the secret never expires.
+     */
+    public function neverExpires(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'expires_at' => null,
         ]);
     }
 }

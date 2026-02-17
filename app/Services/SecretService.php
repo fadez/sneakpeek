@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Http\Requests\StoreSecretRequest;
 use App\Models\Secret;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -23,7 +22,7 @@ class SecretService
             'key' => Str::random(64),
             'secret_key' => Str::random(64),
             'content' => $request->input('content'),
-            'passphrase' => $request->input('passphrase') ? Hash::make($request->string('passphrase')) : null,
+            'passphrase' => $request->input('passphrase'),
             'expires_at' => $request->filled('ttl') ? now()->addSeconds($request->integer('ttl')) : null,
         ]);
     }
