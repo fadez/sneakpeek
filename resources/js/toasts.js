@@ -7,7 +7,7 @@ const toastNotifications = {
         app.use(Toast, {
             transition: 'Vue-Toastification__bounce',
             maxToasts: 10,
-            timeout: 4000,
+            timeout: 5000,
             position: TOAST_POSITION.BOTTOM_RIGHT,
             newestOnTop: true,
             icon: false,
@@ -23,17 +23,17 @@ const toastNotifications = {
                 },
                 [TOAST_TYPE.SUCCESS]: {
                     closeButton: () => h(ToastCloseButton, { type: 'success' }),
+                    timeout: 3000,
                 },
                 [TOAST_TYPE.INFO]: {
                     closeButton: () => h(ToastCloseButton, { type: 'info' }),
-                    timeout: 2500,
+                    timeout: 3000,
                 },
                 [TOAST_TYPE.WARNING]: {
                     closeButton: () => h(ToastCloseButton, { type: 'warning' }),
                 },
                 [TOAST_TYPE.ERROR]: {
                     closeButton: () => h(ToastCloseButton, { type: 'danger' }),
-                    timeout: 7500,
                     pauseOnHover: true,
                 },
             },
