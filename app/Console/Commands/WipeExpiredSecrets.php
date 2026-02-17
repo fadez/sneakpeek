@@ -28,7 +28,7 @@ class WipeExpiredSecrets extends Command
     {
         $wipedCount = 0;
 
-        Secret::toBeWiped()->cursor()->each(function ($secret) use (&$wipedCount) {
+        Secret::toBeWiped()->cursor()->each(function (Secret $secret) use (&$wipedCount) {
             $secret->wipeContent();
 
             $wipedCount++;

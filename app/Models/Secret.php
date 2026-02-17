@@ -89,7 +89,7 @@ class Secret extends Model
     #[Scope]
     protected function scopeNotExpired(Builder $query): Builder
     {
-        return $query->where(function ($query) {
+        return $query->where(function (Builder $query) {
             $query->whereNull('expires_at')
                 ->orWhere('expires_at', '>=', now());
         });
