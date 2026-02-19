@@ -34,6 +34,6 @@ class WipeExpiredSecrets extends Command
             $wipedCount++;
         });
 
-        $this->info("Wiped {$wipedCount} expired secrets.");
+        $this->info('Wiped ' . $wipedCount . ' expired ' . str('secret')->plural($wipedCount) . '.');
     }
 }

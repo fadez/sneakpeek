@@ -55,5 +55,5 @@ function test_name()
 // Returns a screenshot filename prefixed with the clean test name
 function screenshot_name($name)
 {
-    return test_name().'_'.$name;
+    return test_name() . '_' . $name;
 }
