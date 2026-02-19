@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 /*
@@ -14,11 +14,11 @@ use Tests\TestCase;
 |
 */
 
-pest()->extend(TestCase::class)->use(RefreshDatabase::class)->group('unit')->in('Unit');
+pest()->extend(TestCase::class)->use(LazilyRefreshDatabase::class)->group('unit')->in('Unit');
 
-pest()->extend(TestCase::class)->use(RefreshDatabase::class)->group('feature')->in('Feature');
+pest()->extend(TestCase::class)->use(LazilyRefreshDatabase::class)->group('feature')->in('Feature');
 
-pest()->extend(TestCase::class)->use(RefreshDatabase::class)->group('browser')->in('Browser');
+pest()->extend(TestCase::class)->use(LazilyRefreshDatabase::class)->group('browser')->in('Browser');
 
 /*
 |--------------------------------------------------------------------------
@@ -55,5 +55,5 @@ function test_name()
 // Returns a screenshot filename prefixed with the clean test name
 function screenshot_name($name)
 {
-    return test_name() . '_' . $name;
+    return test_name() . '_' . str($name)->replace('.', '_')->slug('_');
 }

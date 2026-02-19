@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Secret;
+use App\Services\SecretService;
 use Illuminate\Console\Command;
 
 class WipeExpiredSecrets extends Command
@@ -24,14 +25,14 @@ class WipeExpiredSecrets extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle(SecretService $secretService): void
     {
         $wipedCount = 0;
 
-        Secret::toBeWiped()->cursor()->each(function (Secret $secret) use (&$wipedCount) {
-            $secret->wipeContent();
-
-            $wipedCount++;
+        Secret::toBeWiped()->cursor()->each(function (Secret $secret) use ($secretService, &$wipedCount) {
+            if ($secretService->wipeContent($secret)) {
+                $wipedCount++;
+            }
         });
 
         $this->info('Wiped ' . $wipedCount . ' expired ' . str('secret')->plural($wipedCount) . '.');

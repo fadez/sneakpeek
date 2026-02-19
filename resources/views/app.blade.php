@@ -39,6 +39,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-zinc-100 dark:bg-black">
-    <div id="app"></div>
+    <div id="app" data-test="app"></div>
 </body>
 </html>

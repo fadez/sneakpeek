@@ -22,6 +22,9 @@ class SecretFactory extends Factory
             'key' => Str::random(64),
             'secret_key' => Str::random(64),
             'content' => fake()->sentence(),
+            'passphrase' => null,
+            'expires_at' => null,
+            'revealed_at' => null,
         ];
     }
 
@@ -32,16 +35,6 @@ class SecretFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'passphrase' => Hash::make($passphrase),
-        ]);
-    }
-
-    /**
-     * Indicate that the secret has expired.
-     */
-    public function expired(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'expires_at' => now()->subSecond(),
         ]);
     }
 
@@ -57,6 +50,16 @@ class SecretFactory extends Factory
     }
 
     /**
+     * Indicate that the secret has been wiped.
+     */
+    public function wiped(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'content' => null,
+        ]);
+    }
+
+    /**
      * Indicate that the secret will expire in the future.
      */
     public function expiresIn(int $seconds): static
@@ -67,12 +70,22 @@ class SecretFactory extends Factory
     }
 
     /**
-     * Indicate that the secret expires at the current moment.
+     * Indicate that the secret expires at the current second.
      */
     public function expiresNow(): static
     {
         return $this->state(fn (array $attributes) => [
             'expires_at' => now(),
+        ]);
+    }
+
+    /**
+     * Indicate that the secret has expired.
+     */
+    public function expired(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'expires_at' => now()->subSecond(),
         ]);
     }
 

@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('secrets', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique()->comment('The key used to access the info about the secret');
-            $table->string('secret_key')->unique()->comment('The key used to reveal the secret');
-            $table->longText('content')->nullable();
-            $table->string('passphrase')->nullable();
-            $table->timestamp('expires_at')->nullable()->index();
-            $table->timestamp('revealed_at')->nullable()->index();
+            $table->string('key')->unique()->comment('Unique identifier used to access public information about the secret.');
+            $table->string('secret_key')->unique()->comment('Unique identifier used to authorize decryption or destruction of the secret.');
+            $table->longText('content')->nullable()->comment('Encrypted payload of the secret.');
+            $table->string('passphrase')->nullable()->comment('Optional hashed passphrase required to authorize decryption.');
+            $table->timestamp('expires_at')->nullable()->index()->comment('Timestamp after which the secret is no longer accessible.');
+            $table->timestamp('revealed_at')->nullable()->index()->comment('Timestamp of when the secret was decrypted and payload was destroyed.');
             $table->timestamps();
         });
     }

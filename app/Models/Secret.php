@@ -7,13 +7,18 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 
 /**
+ * @property int $id
  * @property string $key
  * @property string $secret_key
  * @property string|null $content
+ * @property string|null $passphrase
+ * @property Carbon|null $expires_at
+ * @property Carbon|null $revealed_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * @property-read bool $is_passphrase_protected
  * @property-read bool $is_expired
  * @property-read bool $is_revealed
@@ -122,35 +127,6 @@ class Secret extends Model
     }
 
     /**
-     * Verify if the provided passphrase matches the hashed passphrase.
-     */
-    public function checkPassphrase(?string $passphrase = null): bool
-    {
-        // Return true if the secret doesn't require a passphrase
-        if ($this->passphrase === null) {
-            return true;
-        }
-
-        // Return false if a passphrase is not provided when the secret requires one
-        if ($passphrase === null) {
-            return false;
-        }
-
-        return Hash::check($passphrase, $this->passphrase);
-    }
-
-    /**
-     * Wipe the content of the secret from the database permanently.
-     *
-     * The Secret model is preserved so the creator can still view its status on the receipt page.
-     */
-    public function wipeContent(): void
-    {
-        $this->content = null;
-        $this->save();
-    }
-
-    /**
      * Determine if the secret is protected by a passphrase.
      *
      * @return Attribute<bool, never>
@@ -163,14 +139,14 @@ class Secret extends Model
     }
 
     /**
-     * Determine if the secret has expired.
+     * Determine if the secret is unrevealed and haven't expired.
      *
      * @return Attribute<bool, never>
      */
-    protected function isExpired(): Attribute
+    protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->expires_at !== null && $this->expires_at < now(),
+            get: fn () => ! $this->is_expired && ! $this->is_revealed,
         );
     }
 
@@ -187,14 +163,14 @@ class Secret extends Model
     }
 
     /**
-     * Determine if the secret is unrevealed and haven't expired.
+     * Determine if the secret has expired.
      *
      * @return Attribute<bool, never>
      */
-    protected function isActive(): Attribute
+    protected function isExpired(): Attribute
     {
         return Attribute::make(
-            get: fn () => ! $this->is_expired && ! $this->is_revealed,
+            get: fn () => $this->expires_at !== null && $this->expires_at < now(),
         );
     }
 }

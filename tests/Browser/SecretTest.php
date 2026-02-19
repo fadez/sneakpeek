@@ -1,11 +1,11 @@
 <?php
 
 it('can create and reveal a secret without passphrase', function () {
-    $secretText = Str::random(16);
+    $content = 'Secret content.';
 
     // Create the secret
     $page = visit('/')
-        ->type('@content-input', $secretText)
+        ->type('@content-input', $content)
         ->pressAndWaitFor('@submit-btn', 0.2)
         ->assertPresent('@secret-link');
 
@@ -18,7 +18,7 @@ it('can create and reveal a secret without passphrase', function () {
     $page->navigate($secretUrl)
         ->assertPresent('@reveal-secret-btn')
         ->pressAndWaitFor('@reveal-secret-btn', 0.2)
-        ->assertValue('@secret-content', $secretText);
+        ->assertValue('@secret-content', $content);
 
     $page->screenshot(filename: screenshot_name('2_secret_revealed'));
 

@@ -24,7 +24,7 @@ class SecretController extends Controller
     }
 
     /**
-     * Get a receipt for a secret.
+     * Get receipt for a secret after it is created.
      */
     public function receipt(Secret $secret): SecretResource
     {
@@ -32,7 +32,7 @@ class SecretController extends Controller
     }
 
     /**
-     * Get general information about a secret.
+     * Get information about a secret before it is revealed.
      * A passphrase is not required for this route.
      */
     public function show(string $secretKey): SecretResource

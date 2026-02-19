@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\StoreSecretRequest;
 use App\Models\Secret;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -52,7 +53,25 @@ class SecretService
     }
 
     /**
-     * Validate the passphrase for a secret if required.
+     * Verify if the provided passphrase matches the hashed passphrase.
+     */
+    public function checkPassphrase(Secret $secret, ?string $passphrase = null): bool
+    {
+        // Return true if the secret doesn't require a passphrase
+        if ($secret->passphrase === null) {
+            return true;
+        }
+
+        // Return false if a passphrase is not provided when the secret requires one
+        if ($passphrase === null || $passphrase === '') {
+            return false;
+        }
+
+        return Hash::check($passphrase, $secret->passphrase);
+    }
+
+    /**
+     * Validate the passphrase for a secret if secret is passphrase-protected.
      *
      * @throws ValidationException
      */
@@ -62,10 +81,20 @@ class SecretService
             return;
         }
 
-        if (! $secret->checkPassphrase(passphrase: $request->string('passphrase'))) {
+        if (! $this->checkPassphrase(secret: $secret, passphrase: $request->string('passphrase'))) {
             throw ValidationException::withMessages([
                 'passphrase' => ['The passphrase is incorrect.'],
             ]);
         }
+    }
+
+    /**
+     * Wipe the content of the secret from the database permanently.
+     *
+     * The Secret model is preserved so the creator can still view its status on the receipt page.
+     */
+    public function wipeContent(Secret $secret): bool
+    {
+        return $secret->update(['content' => null]);
     }
 }

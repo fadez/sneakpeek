@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
@@ -30,8 +31,16 @@ class AppServiceProvider extends ServiceProvider
         // Enforce strict behavior to catch lazy loading and missing attributes
         Model::shouldBeStrict();
 
+        // Exclude fields from automatic trimming
         TrimStrings::except(['passphrase']);
 
+        // Add ->createFresh() method to all model factories to avoid calling ->fresh() all the time
+        Factory::macro('createFresh', function ($attributes = [], ?Model $parent = null) {
+            /** @var (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed> $attributes */
+            return $this->create($attributes, $parent)->fresh();
+        });
+
+        // Throttle API requests to 60 per minute per IP address
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->ip());
         });

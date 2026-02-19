@@ -11,7 +11,7 @@ it('wipes content only for expired secrets that still have content', function ()
     expect($activeSecretWithContent->content)->toBeTruthy();
     expect($activeSecretThatNeverExpires->content)->toBeTruthy();
 
-    $this->artisan('secrets:wipe-expired')->assertExitCode(0);
+    $this->artisan('secrets:wipe-expired')->assertOk();
 
     expect($expiredSecretWithContent->refresh()->content)->toBeNull();
     expect($activeSecretWithContent->refresh()->content)->toBeTruthy();
@@ -19,11 +19,21 @@ it('wipes content only for expired secrets that still have content', function ()
 });
 
 it('does not wipe content for active secrets expiring now', function () {
+    $this->freezeSecond();
+
     $secretExpiresNow = Secret::factory()->expiresNow()->create();
 
     expect($secretExpiresNow->content)->toBeTruthy();
 
-    $this->artisan('secrets:wipe-expired')->assertExitCode(0);
+    $this->artisan('secrets:wipe-expired')->assertOk();
 
     expect($secretExpiresNow->refresh()->content)->toBeTruthy();
+
+    $this->travel(1)->second();
+
+    $this->artisan('secrets:wipe-expired')
+        ->expectsOutput('Wiped 1 expired secret.')
+        ->assertOk();
+
+    expect($secretExpiresNow->refresh()->content)->toBeNull();
 });
