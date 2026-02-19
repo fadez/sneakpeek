@@ -12,7 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__ . '/../routes/api.php',
         web: __DIR__ . '/../routes/web.php',
         commands: __DIR__ . '/../routes/console.php',
-        health: '/up',
+        // Disable default health check to prevent framework identification
+        // health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
@@ -20,11 +21,14 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
+        // Customize the 404 response to prevent framework identification
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if ($request->is('api/*')) {
+            if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'Whoops! We couldn\'t find that page.',
                 ], 404);
             }
+
+            return redirect()->route('home');
         });
     })->create();
