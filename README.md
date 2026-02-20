@@ -6,7 +6,7 @@
     </p>
 </p>
 
-------
+---
 
 > Secure, one-time secret sharing made simple.
 
@@ -22,7 +22,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 
 ### Backend
 
-- **Laravel framework**
+- **Laravel framework v12**
     - RESTful API using Laravel API Resources with clean controllers and rate-limited routes
     - Eloquent ORM with custom scopes, accessors, and API Resources
     - Database migrations with proper indexing for performance and integrity
@@ -33,34 +33,37 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Encrypted content storage using Laravel's built-in encryption
     - Optional hashed passphrase protection for secrets
     - Optional expiration time for secrets
+    - Minimized framework exposure to prevent framework identification and targeted attacks
+    - API throttling (rate limiting) to prevent brute-force attacks
 - **Clean architecture**
     - Readable, maintainable code with scoped responsibilities
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
 - **Quality Assurance (QA)**
-    - A comprehensive suite of unit, feature, and browser tests using **[Pest](https://pestphp.com)**
+    - A comprehensive suite of unit, feature, and browser tests using **[Pest](https://pestphp.com)**, utilizing its native **[Playwright](https://playwright.dev)** integration for E2E browser testing
     - Strict code consistency and PSR-12 compliance, enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
-    - Strict static analysis with maximum type safety — 100% coverage with **[PHPStan](https://phpstan.org)** level 10, enforced by **[Larastan](https://github.com/larastan/larastan)**
+    - Strict static analysis with maximum type safety across the entire codebase with **[PHPStan](https://phpstan.org)** level 10, enforced by **[Larastan](https://github.com/larastan/larastan)**
 
 ### Frontend
 
-- **Vue.js**
-    - Composition API
-    - Vue Router
-    - Component-based architecture
-    - Reactive state management
-- **Tailwind CSS**
-    - Responsive and beautiful UI
-    - Auto-switching light/dark mode support
+- **Vue.js v3.5**
+    - **[Composition API](https://vuejs.org/guide/extras/composition-api-faq)** with the `<script setup>` syntax for clean components
+    - Modular, component-based structure with reusable Single File Components (SFC)
+    - Single-page application (SPA) architecture powered by **[Vue Router](https://router.vuejs.org)**
+    - Consistent naming conventions and directory organization for ease of navigation and scalability
+    - State-driven reactivity ensuring seamless user interaction
+- **Tailwind CSS v4.2**
+    - Elegant, mobile-first responsive design
+    - Light and dark mode support with automatic switching
 - **Vite**
-    - Fast builds, hot module replacement, production optimization
+    - Lightning-fast builds and production optimization
 
 ### CI/CD
 
 - **Continuous Integration (CI)**
-    - **[Automated CI tests](.github/workflows/ci.yml)** using **[Laravel Pint](https://laravel.com/docs/pint)**, **[PHPStan](https://phpstan.org)**, **[Pest](https://pestphp.com)** and **[Playwright](https://playwright.dev)** via GitHub Actions on every push
+    - **[Automated CI pipeline](.github/workflows/ci.yml)** using **[Laravel Pint](https://laravel.com/docs/pint)**, **[PHPStan](https://phpstan.org)**, **[Pest](https://pestphp.com)**, and **[Playwright](https://playwright.dev)** via **[GitHub Actions](https://github.com/features/actions)** on every push
 - **Continuous Deployment (CD)**
     - **[Automated CD pipeline](.github/workflows/cd.yml)** that deploys to a **[Google Cloud](https://cloud.google.com)** Compute Engine instance via SSH
-    - Secure SSH orchestration via encrypted GitHub Secrets and SSH key-pairing for automated remote deployment
+    - Secure SSH orchestration using encrypted GitHub Secrets and SSH key pairs for automated remote deployment
 
 ### Deployment & DX
 
@@ -69,14 +72,16 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 - **Developer Experience (DX)**
     - Automated onboarding via a single command that handles environment setup, SQLite database creation, and dependency installation
     - **[Laravel Boost](https://laravel.com/ai/boost)** integration for **[Cursor](https://cursor.com)** via **[MCP (Model Context Protocol)](https://modelcontextprotocol.io)** server accelerates AI-assisted development by providing the essential context and structure that AI needs
+    - Automated linting and formatting using Prettier to ensure a standardized code style across all Vue and CSS files
 
 # Installation
 
 ### Prerequisites
 
 Before beginning installation, make sure that your local machine has:
+
 - **[PHP](https://php.net)** v8.3+
-- **[Node.js and npm](https://nodejs.org)** v18+
+- **[Node.js and npm](https://nodejs.org)** v20+
 - **[Composer](https://getcomposer.org)**
 - **[Git](https://git-scm.com)**
 
@@ -93,3 +98,11 @@ git clone https://github.com/fadez/sneakpeek.git && cd sneakpeek && composer set
 ### Visiting the site
 
 If you're using **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/valet)**, you can now access the app at **[sneakpeek.test](http://sneakpeek.test)**.
+
+# Testing
+
+You can run the full test suite, PHPStan and Laravel Pint with a single command:
+
+```sh
+composer test
+```
