@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
 
 /**
- * @property int $id
- * @property string $key
- * @property string $secret_key
+ * @property string $id
+ * @property string $access_token
  * @property string|null $content
  * @property string|null $passphrase
  * @property Carbon|null $expires_at
@@ -30,12 +29,26 @@ class Secret extends Model
     use HasFactory;
 
     /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The data type of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>
      */
     protected $hidden = [
-        'secret_key', 'content', 'passphrase',
+        'access_token', 'content', 'passphrase',
     ];
 
     /**

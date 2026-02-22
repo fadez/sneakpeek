@@ -11,6 +11,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class SecretResource extends JsonResource
 {
     /**
+     * The "data" wrapper that should be applied.
+     *
+     * @var string|null
+     */
+    public static $wrap = 'secret';
+
+    /**
      * Transform the resource into an array.
      *
      * @return array<int|string, mixed>
@@ -20,9 +27,9 @@ class SecretResource extends JsonResource
         $isReceiptOrStoreRoute = $request->routeIs('api.secrets.store', 'api.secrets.receipt');
 
         return [
-            'key' => $this->key,
+            'id' => $this->getKey(),
             $this->mergeWhen($isReceiptOrStoreRoute, [
-                'secret_key' => $this->secret_key,
+                'access_token' => $this->access_token,
                 'expires_at' => $this->expires_at,
                 'revealed_at' => $this->revealed_at,
             ]),

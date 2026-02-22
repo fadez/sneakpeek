@@ -35,9 +35,9 @@ class SecretController extends Controller
      * Get information about a secret before it is revealed.
      * A passphrase is not required for this route.
      */
-    public function show(string $secretKey): SecretResource
+    public function show(string $accessToken): SecretResource
     {
-        $secret = $this->secretService->findActive(secretKey: $secretKey);
+        $secret = $this->secretService->findActiveByAccessTokenOrFail(accessToken: $accessToken);
 
         return new SecretResource($secret);
     }
@@ -46,9 +46,9 @@ class SecretController extends Controller
      * Reveal a secret and wipe its content.
      * If the secret is passphrase-protected, the passphrase must be provided.
      */
-    public function reveal(Request $request, string $secretKey): JsonResponse
+    public function reveal(Request $request, string $accessToken): JsonResponse
     {
-        $secret = $this->secretService->findActive(secretKey: $secretKey);
+        $secret = $this->secretService->findActiveByAccessTokenOrFail(accessToken: $accessToken);
 
         $this->secretService->validatePassphrase($request, $secret);
 
@@ -63,9 +63,9 @@ class SecretController extends Controller
      * Delete a secret.
      * Only secrets that have not been revealed can be deleted.
      */
-    public function destroy(Request $request, string $secretKey): Response
+    public function destroy(Request $request, string $accessToken): Response
     {
-        $secret = $this->secretService->findActive(secretKey: $secretKey);
+        $secret = $this->secretService->findActiveByAccessTokenOrFail(accessToken: $accessToken);
 
         $this->secretService->validatePassphrase($request, $secret);
 

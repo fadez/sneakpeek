@@ -1,0 +1,30 @@
+/* Error page */
+.http-error-container {
+    @apply flex min-h-screen w-full items-center justify-center;
+}
+
+.http-error-card {
+    @apply flex flex-col items-center justify-center;
+}
+
+.http-error-code {
+    @apply text-center font-error text-9xl font-bold dark:text-white;
+}
+
+.http-error-message {
+    @apply text-center font-error text-6xl font-bold text-zinc-500;
+}
+
+.http-error-image {
+    @apply pointer-events-none w-full max-w-[400px] select-none;
+}
+
+/* Error page: 418 */
+body.http-error-418 {
+    @apply bg-orange-100 dark:bg-taupe-950;
+}
+
+body.http-error-418 .http-error-code,
+body.http-error-418 .http-error-message {
+    @apply text-[#8A4D2A] uppercase dark:text-[#B0693B];
+}

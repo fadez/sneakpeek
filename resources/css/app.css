@@ -1,13 +1,20 @@
 @import 'tailwindcss';
-@import './toasts.css';
+
+@theme {
+    --font-sans: 'Ubuntu', sans-serif;
+    --font-mono: 'Ubuntu Mono', monospace;
+    --font-brand: 'Fredoka', 'sans-serif';
+    --font-error: 'Rubik', 'sans-serif';
+}
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-@theme {
-    --font-sans: 'Ubuntu', sans-serif;
-    --font-mono: 'Ubuntu Mono', monospace;
-    --font-brand: 'Fredoka', 'sans-serif';
+body {
+    @apply bg-zinc-100 dark:bg-black;
 }
+
+@import './toasts.css';
+@import './errors.css';

@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('secrets', function (Blueprint $table) {
-            $table->id();
-            $table->string('key')->unique()->comment('Unique identifier used to access public information about the secret.');
-            $table->string('secret_key')->unique()->comment('Unique identifier used to authorize decryption or destruction of the secret.');
+            $table->string('id')->primary()->comment('Unique identifier used to access public information about the secret.');
+            $table->string('access_token')->unique()->comment('Unique identifier used to authorize decryption or destruction of the secret.');
             $table->longText('content')->nullable()->comment('Encrypted payload of the secret.');
             $table->string('passphrase')->nullable()->comment('Optional hashed passphrase required to authorize decryption.');
             $table->timestamp('expires_at')->nullable()->index()->comment('Timestamp after which the secret is no longer accessible.');

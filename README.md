@@ -27,6 +27,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Eloquent ORM with custom scopes, accessors, and API Resources
     - Database migrations with proper indexing for performance and integrity
     - A scheduled command to permanently wipe expired secrets from the database
+    - Custom error response handling
 - **Security-first design**
     - End-to-end privacy — no authentication, no logs
     - Secrets can only be accessed once, then wiped permanently
@@ -35,6 +36,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Optional expiration time for secrets
     - Minimized framework exposure to prevent framework identification and targeted attacks
     - API throttling (rate limiting) to prevent brute-force attacks
+    - **[Laravel Sanctum](https://laravel.com/docs/sanctum)** is used to prevent CSRF and automated request forgery by enforcing stateful, cookie-based validation
 - **Clean architecture**
     - Readable, maintainable code with scoped responsibilities
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout

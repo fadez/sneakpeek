@@ -4,24 +4,32 @@ import routes from '@/routes';
 import toastNotifications from '@/toasts';
 import App from '@/App.vue';
 
-const app = createApp(App);
+// Import all files from the resources directories to ensure they're available to Vite and the app
+import.meta.glob(['../images/**']);
 
-const router = createRouter({
-    history: createWebHistory(),
-    routes,
-    scrollBehavior(to, from, savedPosition) {
-        if (from.name === to.name) {
-            // If navigating to the same page, scroll smoothly to the top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-            // Always scroll to top by default
-            return { top: 0 };
-        }
-    },
-});
+// Only bootstrap Vue app if #app element exists
+const appElement = document.getElementById('app');
 
-app.use(router);
+if (appElement) {
+    const app = createApp(App);
 
-app.use(toastNotifications);
+    const router = createRouter({
+        history: createWebHistory(),
+        routes,
+        scrollBehavior(to, from, savedPosition) {
+            if (from.name === to.name) {
+                // If navigating to the same page, scroll smoothly to the top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Always scroll to top by default
+                return { top: 0 };
+            }
+        },
+    });
 
-app.mount('#app');
+    app.use(router);
+
+    app.use(toastNotifications);
+
+    app.mount(appElement);
+}

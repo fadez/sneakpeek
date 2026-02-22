@@ -1,9 +1,13 @@
 <script setup>
+import { ref } from 'vue';
+
 const props = defineProps({
     modelValue: {
         type: String,
     },
 });
+
+const textarea = ref(null);
 
 const classes = [
     'font-mono',
@@ -29,8 +33,13 @@ const emit = defineEmits(['update:modelValue']);
 const handleInput = (event) => {
     emit('update:modelValue', event.target.value);
 };
+
+defineExpose({
+    focus: () => textarea.value?.focus(),
+    select: () => textarea.value?.select(),
+});
 </script>
 
 <template>
-    <textarea :class="classes" :value="modelValue" @input="handleInput"></textarea>
+    <textarea ref="textarea" :class="classes" :value="modelValue" @input="handleInput"></textarea>
 </template>

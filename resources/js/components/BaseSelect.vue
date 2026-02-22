@@ -1,11 +1,19 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, useAttrs } from 'vue';
+
+defineOptions({
+    inheritAttrs: false,
+});
+
+const attrs = useAttrs();
 
 const props = defineProps({
     modelValue: {
         type: String,
     },
 });
+
+const emit = defineEmits(['update:modelValue']);
 
 const classes = computed(() =>
     [
@@ -28,8 +36,6 @@ const classes = computed(() =>
     ].join(' '),
 );
 
-const emit = defineEmits(['update:modelValue']);
-
 const handleChange = (event) => {
     emit('update:modelValue', event.target.value);
     event.target.blur();
@@ -38,7 +44,7 @@ const handleChange = (event) => {
 
 <template>
     <div class="relative">
-        <select :class="classes" :value="modelValue" @change="handleChange">
+        <select v-bind="attrs" :class="classes" :value="modelValue" @change="handleChange">
             <slot></slot>
         </select>
         <i class="fa-solid fa-chevron-down pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400 dark:text-zinc-500"></i>

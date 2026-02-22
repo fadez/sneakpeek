@@ -4,8 +4,6 @@ use App\Http\Middleware\ThrottleRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,16 +17,43 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'throttle' => ThrottleRequests::class,
         ]);
+
+        $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Customize the 404 response to prevent framework identification
-        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'message' => 'Whoops! We couldn\'t find that page.',
-                ], 404);
-            }
+        // Only enable default Laravel error handling on local environments or when debug is true
+        if (! app()->environment('local') && config('app.debug', false) !== true) {
+            // Customize the default error handling to prevent framework identification
+            $exceptions->respond(function ($response) {
+                $currentStatusCode = $response->getStatusCode();
 
-            return redirect()->route('home');
-        });
+                // List of HTTP error codes that have custom JSON message responses
+                $messages = [
+                    403 => 'Forbidden.',
+                    404 => 'Whoops! We couldn\'t find that page.',
+                    418 => 'I am a teapot.',
+                    429 => 'Too many requests.',
+                    500 => 'Internal server error.',
+                    503 => 'Service unavailable.',
+                ];
+
+                // List of HTTP error codes that should be mapped to other error codes
+                $mask = [
+                    401 => 403,
+                    402 => 403,
+                    405 => 404,
+                    419 => 403,
+                ];
+
+                // Determine the final status code
+                $code = $mask[$currentStatusCode] ?? (isset($messages[$currentStatusCode]) ? $currentStatusCode : 500);
+                $message = $messages[$code];
+
+                if (request()->expectsJson()) {
+                    return response()->json(['message' => $message], $code);
+                }
+
+                return response()->view('errors.' . $code, [], $code);
+            });
+        }
     })->create();

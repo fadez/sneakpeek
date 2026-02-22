@@ -9,13 +9,13 @@ const routes = [
         component: Home,
     },
     {
-        path: '/receipts/:key',
+        path: '/receipts/:id',
         name: 'receipt',
         component: Receipt,
         props: true,
     },
     {
-        path: '/secrets/:secretKey',
+        path: '/secrets/:accessToken',
         name: 'secret',
         component: Secret,
     },

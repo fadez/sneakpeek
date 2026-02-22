@@ -20,8 +20,8 @@ class SecretService
     public function createFromRequest(StoreSecretRequest $request): Secret
     {
         return Secret::create([
-            'key' => Str::random(64),
-            'secret_key' => Str::random(64),
+            'id' => Str::random(64),
+            'access_token' => Str::random(64),
             'content' => $request->input('content'),
             'passphrase' => $request->input('passphrase'),
             'expires_at' => $request->filled('ttl') ? now()->addSeconds($request->integer('ttl')) : null,
@@ -43,13 +43,13 @@ class SecretService
     }
 
     /**
-     * Find an active secret by its secret key.
+     * Find an active secret by its access token.
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function findActive(string $secretKey): Secret
+    public function findActiveByAccessTokenOrFail(string $accessToken): Secret
     {
-        return Secret::where('secret_key', $secretKey)->active()->firstOrFail();
+        return Secret::where('access_token', $accessToken)->active()->firstOrFail();
     }
 
     /**

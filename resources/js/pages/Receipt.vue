@@ -1,7 +1,10 @@
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useRoute, useRouter } from 'vue-router';
+import { formatDate } from '@/utils/formatDate';
+import { useClipboard } from '@/composables/useClipboard';
+import { useElementFocus } from '@/composables/useElementFocus';
 import axios from '@/axios';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
@@ -13,61 +16,120 @@ import BaseLabel from '@/components/BaseLabel.vue';
 const route = useRoute();
 const router = useRouter();
 const toast = useToast();
+const { copyToClipboard } = useClipboard();
+const { focus, focusAndSelect } = useElementFocus();
+
+const secretLinkInput = ref(null);
+const passphraseInput = ref(null);
 
 const secret = ref(null);
 const passphrase = ref('');
-const isShowingPassphraseInput = ref(false);
-
-watchEffect(async () => {
-    const key = route.params.key;
-
-    try {
-        const response = await axios.get(`/api/receipts/${key}`);
-        secret.value = response.data.data;
-    } catch (error) {
-        router.push({ name: 'home' });
-    }
-});
+const showPassphraseInput = ref(false);
+const isDeletingSecret = ref(false);
 
 const secretUrl = computed(() => {
-    const path = router.resolve({
-        name: 'secret',
-        params: { secretKey: secret.value.secret_key },
-    }).href;
+    const path = router.resolve({ name: 'secret', params: { accessToken: secret.value.access_token } }).href;
 
     return `${window.location.origin}${path}`;
 });
 
-const handleCopyUrlButtonClick = () => {
-    navigator.clipboard.writeText(secretUrl.value).then(() => {
-        toast.info("Secret link copied! You're ready to share.");
-    });
+const fetchSecret = async () => {
+    resetPage();
+
+    try {
+        const response = await axios.get(`/api/receipts/${route.params.id}`);
+        secret.value = response.data.secret;
+
+        selectSecretLinkInput();
+    } catch (error) {
+        router.replace({ name: 'home' });
+    }
 };
 
-const handleDeleteSecretButtonClick = async () => {
-    // We need to show the passphrase input first if the secret is passphrase-protected
-    if (secret.value.is_passphrase_protected && !isShowingPassphraseInput.value) {
-        isShowingPassphraseInput.value = true;
+const deleteSecret = async () => {
+    if (isDeletingSecret.value) return;
+
+    // If the secret is passphrase-protected we need to show the passphrase input first
+    if (secret.value.is_passphrase_protected && !showPassphraseInput.value) {
+        showPassphraseInput.value = true;
         return;
     }
 
+    isDeletingSecret.value = true;
+
     try {
-        await axios.delete(`/api/secrets/${secret.value.secret_key}`, {
+        await axios.delete(`/api/secrets/${secret.value.access_token}`, {
             data: { passphrase: passphrase.value },
         });
 
         toast.success('Secret has been deleted.');
 
-        router.push({ name: 'home' });
+        router.replace({ name: 'home' });
     } catch (error) {
-        passphrase.value = '';
+        clearPassphraseInput();
+
+        focusPassphraseInput();
+    } finally {
+        isDeletingSecret.value = false;
     }
 };
 
-const handleCancelDeleteSecretButtonClick = () => {
-    isShowingPassphraseInput.value = false;
+const copySecretUrl = () => {
+    copyToClipboard(secretUrl.value, "Secret link copied! You're ready to share.", 'Failed to copy secret link.');
+
+    focusAndSelect(secretLinkInput);
+};
+
+const cancelSecretDeletion = () => {
+    clearPassphraseInput();
+    hidePassphraseInput();
+    selectSecretLinkInput();
+};
+
+const selectSecretLinkInput = () => {
+    focusAndSelect(secretLinkInput);
+};
+
+const focusPassphraseInput = () => {
+    focus(passphraseInput);
+};
+
+const clearPassphraseInput = () => {
     passphrase.value = '';
 };
+
+const hidePassphraseInput = () => {
+    showPassphraseInput.value = false;
+};
+
+const handlePassphraseInputVisibilityChange = (inputVisible) => {
+    if (inputVisible) {
+        focusPassphraseInput();
+    }
+};
+
+const resetPage = () => {
+    secret.value = null;
+    clearPassphraseInput();
+    hidePassphraseInput();
+    isDeletingSecret.value = false;
+};
+
+const handlePageShow = (event) => {
+    if (event.persisted) fetchSecret();
+};
+
+watch(showPassphraseInput, handlePassphraseInputVisibilityChange, { flush: 'post' });
+
+watch(() => route.params.id, fetchSecret, { immediate: true });
+
+onMounted(() => {
+    window.addEventListener('pageshow', handlePageShow);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('pageshow', handlePageShow);
+});
 </script>
 
 <template>
@@ -77,12 +139,10 @@ const handleCancelDeleteSecretButtonClick = () => {
     <div v-else>
         <BaseCard>
             <section class="p-4">
-                <BaseMessage v-if="secret.is_revealed" type="success">
-                    Your secret has been revealed on {{ new Date(secret.revealed_at).toLocaleString() }}.
-                </BaseMessage>
+                <BaseMessage v-if="secret.is_revealed" type="success"> Your secret has been revealed on {{ formatDate(secret.revealed_at) }}. </BaseMessage>
                 <BaseMessage v-else-if="secret.is_expired" type="warning">Your secret has expired without being revealed.</BaseMessage>
                 <BaseMessage v-else-if="secret.expires_at" type="info">
-                    Your secret is not yet revealed. It is available until {{ new Date(secret.expires_at).toLocaleString() }}.
+                    Your secret is not yet revealed. It is available until {{ formatDate(secret.expires_at) }}.
                 </BaseMessage>
                 <BaseMessage v-else type="info">Your secret is available and will never expire.</BaseMessage>
             </section>
@@ -112,30 +172,35 @@ const handleCancelDeleteSecretButtonClick = () => {
 
             <section v-if="secret.is_active" class="border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
                 <div class="flex flex-col gap-2">
-                    <BaseLabel>Secret Link</BaseLabel>
-                    <BaseInput data-test="secret-link" :value="secretUrl" readonly @click="$event.target.select()" />
+                    <BaseLabel for="secret-link">Secret Link</BaseLabel>
+                    <BaseInput ref="secretLinkInput" id="secret-link" data-test="secret-link" :value="secretUrl" readonly @click="selectSecretLinkInput" />
                 </div>
             </section>
 
             <template v-if="secret.is_active" #actions>
                 <BaseInput
-                    v-if="secret.is_passphrase_protected && isShowingPassphraseInput"
+                    v-if="secret.is_passphrase_protected && showPassphraseInput"
+                    ref="passphraseInput"
+                    data-test="passphrase-input"
                     type="password"
                     v-model="passphrase"
+                    :disabled="isDeletingSecret"
                     placeholder="Enter passphrase..."
+                    @keyup.enter="deleteSecret"
+                    @keyup.esc="cancelSecretDeletion"
                 />
 
-                <BaseButton v-if="!isShowingPassphraseInput" icon-before="fa-solid fa-copy" @click="handleCopyUrlButtonClick">Copy Secret Link</BaseButton>
+                <BaseButton v-if="!showPassphraseInput" icon-before="fa-solid fa-copy" @click="copySecretUrl">Copy Secret Link</BaseButton>
 
                 <BaseButton
                     type="danger"
                     icon-before="fa-solid fa-trash"
-                    :disabled="isShowingPassphraseInput && !passphrase"
-                    @click="handleDeleteSecretButtonClick"
+                    :disabled="isDeletingSecret || (showPassphraseInput && !passphrase)"
+                    @click="deleteSecret"
                 >
                     Delete Secret
                 </BaseButton>
-                <BaseButton v-if="isShowingPassphraseInput" type="outline-secondary" @click="handleCancelDeleteSecretButtonClick">Cancel</BaseButton>
+                <BaseButton v-if="showPassphraseInput" type="outline-secondary" :disabled="isDeletingSecret" @click="cancelSecretDeletion">Cancel</BaseButton>
             </template>
         </BaseCard>
     </div>

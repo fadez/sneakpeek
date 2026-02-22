@@ -1,13 +1,12 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, useAttrs } from 'vue';
 import { RouterLink } from 'vue-router';
-import { useAttrs } from 'vue';
+
+const attrs = useAttrs();
 
 const props = defineProps({
     to: [String, Object],
 });
-
-const attrs = useAttrs();
 
 const linkClasses = [
     'text-sky-500',

@@ -1,9 +1,13 @@
 <script setup>
+import { ref } from 'vue';
+
 defineProps({
     modelValue: {
         type: String,
     },
 });
+
+const input = ref(null);
 
 const classes = [
     'w-full',
@@ -23,8 +27,13 @@ const classes = [
 ];
 
 const emit = defineEmits(['update:modelValue']);
+
+defineExpose({
+    focus: () => input.value?.focus(),
+    select: () => input.value?.select(),
+});
 </script>
 
 <template>
-    <input :class="classes" :value="modelValue" @input="emit('update:modelValue', $event.target.value)" />
+    <input ref="input" :class="classes" :value="modelValue" @input="emit('update:modelValue', $event.target.value)" />
 </template>

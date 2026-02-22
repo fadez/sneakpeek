@@ -8,7 +8,6 @@ test('toArray', function () {
 
     expect(array_keys($secret->toArray()))->toBe([
         'id',
-        'key',
         'expires_at',
         'revealed_at',
         'created_at',
@@ -21,7 +20,7 @@ test('toArray', function () {
 
     expect($secret->toArray())->not->toHaveKeys([
         'content',
-        'secret_key',
+        'access_token',
         'passphrase',
     ]);
 });

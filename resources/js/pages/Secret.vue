@@ -1,7 +1,9 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
+import { useClipboard } from '@/composables/useClipboard';
+import { useElementFocus } from '@/composables/useElementFocus';
 import axios from '@/axios';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseButton from '@/components/BaseButton.vue';
@@ -13,26 +15,39 @@ import BaseTextarea from '@/components/BaseTextarea.vue';
 const route = useRoute();
 const router = useRouter();
 const toast = useToast();
+const { copyToClipboard } = useClipboard();
+const { focus } = useElementFocus();
+
+const passphraseInput = ref(null);
 
 const secret = ref(null);
 const secretContent = ref(null);
 const passphrase = ref('');
-const isLoading = ref(false);
+const isRevealingSecret = ref(false);
 
-watchEffect(async () => {
+const fetchSecret = async () => {
+    resetPage();
+
     try {
-        const response = await axios.get(`/api/secrets/${route.params.secretKey}`);
-        secret.value = response.data.data;
+        const response = await axios.get(`/api/secrets/${route.params.accessToken}`);
+        secret.value = response.data.secret;
+
+        // Auto-focus the passphrase input if the secret is passphrase-protected
+        if (secret.value.is_passphrase_protected) {
+            focusPassphraseInput();
+        }
     } catch (error) {
-        router.push({ name: 'home' });
+        router.replace({ name: 'home' });
     }
-});
+};
 
-const handleRevealSecretButtonClick = async () => {
-    isLoading.value = true;
+const revealSecret = async () => {
+    if (isRevealingSecret.value) return;
+
+    isRevealingSecret.value = true;
 
     try {
-        const response = await axios.post(`/api/secrets/${route.params.secretKey}/reveal`, {
+        const response = await axios.post(`/api/secrets/${route.params.accessToken}/reveal`, {
             passphrase: passphrase.value,
         });
 
@@ -40,17 +55,45 @@ const handleRevealSecretButtonClick = async () => {
 
         toast.success('Secret has been revealed.');
     } catch (error) {
-        //
+        clearPassphraseInput();
+        focusPassphraseInput();
     } finally {
-        isLoading.value = false;
+        isRevealingSecret.value = false;
     }
 };
 
-const handleCopySecretButtonClick = () => {
-    navigator.clipboard.writeText(secretContent.value).then(() => {
-        toast.info('Secret message copied!');
-    });
+const focusPassphraseInput = () => {
+    focus(passphraseInput);
 };
+
+const clearPassphraseInput = () => {
+    passphrase.value = '';
+};
+
+const copySecret = () => {
+    copyToClipboard(secretContent.value, 'Secret message copied!', 'Failed to copy secret message.');
+};
+
+const resetPage = () => {
+    secret.value = null;
+    secretContent.value = null;
+    clearPassphraseInput();
+    isRevealingSecret.value = false;
+};
+
+const handlePageShow = (event) => {
+    if (event.persisted) fetchSecret();
+};
+
+watch(() => route.params.accessToken, fetchSecret, { immediate: true });
+
+onMounted(() => {
+    window.addEventListener('pageshow', handlePageShow);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('pageshow', handlePageShow);
+});
 </script>
 
 <template>
@@ -60,7 +103,7 @@ const handleCopySecretButtonClick = () => {
     <div v-else class="my-4">
         <BaseCard v-if="secretContent">
             <section class="p-4">
-                <BaseMessage type="info">This secret has been deleted from our servers. You can close this window when done.</BaseMessage>
+                <BaseMessage type="info">This secret message has been deleted from our servers. You can close this window when done.</BaseMessage>
             </section>
 
             <section class="border-t-2 border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-700 dark:bg-zinc-800">
@@ -68,7 +111,7 @@ const handleCopySecretButtonClick = () => {
             </section>
 
             <template #actions>
-                <BaseButton type="primary" icon-before="fa-solid fa-copy" @click="handleCopySecretButtonClick">Copy to Clipboard</BaseButton>
+                <BaseButton type="primary" icon-before="fa-solid fa-copy" @click="copySecret">Copy to Clipboard</BaseButton>
             </template>
         </BaseCard>
         <BaseCard v-else>
@@ -100,18 +143,24 @@ const handleCopySecretButtonClick = () => {
             </section>
 
             <template #actions>
-                <BaseLoader size="w-13 h-13" padding="p-0" v-if="isLoading" />
-
-                <BaseInput v-if="secret.is_passphrase_protected && !isLoading" type="password" v-model="passphrase" placeholder="Enter passphrase..." />
+                <BaseInput
+                    v-if="secret.is_passphrase_protected"
+                    ref="passphraseInput"
+                    data-test="passphrase-input"
+                    type="password"
+                    v-model="passphrase"
+                    :disabled="isRevealingSecret"
+                    placeholder="Enter passphrase..."
+                    @keyup.enter="revealSecret"
+                />
 
                 <BaseButton
-                    v-if="!isLoading"
                     data-test="reveal-secret-btn"
                     type="primary"
-                    :disabled="secret.is_passphrase_protected && !passphrase"
-                    @click="handleRevealSecretButtonClick"
+                    :disabled="isRevealingSecret || (secret.is_passphrase_protected && !passphrase)"
+                    @click="revealSecret"
                 >
-                    Reveal Secret Message
+                    Reveal Secret
                 </BaseButton>
             </template>
         </BaseCard>

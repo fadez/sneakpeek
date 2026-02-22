@@ -19,8 +19,8 @@ class SecretFactory extends Factory
     public function definition(): array
     {
         return [
-            'key' => Str::random(64),
-            'secret_key' => Str::random(64),
+            'id' => Str::random(64),
+            'access_token' => Str::random(64),
             'content' => fake()->sentence(),
             'passphrase' => null,
             'expires_at' => null,

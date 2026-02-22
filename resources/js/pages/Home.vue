@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
+import { useElementFocus } from '@/composables/useElementFocus';
 import axios from '@/axios';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
@@ -13,13 +14,16 @@ import BaseTextarea from '@/components/BaseTextarea.vue';
 
 const router = useRouter();
 const toast = useToast();
+const { focus } = useElementFocus();
 
-const isLoading = ref(false);
+const contentInput = ref(null);
+
 const content = ref('');
 const ttl = ref('2592000'); // 30 days by default
 const passphrase = ref('');
+const isLoading = ref(false);
 
-const handleCreateLinkButtonClick = async () => {
+const createSecret = async () => {
     isLoading.value = true;
 
     try {
@@ -31,18 +35,19 @@ const handleCreateLinkButtonClick = async () => {
 
         toast.success('Secret has been created.');
 
-        router.push({
-            name: 'receipt',
-            params: { key: response.data.data.key },
-            state: { secret: response.data.data },
-            replace: true,
-        });
+        router.push({ name: 'receipt', params: { id: response.data.secret.id } });
     } catch (error) {
         //
     } finally {
         isLoading.value = false;
     }
 };
+
+const focusContentInput = () => {
+    focus(contentInput);
+};
+
+onMounted(focusContentInput);
 </script>
 
 <template>
@@ -54,24 +59,38 @@ const handleCreateLinkButtonClick = async () => {
         <BaseCard>
             <div class="grid grid-cols-1 gap-4 p-4">
                 <div class="flex flex-col gap-2">
-                    <BaseLabel :required="true">Content</BaseLabel>
+                    <BaseLabel for="content" :required="true">Content</BaseLabel>
                     <BaseTextarea
+                        ref="contentInput"
+                        id="content"
                         data-test="content-input"
                         placeholder="Secret content goes here..."
                         rows="7"
                         maxlength="10000"
                         v-model="content"
+                        @keydown.meta.enter.exact.prevent="createSecret"
+                        @keydown.ctrl.enter.exact.prevent="createSecret"
                     ></BaseTextarea>
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <BaseLabel>Passphrase</BaseLabel>
-                    <BaseInput type="password" placeholder="Enter a passphrase..." maxlength="255" autocomplete="off" v-model="passphrase"></BaseInput>
+                    <BaseLabel for="passphrase">Passphrase</BaseLabel>
+                    <BaseInput
+                        id="passphrase"
+                        data-test="passphrase-input"
+                        type="password"
+                        placeholder="Enter a passphrase..."
+                        maxlength="255"
+                        autocomplete="off"
+                        v-model="passphrase"
+                        @keydown.meta.enter.exact.prevent="createSecret"
+                        @keydown.ctrl.enter.exact.prevent="createSecret"
+                    ></BaseInput>
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <BaseLabel :required="true">Expiration Time</BaseLabel>
-                    <BaseSelect v-model="ttl">
+                    <BaseLabel for="ttl" :required="true">Expiration Time</BaseLabel>
+                    <BaseSelect id="ttl" v-model="ttl">
                         <option value="60">Expires in 1 minute</option>
                         <option value="180">Expires in 30 minutes</option>
                         <option value="3600">Expires in 1 hour</option>
@@ -91,7 +110,7 @@ const handleCreateLinkButtonClick = async () => {
             </div>
 
             <template #actions>
-                <BaseButton data-test="submit-btn" icon-before="fa-solid fa-lock" :disabled="!content.trim() || isLoading" @click="handleCreateLinkButtonClick">
+                <BaseButton data-test="submit-btn" icon-before="fa-solid fa-lock" :disabled="!content.trim() || isLoading" @click="createSecret">
                     Create Link
                 </BaseButton>
             </template>
