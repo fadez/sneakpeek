@@ -36,7 +36,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Optional expiration time for secrets
     - Minimized framework exposure to prevent framework identification and targeted attacks
     - API throttling (rate limiting) to prevent brute-force attacks
-    - **[Laravel Sanctum](https://laravel.com/docs/sanctum)** is used to prevent CSRF and automated request forgery by enforcing stateful, cookie-based validation
+    - **[Laravel Sanctum](https://laravel.com/docs/sanctum)** helps protect against CSRF attacks
 - **Clean architecture**
     - Readable, maintainable code with scoped responsibilities
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
