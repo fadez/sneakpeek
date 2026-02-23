@@ -12,6 +12,20 @@ import BaseMessage from '@/components/BaseMessage.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 
+const ttlOptions = [
+    { value: '60', label: 'Expires in 1 minute' },
+    { value: '300', label: 'Expires in 5 minutes' },
+    { value: '1800', label: 'Expires in 30 minutes' },
+    { value: '3600', label: 'Expires in 1 hour' },
+    { value: '43200', label: 'Expires in 12 hours' },
+    { value: '86400', label: 'Expires in 1 day' },
+    { value: '259200', label: 'Expires in 3 days' },
+    { value: '604800', label: 'Expires in 7 days' },
+    { value: '2592000', label: 'Expires in 30 days' },
+    { value: '7776000', label: 'Expires in 90 days' },
+    { value: '', label: 'Never expires' },
+];
+
 const router = useRouter();
 const toast = useToast();
 const { focus } = useElementFocus();
@@ -19,7 +33,7 @@ const { focus } = useElementFocus();
 const contentInput = ref(null);
 
 const content = ref('');
-const ttl = ref('2592000'); // 30 days by default
+const ttl = ref('604800'); // 7 days by default
 const passphrase = ref('');
 const isLoading = ref(false);
 
@@ -91,16 +105,9 @@ onMounted(focusContentInput);
                 <div class="flex flex-col gap-2">
                     <BaseLabel for="ttl" :required="true">Expiration Time</BaseLabel>
                     <BaseSelect id="ttl" v-model="ttl">
-                        <option value="60">Expires in 1 minute</option>
-                        <option value="180">Expires in 30 minutes</option>
-                        <option value="3600">Expires in 1 hour</option>
-                        <option value="43200">Expires in 12 hours</option>
-                        <option value="86400">Expires in 1 day</option>
-                        <option value="259200">Expires in 3 days</option>
-                        <option value="604800">Expires in 7 days</option>
-                        <option value="2592000">Expires in 30 days</option>
-                        <option value="7776000">Expires in 90 days</option>
-                        <option value="">Never expires</option>
+                        <option v-for="option in ttlOptions" :key="option.value" :value="option.value">
+                            {{ option.label }}
+                        </option>
                     </BaseSelect>
                 </div>
 
