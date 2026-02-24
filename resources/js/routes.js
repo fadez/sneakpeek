@@ -1,3 +1,4 @@
+import { useToast } from 'vue-toastification';
 import Home from '@/pages/Home.vue';
 import Receipt from '@/pages/Receipt.vue';
 import Secret from '@/pages/Secret.vue';
@@ -12,7 +13,6 @@ const routes = [
         path: '/receipts/:id',
         name: 'receipt',
         component: Receipt,
-        props: true,
     },
     {
         path: '/secrets/:id',
@@ -21,8 +21,14 @@ const routes = [
     },
     {
         path: '/:pathMatch(.*)*',
-        name: 'not-found',
-        redirect: '/',
+        name: '404',
+        beforeEnter: (to, from, next) => {
+            const toast = useToast();
+
+            toast.error("Whoops! We couldn't find that page.");
+
+            next({ name: 'home', replace: true });
+        },
     },
 ];
 

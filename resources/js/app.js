@@ -28,7 +28,6 @@ if (appElement) {
     });
 
     app.use(router);
-
     app.use(toastNotifications);
 
     app.mount(appElement);
