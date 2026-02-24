@@ -31,12 +31,13 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 - **Security-first design**
     - End-to-end privacy — no authentication, no logs
     - Secrets can only be accessed once, then wiped permanently
-    - Encrypted content storage using Laravel's built-in encryption
-    - Optional hashed passphrase protection for secrets
-    - Optional expiration time for secrets
-    - Minimized framework exposure to prevent framework identification and targeted attacks
+    - Secret content encrypted using Laravel's built-in encryption
+    - Secret access tokens (hashed in DB) stored in the URL `#` hash fragment to prevent server-side logging, analytics tracking, or accidental leakage via `Referer` header
+    - Secrets have optional passphrase (hashed in DB)
+    - Mandatory expiration time for secrets
+    - Minimized framework headers and error masking to prevent framework identification, fingerprinting and targeted exploits
     - API throttling (rate limiting) to prevent brute-force attacks
-    - **[Laravel Sanctum](https://laravel.com/docs/sanctum)** helps protect against CSRF attacks
+    - **[Laravel Sanctum](https://laravel.com/docs/sanctum)** integration for robust CSRF protection and secure API state management
 - **Clean architecture**
     - Readable, maintainable code with scoped responsibilities
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout

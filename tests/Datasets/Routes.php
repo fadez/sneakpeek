@@ -10,12 +10,8 @@ dataset('routes_web_public', [
 ]);
 
 dataset('routes_api_not_cached', [
-    'api.secrets.receipt' => [fn () => [
-        'name' => 'api.secrets.receipt',
-        'url' => route('api.secrets.receipt', ['secret' => Secret::factory()->createFresh()->getKey()], false),
-    ]],
     'api.secrets.show' => [fn () => [
         'name' => 'api.secrets.show',
-        'url' => route('api.secrets.show', ['accessToken' => Secret::factory()->createFresh()->access_token], false),
+        'url' => route('api.secrets.show', ['secret' => Secret::factory()->createFresh()->getKey()], false),
     ]],
 ]);

@@ -15,7 +15,7 @@ const routes = [
         props: true,
     },
     {
-        path: '/secrets/:accessToken',
+        path: '/secrets/:id',
         name: 'secret',
         component: Secret,
     },

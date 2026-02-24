@@ -11,21 +11,17 @@ Route::name('api.')->middleware(['throttle:api', 'cache.headers:no_store'])->gro
             ->name('store')
             ->middleware('throttle:10,1');
 
-        Route::get('/receipts/{secret}', [SecretController::class, 'receipt'])
-            ->whereAlphaNumeric('secret')
-            ->name('receipt');
-
-        Route::get('/secrets/{accessToken}', [SecretController::class, 'show'])
-            ->whereAlphaNumeric('accessToken')
+        Route::get('/secrets/{secret}', [SecretController::class, 'show'])
+            ->whereAlphaNumeric(['secret'])
             ->name('show');
 
-        Route::post('/secrets/{accessToken}/reveal', [SecretController::class, 'reveal'])
-            ->whereAlphaNumeric('accessToken')
+        Route::post('/secrets/{secret}/reveal', [SecretController::class, 'reveal'])
+            ->whereAlphaNumeric(['secret'])
             ->name('reveal')
             ->middleware('throttle:10,1');
 
-        Route::delete('/secrets/{accessToken}', [SecretController::class, 'destroy'])
-            ->whereAlphaNumeric('accessToken')
+        Route::delete('/secrets/{secret}', [SecretController::class, 'destroy'])
+            ->whereAlphaNumeric(['secret'])
             ->name('destroy');
     });
 });

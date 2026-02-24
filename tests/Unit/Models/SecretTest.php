@@ -15,7 +15,7 @@ test('toArray', function () {
         'is_passphrase_protected',
         'is_expired',
         'is_revealed',
-        'is_active',
+        'is_available',
     ]);
 
     expect($secret->toArray())->not->toHaveKeys([
@@ -29,13 +29,30 @@ test('content', function () {
     $content = 'Secret content.';
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
-    // Let's imagine someone got access to our DB,
-    // we need to ensure that secret content is, indeed, secret
+    // Let's imagine someone got access to our DB, we need to ensure that content is encrypted
     $rawContent = DB::table('secrets')->find($secret->getKey())->content;
 
     expect($secret->content)->toBe($content);
     expect($rawContent)->not->toBe($content);
 });
+
+test('access_token', function (string $driver) {
+    config(['hashing.driver' => $driver]);
+
+    $accessToken = 'secret_access_token';
+    $secret = Secret::factory()->createFresh(['access_token' => $accessToken]);
+
+    // Verify that passphrase is hashed
+    expect(Hash::check($accessToken, $secret->access_token))->toBeTrue();
+
+    // Let's imagine someone got access to our DB, we need to ensure that access token is not accessible
+    $rawAccessToken = DB::table('secrets')->find($secret->getKey())->access_token;
+
+    expect($rawAccessToken)->not->toBe($accessToken);
+
+    // Ensure the access token is already hashed using the intended algorithm
+    expect(Hash::needsRehash($rawAccessToken))->toBeFalse();
+})->with(['bcrypt', 'argon', 'argon2id']);
 
 test('passphrase', function (string $driver) {
     config(['hashing.driver' => $driver]);
@@ -46,12 +63,12 @@ test('passphrase', function (string $driver) {
     // Verify that passphrase is hashed
     expect(Hash::check($passphrase, $secret->passphrase))->toBeTrue();
 
-    // Let's imagine someone got access to our DB,
-    // we need to ensure that passphrase is not accessible
+    // Let's imagine someone got access to our DB, we need to ensure that passphrase is not accessible
     $rawPassphrase = DB::table('secrets')->find($secret->getKey())->passphrase;
 
     expect($rawPassphrase)->not->toBe($passphrase);
 
+    // Ensure the passphrase is already hashed using the intended algorithm
     expect(Hash::needsRehash($rawPassphrase))->toBeFalse();
 })->with(['bcrypt', 'argon', 'argon2id']);
 
@@ -67,10 +84,17 @@ test('expires_at', function () {
     expect($secret->expires_at)->toBeInstanceOf(Carbon::class);
 });
 
-test('scopeActive', function () {
+test('scopeAvailable', function () {
     Secret::factory()->createFresh();
 
-    expect(Secret::active()->count())->toBeOne();
+    expect(Secret::available()->count())->toBeOne();
+});
+
+test('scopeHasContent', function () {
+    Secret::factory()->createFresh();
+
+    expect(Secret::hasContent()->count())->toBeOne();
+    expect(Secret::hasContent()->first()->content)->not->toBeNull();
 });
 
 test('scopeExpired', function () {
@@ -101,16 +125,16 @@ test('scopeToBeWiped', function () {
     expect(Secret::toBeWiped()->count())->toBeOne();
 });
 
-test('isActive', function () {
-    $active = Secret::factory()->createFresh();
-    $revealed = Secret::factory()->revealed()->createFresh();
-    $expiredWithContent = Secret::factory()->expired()->createFresh();
-    $expiredWiped = Secret::factory()->expired()->wiped()->createFresh();
+test('isAvailable', function () {
+    $secretAvailable = Secret::factory()->createFresh();
+    $secretRevealed = Secret::factory()->revealed()->createFresh();
+    $secretExpiredWithContent = Secret::factory()->expired()->createFresh();
+    $secretExpiredWiped = Secret::factory()->expired()->wiped()->createFresh();
 
-    expect($active->is_active)->toBeTrue();
-    expect($revealed->is_active)->toBeFalse();
-    expect($expiredWithContent->is_active)->toBeFalse();
-    expect($expiredWiped->is_active)->toBeFalse();
+    expect($secretAvailable->is_available)->toBeTrue();
+    expect($secretRevealed->is_available)->toBeFalse();
+    expect($secretExpiredWithContent->is_available)->toBeFalse();
+    expect($secretExpiredWiped->is_available)->toBeFalse();
 });
 
 test('isRevealed', function () {

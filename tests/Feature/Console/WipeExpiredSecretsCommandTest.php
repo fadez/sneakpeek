@@ -3,31 +3,28 @@
 use App\Models\Secret;
 
 it('wipes content only for expired secrets that still have content', function () {
-    $expiredSecretWithContent = Secret::factory()->expired()->create();
-    $activeSecretWithContent = Secret::factory()->expiresIn(seconds: 3600)->create();
-    $activeSecretThatNeverExpires = Secret::factory()->neverExpires()->create();
+    $secretWithContentExpired = Secret::factory()->expired()->createFresh();
+    $secretWithContentAvailable = Secret::factory()->expiresIn(seconds: 3600)->createFresh();
 
-    expect($expiredSecretWithContent->content)->toBeTruthy();
-    expect($activeSecretWithContent->content)->toBeTruthy();
-    expect($activeSecretThatNeverExpires->content)->toBeTruthy();
+    expect($secretWithContentExpired->content)->toBeTruthy();
+    expect($secretWithContentAvailable->content)->toBeTruthy();
 
     $this->artisan('secrets:wipe-expired')->assertOk();
 
-    expect($expiredSecretWithContent->refresh()->content)->toBeNull();
-    expect($activeSecretWithContent->refresh()->content)->toBeTruthy();
-    expect($activeSecretThatNeverExpires->refresh()->content)->toBeTruthy();
+    expect($secretWithContentExpired->refresh()->content)->toBeNull();
+    expect($secretWithContentAvailable->refresh()->content)->toBeTruthy();
 });
 
-it('does not wipe content for active secrets expiring now', function () {
+it('does not wipe content for available secrets expiring now', function () {
     $this->freezeSecond();
 
-    $secretExpiresNow = Secret::factory()->expiresNow()->create();
+    $secret = Secret::factory()->expiresNow()->createFresh();
 
-    expect($secretExpiresNow->content)->toBeTruthy();
+    expect($secret->content)->toBeTruthy();
 
     $this->artisan('secrets:wipe-expired')->assertOk();
 
-    expect($secretExpiresNow->refresh()->content)->toBeTruthy();
+    expect($secret->refresh()->content)->toBeTruthy();
 
     $this->travel(1)->second();
 
@@ -35,5 +32,5 @@ it('does not wipe content for active secrets expiring now', function () {
         ->expectsOutput('Wiped 1 expired secret.')
         ->assertOk();
 
-    expect($secretExpiresNow->refresh()->content)->toBeNull();
+    expect($secret->refresh()->content)->toBeNull();
 });

@@ -7,14 +7,22 @@
     --font-error: 'Rubik', 'sans-serif';
 }
 
+@layer base {
+    body {
+        @apply bg-zinc-100 dark:bg-black;
+    }
+}
+
+@layer components {
+    .form {
+        @apply grid grid-cols-1 gap-4 p-4;
+    }
+}
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
-
-body {
-    @apply bg-zinc-100 dark:bg-black;
-}
 
 @import './toasts.css';
 @import './errors.css';

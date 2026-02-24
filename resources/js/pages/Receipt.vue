@@ -27,17 +27,48 @@ const passphrase = ref('');
 const showPassphraseInput = ref(false);
 const isDeletingSecret = ref(false);
 
+const hasAccessToken = computed(() => {
+    if (!secret.value?.access_token) return false;
+
+    return true;
+});
+
 const secretUrl = computed(() => {
-    const path = router.resolve({ name: 'secret', params: { accessToken: secret.value.access_token } }).href;
+    if (!hasAccessToken.value) return '';
+
+    const path = router.resolve({
+        name: 'secret',
+        params: {
+            id: secret.value.id,
+        },
+        hash: `#${secret.value.access_token}`,
+    }).href;
 
     return `${window.location.origin}${path}`;
 });
 
 const fetchSecret = async () => {
+    const state = window.history.state;
+
+    // Retrieve secret from history state (passed during redirect)
+    // and immediately clear it to prevent access via browser navigation
+    if (state && state.secret) {
+        secret.value = state.secret;
+
+        // Clear the state in the browser history
+        const newState = { ...state };
+        delete newState.secret;
+        window.history.replaceState(newState, '');
+
+        selectSecretLinkInput();
+
+        return;
+    }
+
     resetPage();
 
     try {
-        const response = await axios.get(`/api/receipts/${route.params.id}`);
+        const response = await axios.get(`/api/secrets/${route.params.id}`);
         secret.value = response.data.secret;
 
         selectSecretLinkInput();
@@ -58,8 +89,11 @@ const deleteSecret = async () => {
     isDeletingSecret.value = true;
 
     try {
-        await axios.delete(`/api/secrets/${secret.value.access_token}`, {
-            data: { passphrase: passphrase.value },
+        await axios.delete(`/api/secrets/${secret.value.id}`, {
+            data: {
+                passphrase: passphrase.value,
+                access_token: secret.value.access_token,
+            },
         });
 
         toast.success('Secret has been deleted.');
@@ -138,16 +172,18 @@ onUnmounted(() => {
     </div>
     <div v-else>
         <BaseCard>
-            <section class="p-4">
-                <BaseMessage v-if="secret.is_revealed" type="success"> Your secret has been revealed on {{ formatDate(secret.revealed_at) }}. </BaseMessage>
-                <BaseMessage v-else-if="secret.is_expired" type="warning">Your secret has expired without being revealed.</BaseMessage>
-                <BaseMessage v-else-if="secret.expires_at" type="info">
-                    Your secret is not yet revealed. It is available until {{ formatDate(secret.expires_at) }}.
-                </BaseMessage>
-                <BaseMessage v-else type="info">Your secret is available and will never expire.</BaseMessage>
+            <section class="form">
+                <BaseMessage v-if="secret.is_revealed" type="success"> Secret has been revealed on {{ formatDate(secret.revealed_at) }}. </BaseMessage>
+                <BaseMessage v-else-if="secret.is_expired" type="warning">Secret has expired without being revealed.</BaseMessage>
+                <BaseMessage v-else type="info">Secret is not yet revealed. It is available until {{ formatDate(secret.expires_at) }}.</BaseMessage>
             </section>
 
-            <section :class="['border-t-2 border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-700 dark:bg-zinc-800', !secret.is_active ? 'rounded-b-sm' : '']">
+            <section
+                :class="[
+                    'border-t-2 border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-700 dark:bg-zinc-800',
+                    !secret.is_available || !hasAccessToken ? 'rounded-b-sm' : '',
+                ]"
+            >
                 <div class="flex items-center justify-between gap-2 py-2 font-mono select-none">
                     <div class="flex min-w-0 flex-1 items-center">
                         <span class="truncate text-zinc-950 blur-sm dark:text-white">
@@ -170,14 +206,16 @@ onUnmounted(() => {
                 </div>
             </section>
 
-            <section v-if="secret.is_active" class="border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+            <section v-if="secret.is_available && hasAccessToken" class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
                 <div class="flex flex-col gap-2">
                     <BaseLabel for="secret-link">Secret Link</BaseLabel>
                     <BaseInput ref="secretLinkInput" id="secret-link" data-test="secret-link" :value="secretUrl" readonly @click="selectSecretLinkInput" />
                 </div>
+
+                <BaseMessage type="warning">You will only see this link once.</BaseMessage>
             </section>
 
-            <template v-if="secret.is_active" #actions>
+            <template v-if="secret.is_available && hasAccessToken" #actions>
                 <BaseInput
                     v-if="secret.is_passphrase_protected && showPassphraseInput"
                     ref="passphraseInput"

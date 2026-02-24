@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useClipboard } from '@/composables/useClipboard';
@@ -24,13 +24,21 @@ const secret = ref(null);
 const secretContent = ref(null);
 const passphrase = ref('');
 const isRevealingSecret = ref(false);
+const routeHash = ref(route.hash.slice(1));
 
 const fetchSecret = async () => {
     resetPage();
 
     try {
-        const response = await axios.get(`/api/secrets/${route.params.accessToken}`);
+        const response = await axios.get(`/api/secrets/${route.params.id}?access_token=${routeHash.value}`);
         secret.value = response.data.secret;
+
+        // Clear the access token from the URL hash to prevent accidental exposure in browser history, clipboard, or screenshots
+        router.replace({
+            name: 'secret',
+            params: { id: route.params.id },
+            hash: '',
+        });
 
         // Auto-focus the passphrase input if the secret is passphrase-protected
         if (secret.value.is_passphrase_protected) {
@@ -47,8 +55,9 @@ const revealSecret = async () => {
     isRevealingSecret.value = true;
 
     try {
-        const response = await axios.post(`/api/secrets/${route.params.accessToken}/reveal`, {
+        const response = await axios.post(`/api/secrets/${route.params.id}/reveal`, {
             passphrase: passphrase.value,
+            access_token: routeHash.value,
         });
 
         secretContent.value = response.data.content;
@@ -85,7 +94,7 @@ const handlePageShow = (event) => {
     if (event.persisted) fetchSecret();
 };
 
-watch(() => route.params.accessToken, fetchSecret, { immediate: true });
+watch(() => route.params.id, fetchSecret, { immediate: true });
 
 onMounted(() => {
     window.addEventListener('pageshow', handlePageShow);
@@ -102,7 +111,7 @@ onUnmounted(() => {
     </div>
     <div v-else class="my-4">
         <BaseCard v-if="secretContent">
-            <section class="p-4">
+            <section class="form">
                 <BaseMessage type="info">This secret message has been deleted from our servers. You can close this window when done.</BaseMessage>
             </section>
 

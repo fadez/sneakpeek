@@ -23,7 +23,6 @@ const ttlOptions = [
     { value: '604800', label: 'Expires in 7 days' },
     { value: '2592000', label: 'Expires in 30 days' },
     { value: '7776000', label: 'Expires in 90 days' },
-    { value: '', label: 'Never expires' },
 ];
 
 const router = useRouter();
@@ -33,7 +32,7 @@ const { focus } = useElementFocus();
 const contentInput = ref(null);
 
 const content = ref('');
-const ttl = ref('604800'); // 7 days by default
+const ttl = ref('86400'); // 1 day by default
 const passphrase = ref('');
 const isLoading = ref(false);
 
@@ -49,7 +48,11 @@ const createSecret = async () => {
 
         toast.success('Secret has been created.');
 
-        router.push({ name: 'receipt', params: { id: response.data.secret.id } });
+        router.push({
+            name: 'receipt',
+            params: { id: response.data.secret.id },
+            state: { secret: response.data.secret },
+        });
     } catch (error) {
         //
     } finally {
@@ -71,7 +74,7 @@ onMounted(focusContentInput);
             <div class="text-zinc-600 dark:text-zinc-300">Keep sensitive data out of your messages or inbox.</div>
         </div>
         <BaseCard>
-            <div class="grid grid-cols-1 gap-4 p-4">
+            <div class="form">
                 <div class="flex flex-col gap-2">
                     <BaseLabel for="content" :required="true">Content</BaseLabel>
                     <BaseTextarea
@@ -111,9 +114,7 @@ onMounted(focusContentInput);
                     </BaseSelect>
                 </div>
 
-                <BaseMessage v-if="!ttl" type="warning">Without an expiration, the secret will remain on our servers until it's revealed.</BaseMessage>
-
-                <BaseMessage type="info"> Your message will self-destruct after being revealed.</BaseMessage>
+                <BaseMessage type="info">Your message will self-destruct after being revealed.</BaseMessage>
             </div>
 
             <template #actions>

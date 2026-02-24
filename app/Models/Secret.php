@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Support\Carbon;
 
 /**
@@ -14,19 +15,21 @@ use Illuminate\Support\Carbon;
  * @property string $access_token
  * @property string|null $content
  * @property string|null $passphrase
- * @property Carbon|null $expires_at
+ * @property Carbon $expires_at
  * @property Carbon|null $revealed_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read bool $is_passphrase_protected
  * @property-read bool $is_expired
  * @property-read bool $is_revealed
- * @property-read bool $is_active
+ * @property-read bool $is_available
  */
 class Secret extends Model
 {
     /** @use HasFactory<SecretFactory> */
     use HasFactory;
+
+    use Prunable;
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -57,7 +60,7 @@ class Secret extends Model
      * @var list<string>
      */
     protected $appends = [
-        'is_passphrase_protected', 'is_expired', 'is_revealed', 'is_active',
+        'is_passphrase_protected', 'is_expired', 'is_revealed', 'is_available',
     ];
 
     /**
@@ -68,6 +71,7 @@ class Secret extends Model
     protected function casts(): array
     {
         return [
+            'access_token' => 'hashed',
             'content' => 'encrypted',
             'passphrase' => 'hashed',
             'expires_at' => 'datetime',
@@ -82,9 +86,21 @@ class Secret extends Model
      * @return Builder<Secret>
      */
     #[Scope]
-    protected function scopeActive(Builder $query): Builder
+    protected function scopeAvailable(Builder $query): Builder
     {
-        return $query->unrevealed()->notExpired();
+        return $query->hasContent()->unrevealed()->notExpired();
+    }
+
+    /**
+     * Scope a query to only include secrets whose content has not been wiped.
+     *
+     * @param  Builder<Secret>  $query
+     * @return Builder<Secret>
+     */
+    #[Scope]
+    protected function scopeHasContent(Builder $query): Builder
+    {
+        return $query->whereNotNull('content');
     }
 
     /**
@@ -96,8 +112,7 @@ class Secret extends Model
     #[Scope]
     protected function scopeExpired(Builder $query): Builder
     {
-        return $query->whereNotNull('expires_at')
-            ->where('expires_at', '<', now());
+        return $query->where('expires_at', '<', now());
     }
 
     /**
@@ -109,10 +124,7 @@ class Secret extends Model
     #[Scope]
     protected function scopeNotExpired(Builder $query): Builder
     {
-        return $query->where(function (Builder $query) {
-            $query->whereNull('expires_at')
-                ->orWhere('expires_at', '>=', now());
-        });
+        return $query->where('expires_at', '>=', now());
     }
 
     /**
@@ -140,6 +152,16 @@ class Secret extends Model
     }
 
     /**
+     * Get the prunable model query.
+     *
+     * @return Builder<static>
+     */
+    public function prunable(): Builder
+    {
+        return static::query()->where('expires_at', '<', now()->minus(days: 90));
+    }
+
+    /**
      * Determine if the secret is protected by a passphrase.
      *
      * @return Attribute<bool, never>
@@ -152,14 +174,14 @@ class Secret extends Model
     }
 
     /**
-     * Determine if the secret is unrevealed and haven't expired.
+     * Determine if the secret is still available.
      *
      * @return Attribute<bool, never>
      */
-    protected function isActive(): Attribute
+    protected function isAvailable(): Attribute
     {
         return Attribute::make(
-            get: fn () => ! $this->is_expired && ! $this->is_revealed,
+            get: fn () => ! $this->is_expired && ! $this->is_revealed && $this->content !== null,
         );
     }
 
@@ -183,7 +205,7 @@ class Secret extends Model
     protected function isExpired(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->expires_at !== null && $this->expires_at < now(),
+            get: fn () => $this->expires_at->isPast(),
         );
     }
 }

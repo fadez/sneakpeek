@@ -45,7 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     419 => 403,
                 ];
 
-                // Determine the final status code
+                // Determine the status code and the message we should display
                 $code = $mask[$currentStatusCode] ?? (isset($messages[$currentStatusCode]) ? $currentStatusCode : 500);
                 $message = $messages[$code];
 

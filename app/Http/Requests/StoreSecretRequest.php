@@ -24,7 +24,7 @@ class StoreSecretRequest extends FormRequest
         return [
             'content' => ['required', 'string', 'max:10000'],
             'passphrase' => ['nullable', 'string', 'min:1', 'max:255'],
-            'ttl' => ['nullable', 'integer', 'min:60', 'max:7776000'], // In seconds, from 1 minute up to 90 days
+            'ttl' => ['required', 'integer', 'min:60', 'max:7776000'], // In seconds, from 1 minute up to 90 days
         ];
     }
 }

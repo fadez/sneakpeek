@@ -23,7 +23,7 @@ class SecretFactory extends Factory
             'access_token' => Str::random(64),
             'content' => fake()->sentence(),
             'passphrase' => null,
-            'expires_at' => null,
+            'expires_at' => now()->addDay(),
             'revealed_at' => null,
         ];
     }
@@ -39,7 +39,7 @@ class SecretFactory extends Factory
     }
 
     /**
-     * Indicate that the secret has been revealed.
+     * Indicate that the secret is revealed.
      */
     public function revealed(): static
     {
@@ -50,7 +50,7 @@ class SecretFactory extends Factory
     }
 
     /**
-     * Indicate that the secret has been wiped.
+     * Indicate that the secret is wiped.
      */
     public function wiped(): static
     {
@@ -60,7 +60,7 @@ class SecretFactory extends Factory
     }
 
     /**
-     * Indicate that the secret will expire in the future.
+     * Indicate that the secret should expire in the future.
      */
     public function expiresIn(int $seconds): static
     {
@@ -70,7 +70,7 @@ class SecretFactory extends Factory
     }
 
     /**
-     * Indicate that the secret expires at the current second.
+     * Indicate that the secret should expire after the current second.
      */
     public function expiresNow(): static
     {
@@ -80,22 +80,12 @@ class SecretFactory extends Factory
     }
 
     /**
-     * Indicate that the secret has expired.
+     * Indicate that the secret is expired.
      */
     public function expired(): static
     {
         return $this->state(fn (array $attributes) => [
-            'expires_at' => now()->subSecond(),
-        ]);
-    }
-
-    /**
-     * Indicate that the secret never expires.
-     */
-    public function neverExpires(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'expires_at' => null,
+            'expires_at' => now()->minus(seconds: 1),
         ]);
     }
 }
