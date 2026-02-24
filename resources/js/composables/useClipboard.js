@@ -1,23 +1,23 @@
-import { useToast } from 'vue-toastification';
+import { useNotificationStore } from '@/stores/notifications';
 
 export function useClipboard() {
-    const toast = useToast();
+    const notify = useNotificationStore();
 
     /**
-     * Copy a string to the clipboard and show toast notification.
+     * Copy a string to the clipboard and show notification.
+     *
      * @param {string} text
-     * @param {string} [successMessage='Copied!']
-     * @param {string} [errorMessage]
+     * @param {Object} [options]
+     * @param {Function} [options.onSuccess]
+     * @param {Function} [options.onError]
      */
-    const copyToClipboard = async (text, successMessage = 'Copied!', errorMessage) => {
+    const copyToClipboard = async (text, options = {}) => {
         try {
             await navigator.clipboard.writeText(text);
-            toast.info(successMessage);
-        } catch (error) {
-            // Do not show error toast if errorMessage is not set at all
-            if (errorMessage === undefined) return;
 
-            toast.error(typeof errorMessage === 'string' ? errorMessage : 'Failed to copy.');
+            options.onSuccess ? options.onSuccess() : notify.copiedToClipboard();
+        } catch (error) {
+            options.onError ? options.onError() : notify.failedToCopyToClipboard();
         }
     };
 

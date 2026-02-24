@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { useToast } from 'vue-toastification';
+import { useNotificationStore } from '@/stores/notifications';
 import { useRoute, useRouter } from 'vue-router';
 import { formatDate } from '@/utils/formatDate';
 import { useClipboard } from '@/composables/useClipboard';
@@ -15,7 +15,7 @@ import BaseLabel from '@/components/BaseLabel.vue';
 
 const route = useRoute();
 const router = useRouter();
-const toast = useToast();
+const notify = useNotificationStore();
 const { copyToClipboard } = useClipboard();
 const { focus, focusAndSelect } = useElementFocus();
 
@@ -96,7 +96,7 @@ const deleteSecret = async () => {
             },
         });
 
-        toast.success('Secret has been deleted.');
+        notify.secretDeleted();
 
         router.replace({ name: 'home' });
     } catch (error) {
@@ -109,7 +109,10 @@ const deleteSecret = async () => {
 };
 
 const copySecretUrl = () => {
-    copyToClipboard(secretUrl.value, "Secret link copied! You're ready to share.", 'Failed to copy secret link.');
+    copyToClipboard(secretUrl.value, {
+        onSuccess: notify.secretLinkCopied,
+        onError: notify.failedToCopySecretLink,
+    });
 
     focusAndSelect(secretLinkInput);
 };

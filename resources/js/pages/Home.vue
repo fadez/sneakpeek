@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
+import { useNotificationStore } from '@/stores/notifications';
 import { useElementFocus } from '@/composables/useElementFocus';
 import axios from '@/axios';
 import BaseButton from '@/components/BaseButton.vue';
@@ -26,7 +26,7 @@ const ttlOptions = [
 ];
 
 const router = useRouter();
-const toast = useToast();
+const notify = useNotificationStore();
 const { focus } = useElementFocus();
 
 const contentInput = ref(null);
@@ -46,7 +46,7 @@ const createSecret = async () => {
             passphrase: passphrase.value,
         });
 
-        toast.success('Secret has been created.');
+        notify.secretCreated();
 
         router.push({
             name: 'receipt',

@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { useToast } from 'vue-toastification';
-
-const toast = useToast();
+import { useNotificationStore } from '@/stores/notifications';
 
 function extractErrorMessage(error) {
     const data = error.response?.data;
@@ -12,9 +10,11 @@ function extractErrorMessage(error) {
 axios.interceptors.response.use(
     (response) => response,
     (error) => {
+        const notify = useNotificationStore();
+
         const message = extractErrorMessage(error);
 
-        toast.error(message);
+        notify.error(message);
 
         return Promise.reject(error);
     },

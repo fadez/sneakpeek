@@ -53,10 +53,12 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Modular, component-based structure with reusable Single File Components (SFC)
     - Single-page application (SPA) architecture powered by **[Vue Router](https://router.vuejs.org)**
     - Consistent naming conventions and directory organization for ease of navigation and scalability
-    - State-driven reactivity ensuring seamless user interaction
+    - **[Pinia](https://pinia.vuejs.org)** is used for centralized state management and application-wide reactive data
+    - A notification system implemented in the Pinia store that abstracts the underlying toast notification library for clean, consistent usage across the app
 - **Tailwind CSS v4.2**
-    - Elegant, mobile-first responsive design
+    - Modern utility-first styling for mobile-first responsive design
     - Light and dark mode support with automatic switching
+    - Bespoke toast notification styling that aligns with the app's core design language
 - **Vite**
     - Lightning-fast builds and production optimization
 

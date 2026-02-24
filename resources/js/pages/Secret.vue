@@ -1,7 +1,7 @@
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
+import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';
 import axios from '@/axios';
@@ -14,7 +14,7 @@ import BaseTextarea from '@/components/BaseTextarea.vue';
 
 const route = useRoute();
 const router = useRouter();
-const toast = useToast();
+const notify = useNotificationStore();
 const { copyToClipboard } = useClipboard();
 const { focus } = useElementFocus();
 
@@ -62,7 +62,7 @@ const revealSecret = async () => {
 
         secretContent.value = response.data.content;
 
-        toast.success('Secret has been revealed.');
+        notify.secretRevealed();
     } catch (error) {
         clearPassphraseInput();
         focusPassphraseInput();
@@ -80,7 +80,10 @@ const clearPassphraseInput = () => {
 };
 
 const copySecret = () => {
-    copyToClipboard(secretContent.value, 'Secret message copied!', 'Failed to copy secret message.');
+    copyToClipboard(secretContent.value, {
+        onSuccess: notify.secretMessageCopied,
+        onError: notify.failedToCopySecretMessage,
+    });
 };
 
 const resetPage = () => {
