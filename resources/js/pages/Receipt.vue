@@ -1,11 +1,11 @@
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { useNotificationStore } from '@/stores/notifications';
+import { ref, computed, nextTick, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { formatDate } from '@/utils/formatDate';
+import { getSecret, deleteSecret } from '@/api';
 import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';
-import axios from '@/axios';
+import { formatDate } from '@/utils/formatDate';
+import { useNotificationStore } from '@/stores/notifications';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
@@ -61,24 +61,19 @@ const fetchSecret = async () => {
         delete newState.secret;
         window.history.replaceState(newState, '');
 
-        selectSecretLinkInput();
-
         return;
     }
 
     resetPage();
 
     try {
-        const response = await axios.get(`/api/secrets/${route.params.id}`);
-        secret.value = response.data.secret;
-
-        selectSecretLinkInput();
+        secret.value = await getSecret(route.params.id);
     } catch (error) {
         router.replace({ name: 'home' });
     }
 };
 
-const deleteSecret = async () => {
+const handleSecretDelete = async () => {
     if (isDeletingSecret.value) return;
 
     // If the secret is passphrase-protected we need to show the passphrase input first
@@ -90,11 +85,9 @@ const deleteSecret = async () => {
     isDeletingSecret.value = true;
 
     try {
-        await axios.delete(`/api/secrets/${secret.value.id}`, {
-            data: {
-                passphrase: passphrase.value,
-                access_token: secret.value.access_token,
-            },
+        await deleteSecret(secret.value.id, {
+            passphrase: passphrase.value,
+            access_token: secret.value.access_token,
         });
 
         notify.secretDeleted();
@@ -161,6 +154,8 @@ watch(showPassphraseInput, handlePassphraseInputVisibilityChange, { flush: 'post
 
 watch(() => route.params.id, fetchSecret, { immediate: true });
 
+watch(secretLinkInput, selectSecretLinkInput, { once: true });
+
 onMounted(() => {
     window.addEventListener('pageshow', handlePageShow);
 });
@@ -221,7 +216,7 @@ onUnmounted(() => {
                     v-model="passphrase"
                     :disabled="isDeletingSecret"
                     placeholder="Enter passphrase..."
-                    @keyup.enter="deleteSecret"
+                    @keyup.enter="handleSecretDelete"
                     @keyup.esc="cancelSecretDeletion"
                 />
 
@@ -231,7 +226,7 @@ onUnmounted(() => {
                     type="danger"
                     icon-before="fa-solid fa-trash"
                     :disabled="isDeletingSecret || (showPassphraseInput && !passphrase)"
-                    @click="deleteSecret"
+                    @click="handleSecretDelete"
                 >
                     Delete Secret
                 </BaseButton>

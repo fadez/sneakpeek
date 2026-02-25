@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useNotificationStore } from '@/stores/notifications';
+import { storeSecret } from '@/api';
 import { useElementFocus } from '@/composables/useElementFocus';
-import axios from '@/axios';
+import { useNotificationStore } from '@/stores/notifications';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
@@ -44,7 +44,7 @@ const createSecret = async () => {
     isLoading.value = true;
 
     try {
-        const response = await axios.post('/api/secrets', {
+        const secret = await storeSecret({
             content: content.value,
             ttl: ttl.value,
             passphrase: passphrase.value,
@@ -54,8 +54,8 @@ const createSecret = async () => {
 
         router.push({
             name: 'receipt',
-            params: { id: response.data.secret.id },
-            state: { secret: response.data.secret },
+            params: { id: secret.id },
+            state: { secret: secret },
         });
     } catch (error) {
         //

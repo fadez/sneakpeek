@@ -1,10 +1,10 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { getSecret, revealSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';
-import axios from '@/axios';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseInput from '@/components/BaseInput.vue';
@@ -32,8 +32,7 @@ const fetchSecret = async () => {
     resetPage();
 
     try {
-        const response = await axios.get(`/api/secrets/${route.params.id}?access_token=${routeHash.value}`);
-        secret.value = response.data.secret;
+        secret.value = await getSecret(route.params.id, routeHash.value);
 
         // Clear the access token from the URL hash to prevent accidental exposure in browser history, clipboard, or screenshots
         router.replace({
@@ -51,18 +50,16 @@ const fetchSecret = async () => {
     }
 };
 
-const revealSecret = async () => {
+const handleSecretReveal = async () => {
     if (isRevealingSecret.value) return;
 
     isRevealingSecret.value = true;
 
     try {
-        const response = await axios.post(`/api/secrets/${route.params.id}/reveal`, {
+        secretContent.value = await revealSecret(route.params.id, {
             passphrase: passphrase.value,
             access_token: routeHash.value,
         });
-
-        secretContent.value = response.data.content;
 
         notify.secretRevealed();
     } catch (error) {
@@ -160,7 +157,7 @@ onUnmounted(() => {
                     v-model="passphrase"
                     :disabled="isRevealingSecret"
                     placeholder="Enter passphrase..."
-                    @keyup.enter="revealSecret"
+                    @keyup.enter="handleSecretReveal"
                 />
 
                 <BaseButton
@@ -168,7 +165,7 @@ onUnmounted(() => {
                     type="primary"
                     icon-before="fa-solid fa-unlock"
                     :disabled="isRevealingSecret || (secret.is_passphrase_protected && !passphrase)"
-                    @click="revealSecret"
+                    @click="handleSecretReveal"
                 >
                     Reveal Secret
                 </BaseButton>
