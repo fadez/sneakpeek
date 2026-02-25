@@ -5,17 +5,46 @@
     --font-mono: 'Ubuntu Mono', monospace;
     --font-brand: 'Fredoka', 'sans-serif';
     --font-error: 'Rubik', 'sans-serif';
+    --color-zinc-75: color-mix(in srgb, var(--color-zinc-50), var(--color-zinc-100));
+    --height-receipt-card-skeleton: 162px;
+    --height-secret-card-skeleton: 248px;
 }
 
 @layer base {
     body {
-        @apply bg-zinc-100 dark:bg-black;
+        @apply bg-zinc-75 text-zinc-900 dark:bg-black dark:text-zinc-100;
+    }
+
+    textarea {
+        @apply overscroll-none;
+    }
+
+    input::placeholder,
+    textarea::placeholder,
+    select:invalid {
+        @apply text-zinc-400 dark:text-zinc-500;
     }
 }
 
 @layer components {
     .form {
         @apply grid grid-cols-1 gap-4 p-4;
+    }
+
+    .text-title {
+        @apply text-zinc-900 dark:text-zinc-100;
+    }
+
+    .text-subtitle {
+        @apply text-zinc-600 dark:text-zinc-300;
+    }
+
+    .text-secondary {
+        @apply text-zinc-700 dark:text-zinc-400;
+    }
+
+    .text-muted {
+        @apply text-zinc-400 dark:text-zinc-500;
     }
 }
 

@@ -6,10 +6,10 @@ export function useElementFocus() {
      * @param {import('vue').Ref<HTMLElement | null>} elementRef
      */
     function focus(elementRef) {
-        if (!elementRef) return;
+        if (!elementRef || !elementRef.value) return;
 
         nextTick(() => {
-            elementRef.value?.focus();
+            elementRef.value.focus();
         });
     }
 
@@ -18,10 +18,10 @@ export function useElementFocus() {
      * @param {import('vue').Ref<HTMLElement | null>} elementRef
      */
     function focusAndSelect(elementRef) {
-        if (!elementRef) return;
+        if (!elementRef || !elementRef.value) return;
 
         nextTick(() => {
-            elementRef.value?.select();
+            elementRef.value.select();
         });
     }
 

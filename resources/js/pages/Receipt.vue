@@ -12,6 +12,7 @@ import BaseLoader from '@/components/BaseLoader.vue';
 import BaseMessage from '@/components/BaseMessage.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseLabel from '@/components/BaseLabel.vue';
+import BaseBadge from '@/components/BaseBadge.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -109,12 +110,12 @@ const deleteSecret = async () => {
 };
 
 const copySecretUrl = () => {
+    selectSecretLinkInput();
+
     copyToClipboard(secretUrl.value, {
         onSuccess: notify.secretLinkCopied,
         onError: notify.failedToCopySecretLink,
     });
-
-    focusAndSelect(secretLinkInput);
 };
 
 const cancelSecretDeletion = () => {
@@ -171,7 +172,9 @@ onUnmounted(() => {
 
 <template>
     <div v-if="!secret">
-        <BaseLoader />
+        <BaseCard class="min-h-receipt-card-skeleton">
+            <BaseLoader />
+        </BaseCard>
     </div>
     <div v-else>
         <BaseCard>
@@ -193,18 +196,9 @@ onUnmounted(() => {
                             ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
                         </span>
                     </div>
-                    <div class="flex shrink-0 flex-row items-end gap-2 text-zinc-400 dark:text-zinc-500">
-                        <span class="flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-1 text-xs font-medium dark:bg-zinc-700">
-                            <i class="fa-solid fa-lock"></i>
-                            Encrypted
-                        </span>
-                        <span
-                            v-if="secret.is_passphrase_protected"
-                            class="flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-1 text-xs font-medium dark:bg-zinc-700"
-                        >
-                            <i class="fa-solid fa-key"></i>
-                            Passphrase-protected
-                        </span>
+                    <div class="flex shrink-0 flex-row items-end gap-2">
+                        <BaseBadge icon="fa-solid fa-lock">Encrypted</BaseBadge>
+                        <BaseBadge v-if="secret.is_passphrase_protected" icon="fa-solid fa-key">Passphrase-protected</BaseBadge>
                     </div>
                 </div>
             </section>

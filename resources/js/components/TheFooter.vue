@@ -7,7 +7,7 @@ const commitHash = __COMMIT_HASH__;
 
 <template>
     <footer data-test="footer" class="container mx-auto my-4 max-w-4xl px-4">
-        <div class="flex justify-between text-zinc-700 dark:text-zinc-400">
+        <div class="text-secondary flex justify-between">
             <div>© {{ new Date().getFullYear() }} {{ appName }}. All rights reserved.</div>
 
             <div>
@@ -15,7 +15,7 @@ const commitHash = __COMMIT_HASH__;
                 <BaseLink href="https://github.com/fadez/sneakpeek" target="_blank">GitHub</BaseLink>
             </div>
         </div>
-        <div class="flex justify-between text-zinc-400 dark:text-zinc-500">
+        <div class="text-muted flex justify-between">
             <div>
                 Built with ❤️ in 🇺🇦 by
                 <BaseLink href="https://github.com/fadez" target="_blank">@fadez</BaseLink>

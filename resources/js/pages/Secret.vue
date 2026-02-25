@@ -10,15 +10,17 @@ import BaseButton from '@/components/BaseButton.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
 import BaseMessage from '@/components/BaseMessage.vue';
+import BaseBadge from '@/components/BaseBadge.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 
 const route = useRoute();
 const router = useRouter();
 const notify = useNotificationStore();
 const { copyToClipboard } = useClipboard();
-const { focus } = useElementFocus();
+const { focus, focusAndSelect } = useElementFocus();
 
 const passphraseInput = ref(null);
+const secretContentInput = ref(null);
 
 const secret = ref(null);
 const secretContent = ref(null);
@@ -80,6 +82,8 @@ const clearPassphraseInput = () => {
 };
 
 const copySecret = () => {
+    focusAndSelect(secretContentInput);
+
     copyToClipboard(secretContent.value, {
         onSuccess: notify.secretMessageCopied,
         onError: notify.failedToCopySecretMessage,
@@ -110,7 +114,9 @@ onUnmounted(() => {
 
 <template>
     <div v-if="!secret" class="my-4">
-        <BaseLoader />
+        <BaseCard class="min-h-secret-card-skeleton">
+            <BaseLoader />
+        </BaseCard>
     </div>
     <div v-else class="my-4">
         <BaseCard v-if="secretContent">
@@ -119,7 +125,7 @@ onUnmounted(() => {
             </section>
 
             <section class="border-t-2 border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-700 dark:bg-zinc-800">
-                <BaseTextarea data-test="secret-content" v-model="secretContent" rows="7" readonly />
+                <BaseTextarea ref="secretContentInput" data-test="secret-content" v-model="secretContent" rows="7" readonly />
             </section>
 
             <template #actions>
@@ -138,18 +144,9 @@ onUnmounted(() => {
                             ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
                         </span>
                     </div>
-                    <div class="flex shrink-0 flex-row items-end gap-2 text-zinc-400 dark:text-zinc-500">
-                        <span class="flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-1 text-xs font-medium dark:bg-zinc-700">
-                            <i class="fa-solid fa-lock"></i>
-                            Encrypted
-                        </span>
-                        <span
-                            v-if="secret.is_passphrase_protected"
-                            class="flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-1 text-xs font-medium dark:bg-zinc-700"
-                        >
-                            <i class="fa-solid fa-key"></i>
-                            Passphrase-protected
-                        </span>
+                    <div class="flex shrink-0 flex-row items-end gap-2">
+                        <BaseBadge icon="fa-solid fa-lock">Encrypted</BaseBadge>
+                        <BaseBadge v-if="secret.is_passphrase_protected" icon="fa-solid fa-key">Passphrase-protected</BaseBadge>
                     </div>
                 </div>
             </section>
@@ -169,6 +166,7 @@ onUnmounted(() => {
                 <BaseButton
                     data-test="reveal-secret-btn"
                     type="primary"
+                    icon-before="fa-solid fa-unlock"
                     :disabled="isRevealingSecret || (secret.is_passphrase_protected && !passphrase)"
                     @click="revealSecret"
                 >

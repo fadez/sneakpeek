@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useNotificationStore } from '@/stores/notifications';
 import { useElementFocus } from '@/composables/useElementFocus';
@@ -13,16 +13,16 @@ import BaseSelect from '@/components/BaseSelect.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 
 const ttlOptions = [
-    { value: '60', label: 'Expires in 1 minute' },
-    { value: '300', label: 'Expires in 5 minutes' },
-    { value: '1800', label: 'Expires in 30 minutes' },
-    { value: '3600', label: 'Expires in 1 hour' },
-    { value: '43200', label: 'Expires in 12 hours' },
-    { value: '86400', label: 'Expires in 1 day' },
-    { value: '259200', label: 'Expires in 3 days' },
-    { value: '604800', label: 'Expires in 7 days' },
-    { value: '2592000', label: 'Expires in 30 days' },
-    { value: '7776000', label: 'Expires in 90 days' },
+    { value: 60, label: 'Expires in 1 minute' },
+    { value: 300, label: 'Expires in 5 minutes' },
+    { value: 1800, label: 'Expires in 30 minutes' },
+    { value: 3600, label: 'Expires in 1 hour' },
+    { value: 43200, label: 'Expires in 12 hours' },
+    { value: 86400, label: 'Expires in 1 day' },
+    { value: 259200, label: 'Expires in 3 days' },
+    { value: 604800, label: 'Expires in 7 days' },
+    { value: 2592000, label: 'Expires in 30 days' },
+    { value: 7776000, label: 'Expires in 90 days' },
 ];
 
 const router = useRouter();
@@ -32,11 +32,15 @@ const { focus } = useElementFocus();
 const contentInput = ref(null);
 
 const content = ref('');
-const ttl = ref('86400'); // 1 day by default
+const ttl = ref(86400); // 1 day by default
 const passphrase = ref('');
 const isLoading = ref(false);
 
+const canCreateSecret = computed(() => !!content.value.trim() && !!ttl.value);
+
 const createSecret = async () => {
+    if (!canCreateSecret.value) return;
+
     isLoading.value = true;
 
     try {
@@ -70,8 +74,8 @@ onMounted(focusContentInput);
 <template>
     <div>
         <div class="mb-4 text-center sm:my-8">
-            <div class="mb-2 text-2xl font-semibold text-zinc-600 dark:text-zinc-100">Paste a password, secret message or private link below.</div>
-            <div class="text-zinc-600 dark:text-zinc-300">Keep sensitive data out of your messages or inbox.</div>
+            <div class="text-title mb-2 text-2xl font-semibold">Paste a password, secret message or private link below.</div>
+            <div class="text-subtitle">Keep sensitive data out of your messages or inbox.</div>
         </div>
         <BaseCard>
             <div class="form">
@@ -107,7 +111,7 @@ onMounted(focusContentInput);
 
                 <div class="flex flex-col gap-2">
                     <BaseLabel for="ttl" :required="true">Expiration Time</BaseLabel>
-                    <BaseSelect id="ttl" v-model="ttl">
+                    <BaseSelect id="ttl" v-model="ttl" required>
                         <option v-for="option in ttlOptions" :key="option.value" :value="option.value">
                             {{ option.label }}
                         </option>
@@ -118,7 +122,7 @@ onMounted(focusContentInput);
             </div>
 
             <template #actions>
-                <BaseButton data-test="submit-btn" icon-before="fa-solid fa-lock" :disabled="!content.trim() || isLoading" @click="createSecret">
+                <BaseButton data-test="submit-btn" icon-before="fa-solid fa-lock" :disabled="!canCreateSecret || isLoading" @click="createSecret">
                     Create Link
                 </BaseButton>
             </template>

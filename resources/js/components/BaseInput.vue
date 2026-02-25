@@ -18,11 +18,8 @@ const classes = [
     'dark:border-zinc-700',
     'rounded-md',
     'p-3',
-    'dark:text-zinc-100',
     'focus:outline-hidden',
     'focus:border-sky-500',
-    'placeholder:text-zinc-400',
-    'dark:placeholder:text-zinc-500',
     'transition-all',
 ];
 

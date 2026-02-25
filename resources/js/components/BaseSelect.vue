@@ -26,7 +26,6 @@ const classes = computed(() =>
         'rounded-md',
         'px-3',
         'py-3.5',
-        'dark:text-zinc-100',
         'focus:outline-hidden',
         'focus:border-sky-500',
         'cursor-pointer',
@@ -47,6 +46,6 @@ const handleChange = (event) => {
         <select v-bind="attrs" :class="classes" :value="modelValue" @change="handleChange">
             <slot></slot>
         </select>
-        <i class="fa-solid fa-chevron-down pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-zinc-400 dark:text-zinc-500"></i>
+        <i class="fa-solid fa-chevron-down text-muted pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"></i>
     </div>
 </template>
