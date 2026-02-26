@@ -73,7 +73,12 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 ### Deployment & DX
 
 - **Deployment**
-    - Zero-friction deployment with included deployment script and **[nginx](https://nginx.org)** configuration template
+    - Zero-friction deployment with included **[deployment script](deploy.sh)** and **[nginx](https://nginx.org)** server **[configuration template](nginx/sneakpeek.conf)**
+    - Live demo is deployed on **[Google Cloud](https://cloud.google.com)**, protected by **[Cloudflare](https://www.cloudflare.com)** using best practices:
+        - **[Full (Strict) SSL/TLS](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/full-strict)** to eliminate man-in-the-middle vulnerabilities by requiring a trusted **[Cloudflare origin CA](https://developers.cloudflare.com/ssl/origin-configuration/origin-ca)** certificate
+        - **[Authenticated Origin Pulls (mTLS)](https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull)** to ensure that only connections routed through **[Cloudflare WAF](https://www.cloudflare.com/application-services/products/waf)** can reach the server, effectively cloaking the origin server from direct IP-based attacks
+        - Region-based **[Cloudflare security rules](https://developers.cloudflare.com/security/rules)** to restrict network access from undesired geographic areas
+        - Both **[restoring original visitor IPs](https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips)** and all web server logging are deliberately disabled to maximize visitor privacy by ensuring IP addresses are never retained or logged, eliminating associated risks
 - **Developer Experience (DX)**
     - Automated onboarding via a single command that handles environment setup, SQLite database creation, and dependency installation
     - **[Laravel Boost](https://laravel.com/ai/boost)** integration for **[Cursor](https://cursor.com)** via **[MCP (Model Context Protocol)](https://modelcontextprotocol.io)** server accelerates AI-assisted development by providing the essential context and structure that AI needs
