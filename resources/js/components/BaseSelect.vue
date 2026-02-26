@@ -1,5 +1,5 @@
 <script setup>
-import { computed, useAttrs } from 'vue';
+import { computed, useAttrs, defineModel } from 'vue';
 
 defineOptions({
     inheritAttrs: false,
@@ -7,13 +7,9 @@ defineOptions({
 
 const attrs = useAttrs();
 
-const props = defineProps({
-    modelValue: {
-        type: String,
-    },
+const model = defineModel({
+    type: [String, Number],
 });
-
-const emit = defineEmits(['update:modelValue']);
 
 const classes = computed(() =>
     [
@@ -36,14 +32,14 @@ const classes = computed(() =>
 );
 
 const handleChange = (event) => {
-    emit('update:modelValue', event.target.value);
+    model.value = event.target.value;
     event.target.blur();
 };
 </script>
 
 <template>
     <div class="relative">
-        <select v-bind="attrs" :class="classes" :value="modelValue" @change="handleChange">
+        <select v-bind="attrs" :class="classes" :value="model" @change="handleChange">
             <slot></slot>
         </select>
         <i class="fa-solid fa-chevron-down text-muted pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"></i>

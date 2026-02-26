@@ -1,13 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { useTemplateRef, defineModel } from 'vue';
 
-const props = defineProps({
-    modelValue: {
-        type: String,
-    },
+const textarea = useTemplateRef('textarea');
+
+const model = defineModel({
+    type: String,
 });
-
-const textarea = ref(null);
 
 const classes = [
     'font-mono',
@@ -25,12 +23,6 @@ const classes = [
     'resize-none',
 ].join(' ');
 
-const emit = defineEmits(['update:modelValue']);
-
-const handleInput = (event) => {
-    emit('update:modelValue', event.target.value);
-};
-
 defineExpose({
     focus: () => textarea.value?.focus(),
     select: () => textarea.value?.select(),
@@ -38,5 +30,5 @@ defineExpose({
 </script>
 
 <template>
-    <textarea ref="textarea" :class="classes" :value="modelValue" @input="handleInput"></textarea>
+    <textarea ref="textarea" :class="classes" :value="model" @input="model = $event.target.value"></textarea>
 </template>

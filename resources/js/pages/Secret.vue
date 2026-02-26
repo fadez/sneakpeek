@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, watch, useTemplateRef, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getSecret, revealSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
@@ -19,8 +19,8 @@ const notify = useNotificationStore();
 const { copyToClipboard } = useClipboard();
 const { focus, focusAndSelect } = useElementFocus();
 
-const passphraseInput = ref(null);
-const secretContentInput = ref(null);
+const passphraseInput = useTemplateRef('passphrase-input');
+const secretContentTextarea = useTemplateRef('secret-content-textarea');
 
 const secret = ref(null);
 const secretContent = ref(null);
@@ -79,7 +79,7 @@ const clearPassphraseInput = () => {
 };
 
 const copySecret = () => {
-    focusAndSelect(secretContentInput);
+    focusAndSelect(secretContentTextarea);
 
     copyToClipboard(secretContent.value, {
         onSuccess: notify.secretMessageCopied,
@@ -122,7 +122,14 @@ onUnmounted(() => {
             </section>
 
             <section class="border-t-2 border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-700 dark:bg-zinc-800">
-                <BaseTextarea ref="secretContentInput" data-test="secret-content" v-model="secretContent" rows="7" readonly />
+                <BaseTextarea
+                    id="secret-content-textarea"
+                    ref="secret-content-textarea"
+                    data-test="secret-content-textarea"
+                    v-model="secretContent"
+                    rows="7"
+                    readonly
+                />
             </section>
 
             <template #actions>
@@ -151,7 +158,8 @@ onUnmounted(() => {
             <template #actions>
                 <BaseInput
                     v-if="secret.is_passphrase_protected"
-                    ref="passphraseInput"
+                    id="passphrase-input"
+                    ref="passphrase-input"
                     data-test="passphrase-input"
                     type="password"
                     v-model="passphrase"

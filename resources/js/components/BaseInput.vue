@@ -1,13 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { useTemplateRef, defineModel } from 'vue';
 
-defineProps({
-    modelValue: {
-        type: String,
-    },
+const input = useTemplateRef('input');
+
+const model = defineModel({
+    type: [String, Number],
 });
-
-const input = ref(null);
 
 const classes = [
     'w-full',
@@ -23,8 +21,6 @@ const classes = [
     'transition-all',
 ];
 
-const emit = defineEmits(['update:modelValue']);
-
 defineExpose({
     focus: () => input.value?.focus(),
     select: () => input.value?.select(),
@@ -32,5 +28,5 @@ defineExpose({
 </script>
 
 <template>
-    <input ref="input" :class="classes" :value="modelValue" @input="emit('update:modelValue', $event.target.value)" />
+    <input ref="input" :class="classes" :value="model" @input="model = $event.target.value" />
 </template>

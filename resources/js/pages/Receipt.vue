@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, nextTick, watch, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, useTemplateRef, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getSecret, deleteSecret } from '@/api';
 import { useClipboard } from '@/composables/useClipboard';
@@ -20,8 +20,8 @@ const notify = useNotificationStore();
 const { copyToClipboard } = useClipboard();
 const { focus, focusAndSelect } = useElementFocus();
 
-const secretLinkInput = ref(null);
-const passphraseInput = ref(null);
+const secretLinkInput = useTemplateRef('secret-link-input');
+const passphraseInput = useTemplateRef('passphrase-input');
 
 const secret = ref(null);
 const passphrase = ref('');
@@ -200,8 +200,15 @@ onUnmounted(() => {
 
             <section v-if="secret.is_available && hasAccessToken" class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
                 <div class="flex flex-col gap-2">
-                    <BaseLabel for="secret-link">Secret Link</BaseLabel>
-                    <BaseInput ref="secretLinkInput" id="secret-link" data-test="secret-link" :value="secretUrl" readonly @click="selectSecretLinkInput" />
+                    <BaseLabel for="secret-link-input">Secret Link</BaseLabel>
+                    <BaseInput
+                        id="secret-link-input"
+                        ref="secret-link-input"
+                        data-test="secret-link-input"
+                        :value="secretUrl"
+                        readonly
+                        @click="selectSecretLinkInput"
+                    />
                 </div>
 
                 <BaseMessage type="warning">You will only see this link once.</BaseMessage>
@@ -210,7 +217,8 @@ onUnmounted(() => {
             <template v-if="secret.is_available && hasAccessToken" #actions>
                 <BaseInput
                     v-if="secret.is_passphrase_protected && showPassphraseInput"
-                    ref="passphraseInput"
+                    id="passphrase-input"
+                    ref="passphrase-input"
                     data-test="passphrase-input"
                     type="password"
                     v-model="passphrase"

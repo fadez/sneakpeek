@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, useTemplateRef, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeSecret } from '@/api';
 import { useElementFocus } from '@/composables/useElementFocus';
@@ -29,7 +29,7 @@ const router = useRouter();
 const notify = useNotificationStore();
 const { focus } = useElementFocus();
 
-const contentInput = ref(null);
+const secretContentTextarea = useTemplateRef('secret-content-textarea');
 
 const content = ref('');
 const ttl = ref(86400); // 1 day by default
@@ -64,11 +64,9 @@ const createSecret = async () => {
     }
 };
 
-const focusContentInput = () => {
-    focus(contentInput);
-};
-
-onMounted(focusContentInput);
+onMounted(() => {
+    focus(secretContentTextarea);
+});
 </script>
 
 <template>
@@ -80,11 +78,11 @@ onMounted(focusContentInput);
         <BaseCard>
             <div class="form">
                 <div class="flex flex-col gap-2">
-                    <BaseLabel for="content" :required="true">Content</BaseLabel>
+                    <BaseLabel for="secret-content-textarea" :required="true">Content</BaseLabel>
                     <BaseTextarea
-                        ref="contentInput"
-                        id="content"
-                        data-test="content-input"
+                        id="secret-content-textarea"
+                        ref="secret-content-textarea"
+                        data-test="secret-content-textarea"
                         placeholder="Secret content goes here..."
                         rows="7"
                         maxlength="10000"
@@ -95,9 +93,9 @@ onMounted(focusContentInput);
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <BaseLabel for="passphrase">Passphrase</BaseLabel>
+                    <BaseLabel for="passphrase-input">Passphrase</BaseLabel>
                     <BaseInput
-                        id="passphrase"
+                        id="passphrase-input"
                         data-test="passphrase-input"
                         type="password"
                         placeholder="Enter a passphrase..."
@@ -110,8 +108,8 @@ onMounted(focusContentInput);
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <BaseLabel for="ttl" :required="true">Expiration Time</BaseLabel>
-                    <BaseSelect id="ttl" v-model="ttl" required>
+                    <BaseLabel for="ttl-select" :required="true">Expiration Time</BaseLabel>
+                    <BaseSelect id="ttl-select" data-test="ttl-select" v-model.number="ttl" required>
                         <option v-for="option in ttlOptions" :key="option.value" :value="option.value">
                             {{ option.label }}
                         </option>
@@ -122,7 +120,7 @@ onMounted(focusContentInput);
             </div>
 
             <template #actions>
-                <BaseButton data-test="submit-btn" icon-before="fa-solid fa-lock" :disabled="!canCreateSecret || isLoading" @click="createSecret">
+                <BaseButton data-test="create-secret-btn" icon-before="fa-solid fa-lock" :disabled="!canCreateSecret || isLoading" @click="createSecret">
                     Create Link
                 </BaseButton>
             </template>

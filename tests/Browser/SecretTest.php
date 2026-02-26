@@ -5,20 +5,20 @@ it('can create and reveal a secret without passphrase', function () {
 
     // Create the secret
     $page = visit('/')
-        ->type('@content-input', $content)
-        ->pressAndWaitFor('@submit-btn', 0.2)
-        ->assertPresent('@secret-link');
+        ->type('@secret-content-textarea', $content)
+        ->pressAndWaitFor('@create-secret-btn', 0.2)
+        ->assertPresent('@secret-link-input');
 
     // Get the URL that allows us to reveal the secret we just created
-    $secretUrl = $page->value('@secret-link');
+    $secretUrl = $page->value('@secret-link-input');
 
     $page->screenshot(filename: screenshot_name('1_secret_created'));
 
-    // Now let’s reveal the secret.
+    // Reveal the secret
     $page->navigate($secretUrl)
         ->assertPresent('@reveal-secret-btn')
         ->pressAndWaitFor('@reveal-secret-btn', 0.2)
-        ->assertValue('@secret-content', $content);
+        ->assertValue('@secret-content-textarea', $content);
 
     $page->screenshot(filename: screenshot_name('2_secret_revealed'));
 
