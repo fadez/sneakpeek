@@ -12,7 +12,7 @@
                     </RouterLink>
                 </div>
 
-                <div class="text-subtitle">Secure, one-time secret sharing made simple.</div>
+                <div class="text-subtitle text-center sm:text-right">Secure, one-time secret sharing made simple.</div>
             </div>
         </div>
     </header>
