@@ -14,6 +14,9 @@ use Illuminate\Support\Str;
 
 class SecretController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     */
     public function __construct(protected SecretService $secretService) {}
 
     /**

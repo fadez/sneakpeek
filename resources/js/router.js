@@ -3,6 +3,7 @@ import { useNotificationStore } from '@/stores/notifications';
 import Home from '@/pages/Home.vue';
 import Receipt from '@/pages/Receipt.vue';
 import Secret from '@/pages/Secret.vue';
+import UI from '@/pages/UI.vue';
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         path: '/secrets/:id',
         name: 'secret',
         component: Secret,
+    },
+    {
+        path: '/ui',
+        name: 'ui',
+        component: UI,
     },
     {
         path: '/:pathMatch(.*)*',

@@ -24,6 +24,36 @@
     select:invalid {
         @apply text-zinc-400 dark:text-zinc-500;
     }
+
+    input:disabled,
+    textarea:disabled,
+    select:disabled {
+        @apply cursor-not-allowed opacity-50;
+    }
+
+    select:not(:disabled) {
+        @apply cursor-pointer;
+    }
+
+    label[for]:not([for='']) {
+        @apply cursor-pointer;
+    }
+}
+
+@utility text-logo {
+    @apply font-brand text-xl font-medium text-black dark:text-white;
+}
+
+@utility text-title {
+    @apply text-black dark:text-white;
+}
+
+@utility text-secondary {
+    @apply text-zinc-700 dark:text-zinc-300;
+}
+
+@utility text-muted {
+    @apply text-zinc-400 dark:text-zinc-500;
 }
 
 @layer components {
@@ -31,20 +61,20 @@
         @apply grid grid-cols-1 gap-4 p-4;
     }
 
-    .text-title {
-        @apply text-zinc-900 dark:text-zinc-100;
+    .form-group {
+        @apply flex flex-col gap-2;
     }
 
-    .text-subtitle {
-        @apply text-zinc-600 dark:text-zinc-300;
+    .card {
+        @apply flex flex-col rounded-md border-2 border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900;
     }
 
-    .text-secondary {
-        @apply text-zinc-700 dark:text-zinc-400;
+    .card + .card {
+        @apply mt-4;
     }
 
-    .text-muted {
-        @apply text-zinc-400 dark:text-zinc-500;
+    .card-title {
+        @apply flex border-b-2 border-zinc-200 bg-zinc-75 p-4 font-semibold text-title dark:border-zinc-700 dark:bg-zinc-800;
     }
 }
 

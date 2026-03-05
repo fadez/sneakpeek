@@ -28,6 +28,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Database migrations with proper indexing for performance and integrity
     - A scheduled command to permanently wipe expired secrets from the database
     - Custom error response handling
+    - Support for event broadcasting
 - **Security-first design**
     - End-to-end privacy — no authentication, no logs
     - Secrets can only be accessed once, then wiped permanently
@@ -35,7 +36,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Secret access tokens (hashed in DB) stored in the URL `#` hash fragment to prevent server-side logging, analytics tracking, or accidental leakage via `Referer` header
     - Secrets have optional passphrase (hashed in DB)
     - Mandatory expiration time for secrets
-    - Minimized framework headers and error masking to prevent framework identification, fingerprinting and targeted exploits
+    - Minimized framework headers and error masking to prevent framework identification, fingerprinting, and targeted exploits
     - API throttling (rate limiting) to prevent brute-force attacks
     - **[Laravel Sanctum](https://laravel.com/docs/sanctum)** integration for robust CSRF protection and secure API state management
 - **Clean architecture**
@@ -59,6 +60,9 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Modern utility-first styling for mobile-first responsive design
     - Light and dark mode support with automatic switching
     - Bespoke toast notification styling that aligns with the app's core design language
+    - Comprehensive support for seamless keyboard-only navigation, ensuring full accessibility compliance and superior user experience for power users
+- **Laravel Echo**
+    - **[Laravel Echo](https://laravel.com/docs/broadcasting)** is used for real-time event broadcasting
 - **Vite**
     - Lightning-fast builds and production optimization
 
@@ -99,15 +103,41 @@ I highly recommend using **[Laravel Herd](https://herd.laravel.com)** as your lo
 
 ### Setting up the project
 
-Go to your **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/valet)** sites folder and run:
+Go to your **[Laravel Herd](https://herd.laravel.com)** sites folder and run:
 
 ```sh
 git clone https://github.com/fadez/sneakpeek.git && cd sneakpeek && composer setup
 ```
 
+Make sure to secure the site with TLS:
+
+```sh
+herd secure sneakpeek
+```
+
+### Broadcasting
+
+If you want to enable broadcasting, you need to create a **[Pusher Channels](https://dashboard.pusher.com/channels)** application.
+
+Then update your `.env` file with your Pusher credentials and set `BROADCAST_CONNECTION` to `pusher`:
+
+```env
+BROADCAST_CONNECTION=pusher
+PUSHER_APP_ID=your-app-id
+PUSHER_APP_KEY=your-app-key
+PUSHER_APP_SECRET=your-app-secret
+PUSHER_APP_CLUSTER=your-cluster
+```
+
+After saving these changes run:
+
+```sh
+npm run build
+```
+
 ### Visiting the site
 
-If you're using **[Laravel Herd](https://herd.laravel.com)** or **[Laravel Valet](https://laravel.com/docs/valet)**, you can now access the app at **[sneakpeek.test](http://sneakpeek.test)**.
+If you're using **[Laravel Herd](https://herd.laravel.com)**, you can now access the app at **[sneakpeek.test](http://sneakpeek.test)**.
 
 # Testing
 

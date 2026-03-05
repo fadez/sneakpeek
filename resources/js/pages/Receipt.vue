@@ -1,18 +1,21 @@
 <script setup>
-import { ref, computed, watch, useTemplateRef, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted, useTemplateRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { echo } from '@laravel/echo-vue';
 import { getSecret, deleteSecret } from '@/api';
+import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';
-import { formatDate } from '@/utils/formatDate';
-import { useNotificationStore } from '@/stores/notifications';
+import { useSecretExpirationProgress } from '@/composables/useSecretExpirationProgress';
+import formatDate from '@/utils/formatDate';
+import BaseAlert from '@/components/BaseAlert.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
-import BaseLoader from '@/components/BaseLoader.vue';
-import BaseMessage from '@/components/BaseMessage.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseLabel from '@/components/BaseLabel.vue';
-import BaseBadge from '@/components/BaseBadge.vue';
+import BaseLoader from '@/components/BaseLoader.vue';
+import BaseProgressBar from '@/components/BaseProgressBar.vue';
+import SecretPreview from '@/components/SecretPreview.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -24,14 +27,13 @@ const secretLinkInput = useTemplateRef('secret-link-input');
 const passphraseInput = useTemplateRef('passphrase-input');
 
 const secret = ref(null);
+const secretAccessToken = ref(null);
 const passphrase = ref('');
 const showPassphraseInput = ref(false);
 const isDeletingSecret = ref(false);
 
 const hasAccessToken = computed(() => {
-    if (!secret.value?.access_token) return false;
-
-    return true;
+    return !!secretAccessToken.value;
 });
 
 const secretUrl = computed(() => {
@@ -42,7 +44,7 @@ const secretUrl = computed(() => {
         params: {
             id: secret.value.id,
         },
-        hash: `#${secret.value.access_token}`,
+        hash: `#${secretAccessToken.value}`,
     }).href;
 
     return `${window.location.origin}${path}`;
@@ -55,6 +57,7 @@ const fetchSecret = async () => {
     // and immediately clear it to prevent access via browser navigation
     if (state && state.secret) {
         secret.value = state.secret;
+        secretAccessToken.value = secret.value.access_token;
 
         // Clear the state in the browser history
         const newState = { ...state };
@@ -63,8 +66,6 @@ const fetchSecret = async () => {
 
         return;
     }
-
-    resetPage();
 
     try {
         secret.value = await getSecret(route.params.id);
@@ -87,7 +88,7 @@ const handleSecretDelete = async () => {
     try {
         await deleteSecret(secret.value.id, {
             passphrase: passphrase.value,
-            access_token: secret.value.access_token,
+            access_token: secretAccessToken.value,
         });
 
         notify.secretDeleted();
@@ -95,7 +96,6 @@ const handleSecretDelete = async () => {
         router.replace({ name: 'home' });
     } catch (error) {
         clearPassphraseInput();
-
         focusPassphraseInput();
     } finally {
         isDeletingSecret.value = false;
@@ -139,10 +139,25 @@ const handlePassphraseInputVisibilityChange = (inputVisible) => {
     }
 };
 
+const handleSecretIdChange = (newId, oldId) => {
+    resetPage();
+    fetchSecret();
+
+    if (oldId) echo().leave(`secrets.${oldId}`);
+
+    if (!newId) return;
+
+    echo()
+        .channel(`secrets.${newId}`)
+        .listen('.secret.revealed', (e) => {
+            secret.value = e.secret;
+        });
+};
+
 const resetPage = () => {
     secret.value = null;
+    secretAccessToken.value = null;
     clearPassphraseInput();
-    hidePassphraseInput();
     isDeletingSecret.value = false;
 };
 
@@ -150,9 +165,11 @@ const handlePageShow = (event) => {
     if (event.persisted) fetchSecret();
 };
 
+const secretExpirationProgress = useSecretExpirationProgress(secret, fetchSecret);
+
 watch(showPassphraseInput, handlePassphraseInputVisibilityChange, { flush: 'post' });
 
-watch(() => route.params.id, fetchSecret, { immediate: true });
+watch(() => route.params.id, handleSecretIdChange, { immediate: true });
 
 watch(secretLinkInput, selectSecretLinkInput, { once: true });
 
@@ -161,6 +178,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+    if (secret.value?.id) echo().leave(`secrets.${secret.value.id}`);
+
     window.removeEventListener('pageshow', handlePageShow);
 });
 </script>
@@ -174,32 +193,32 @@ onUnmounted(() => {
     <div v-else>
         <BaseCard>
             <section class="form">
-                <BaseMessage v-if="secret.is_revealed" type="success"> Secret has been revealed on {{ formatDate(secret.revealed_at) }}. </BaseMessage>
-                <BaseMessage v-else-if="secret.is_expired" type="warning">Secret has expired without being revealed.</BaseMessage>
-                <BaseMessage v-else type="info">Secret is not yet revealed. It is available until {{ formatDate(secret.expires_at) }}.</BaseMessage>
+                <BaseAlert v-if="secret.is_revealed" type="success">
+                    Secret has been revealed on {{ formatDate(secret.revealed_at) }}.
+                </BaseAlert>
+                <BaseAlert v-else-if="secret.is_expired" type="warning">Secret has expired without being revealed.</BaseAlert>
+                <BaseAlert v-else type="info">
+                    Secret is not yet revealed. It is available until {{ formatDate(secret.expires_at) }}.
+                </BaseAlert>
             </section>
 
             <section
-                :class="[
-                    'border-t-2 border-zinc-200 bg-zinc-100 p-4 dark:border-zinc-700 dark:bg-zinc-800',
-                    !secret.is_available || !hasAccessToken ? 'rounded-b-sm' : '',
-                ]"
+                class="border-t-2 border-zinc-200 bg-zinc-75 p-4 dark:border-zinc-700 dark:bg-zinc-800"
+                :class="{ 'rounded-b-sm': !secret.is_available || !hasAccessToken }"
             >
-                <div class="flex items-center justify-between gap-2 py-2 font-mono select-none">
-                    <div class="flex min-w-0 flex-1 items-center">
-                        <span class="truncate text-zinc-950 blur-sm dark:text-white">
-                            ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-                        </span>
-                    </div>
-                    <div class="flex shrink-0 flex-row items-end gap-2">
-                        <BaseBadge icon="fa-solid fa-lock">Encrypted</BaseBadge>
-                        <BaseBadge v-if="secret.is_passphrase_protected" icon="fa-solid fa-key">Passphrase-protected</BaseBadge>
-                    </div>
-                </div>
+                <SecretPreview :passphrase-protected="secret.is_passphrase_protected" />
+            </section>
+
+            <section v-if="!secret.is_revealed && !secret.is_expired" class="border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+                <BaseProgressBar
+                    type="expiration"
+                    :label="secretExpirationProgress >= 100 ? 'Expired' : 'Expires: ' + formatDate(secret.expires_at)"
+                    :value="secretExpirationProgress"
+                />
             </section>
 
             <section v-if="secret.is_available && hasAccessToken" class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
-                <div class="flex flex-col gap-2">
+                <div class="form-group">
                     <BaseLabel for="secret-link-input">Secret Link</BaseLabel>
                     <BaseInput
                         id="secret-link-input"
@@ -211,7 +230,7 @@ onUnmounted(() => {
                     />
                 </div>
 
-                <BaseMessage type="warning">You will only see this link once.</BaseMessage>
+                <BaseAlert type="warning">You will only see this link once.</BaseAlert>
             </section>
 
             <template v-if="secret.is_available && hasAccessToken" #actions>
@@ -238,7 +257,9 @@ onUnmounted(() => {
                 >
                     Delete Secret
                 </BaseButton>
-                <BaseButton v-if="showPassphraseInput" type="outline-secondary" :disabled="isDeletingSecret" @click="cancelSecretDeletion">Cancel</BaseButton>
+                <BaseButton v-if="showPassphraseInput" type="light" :disabled="isDeletingSecret" @click="cancelSecretDeletion">
+                    Cancel
+                </BaseButton>
             </template>
         </BaseCard>
     </div>

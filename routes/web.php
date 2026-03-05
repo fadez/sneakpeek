@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AppController;
+use App\Http\Controllers\WhoAmIController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'app')->name('home');
+Route::get('/', AppController::class)->name('home');
 
-Route::get('/who-is-alex-fadez', fn () => abort(418))->name('who-is-alex-fadez');
+Route::get('/who-is-alex-fadez', WhoAmIController::class)->name('who-is-alex-fadez');
 
-Route::fallback(fn () => view('app'));
+Route::fallback(AppController::class);

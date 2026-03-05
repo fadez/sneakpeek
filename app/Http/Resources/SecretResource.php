@@ -26,6 +26,7 @@ class SecretResource extends JsonResource
     {
         return [
             'id' => $this->getKey(),
+            'created_at' => $this->created_at,
             'expires_at' => $this->expires_at,
             'revealed_at' => $this->revealed_at,
             'is_passphrase_protected' => $this->is_passphrase_protected,

@@ -7,7 +7,7 @@
     <title>@yield('title', config('app.name'))</title>
     <meta name="description" content="Secure, one-time secret sharing made simple." />
 
-    <!-- Favicon -->
+    {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="icon" type="image/png" href="{{ asset('favicon-96x96.png') }}" sizes="96x96">
@@ -15,13 +15,13 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <meta name="apple-mobile-web-app-title" content="{{ config('app.name') }}">
 
-    <!-- Fonts -->
+    {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&family=Rubik:wght@700&family=Ubuntu+Mono&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-    <!-- OpenGraph -->
+    {{-- OpenGraph --}}
     <meta property="og:site_name" content="{{ config('app.name') }}" />
     <meta property="og:title" content="{{ config('app.name') }}" />
     <meta property="og:description" content="Secure, one-time secret sharing made simple." />
@@ -29,13 +29,13 @@
     <meta property="og:url" content="{{ config('app.url') }}" />
     <meta property="og:type" content="website" />
 
-    <!-- OpenGraph: X (Twitter) -->
+    {{-- OpenGraph: X (Twitter) --}}
     <meta name="twitter:title" content="{{ config('app.name') }}" />
     <meta name="twitter:description" content="Secure, one-time secret sharing made simple." />
     <meta name="twitter:image" content="{{ asset('social.png') }}" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Styles / Scripts -->
+    {{-- Styles / Scripts --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="@yield('bodyClasses')">

@@ -32,6 +32,8 @@ return [
     |
     */
 
+    // Session lifetime is intentionally long as sessions are only needed for CSRF token in the cookies,
+    // and since authentication is disabled by design, session hijacking is a non-issue
     'lifetime' => (int) env('SESSION_LIFETIME', 43200),
 
     'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', true),

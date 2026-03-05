@@ -10,7 +10,7 @@ import { useNotificationStore } from '@/stores/notifications';
 function extractErrorMessage(error) {
     const data = error.response?.data;
 
-    return data?.message || error.message || 'An unexpected error occurred.';
+    return data?.message || error.message || 'An unexpected error has occurred.';
 }
 
 // Set global defaults

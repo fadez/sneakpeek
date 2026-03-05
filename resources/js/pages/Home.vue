@@ -4,11 +4,11 @@ import { useRouter } from 'vue-router';
 import { storeSecret } from '@/api';
 import { useElementFocus } from '@/composables/useElementFocus';
 import { useNotificationStore } from '@/stores/notifications';
+import BaseAlert from '@/components/BaseAlert.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseLabel from '@/components/BaseLabel.vue';
-import BaseMessage from '@/components/BaseMessage.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 
@@ -72,43 +72,44 @@ onMounted(() => {
 <template>
     <div>
         <div class="mb-4 text-center sm:my-8">
-            <div class="text-title mb-2 text-2xl font-semibold">Paste a password, secret message or private link below.</div>
-            <div class="text-subtitle">Keep sensitive data out of your messages or inbox.</div>
+            <div class="mb-2 text-2xl font-semibold text-title">Paste a password, secret message or private link below.</div>
+            <div class="text-secondary">Keep sensitive data out of your messages or inbox.</div>
         </div>
         <BaseCard>
             <div class="form">
-                <div class="flex flex-col gap-2">
-                    <BaseLabel for="secret-content-textarea" :required="true">Content</BaseLabel>
+                <div class="form-group">
+                    <BaseLabel for="secret-content-textarea" required>Content</BaseLabel>
                     <BaseTextarea
                         id="secret-content-textarea"
                         ref="secret-content-textarea"
                         data-test="secret-content-textarea"
-                        placeholder="Secret content goes here..."
+                        placeholder="Your secret content goes here"
+                        class="font-mono"
                         rows="7"
                         maxlength="10000"
                         v-model="content"
                         @keydown.meta.enter.exact.prevent="createSecret"
                         @keydown.ctrl.enter.exact.prevent="createSecret"
-                    ></BaseTextarea>
+                    />
                 </div>
 
-                <div class="flex flex-col gap-2">
+                <div class="form-group">
                     <BaseLabel for="passphrase-input">Passphrase</BaseLabel>
                     <BaseInput
                         id="passphrase-input"
                         data-test="passphrase-input"
                         type="password"
-                        placeholder="Enter a passphrase..."
+                        placeholder="Enter a passphrase"
                         maxlength="255"
                         autocomplete="off"
                         v-model="passphrase"
                         @keydown.meta.enter.exact.prevent="createSecret"
                         @keydown.ctrl.enter.exact.prevent="createSecret"
-                    ></BaseInput>
+                    />
                 </div>
 
-                <div class="flex flex-col gap-2">
-                    <BaseLabel for="ttl-select" :required="true">Expiration Time</BaseLabel>
+                <div class="form-group">
+                    <BaseLabel for="ttl-select" required>Expiration Time</BaseLabel>
                     <BaseSelect id="ttl-select" data-test="ttl-select" v-model.number="ttl" required>
                         <option v-for="option in ttlOptions" :key="option.value" :value="option.value">
                             {{ option.label }}
@@ -116,11 +117,16 @@ onMounted(() => {
                     </BaseSelect>
                 </div>
 
-                <BaseMessage type="info">Your message will self-destruct after being revealed.</BaseMessage>
+                <BaseAlert type="info">Your message will self-destruct after being revealed.</BaseAlert>
             </div>
 
             <template #actions>
-                <BaseButton data-test="create-secret-btn" icon-before="fa-solid fa-lock" :disabled="!canCreateSecret || isLoading" @click="createSecret">
+                <BaseButton
+                    data-test="create-secret-btn"
+                    icon-before="fa-solid fa-lock"
+                    :disabled="!canCreateSecret || isLoading"
+                    @click="createSecret"
+                >
                     Create Link
                 </BaseButton>
             </template>

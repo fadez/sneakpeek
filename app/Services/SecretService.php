@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\SecretRevealed;
 use App\Http\Requests\StoreSecretRequest;
 use App\Models\Secret;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -47,6 +48,8 @@ class SecretService
                 'content' => null,
                 'revealed_at' => now(),
             ]);
+
+            event(new SecretRevealed($secret));
 
             return $content;
         });
@@ -140,6 +143,10 @@ class SecretService
      */
     public function wipeContent(Secret $secret): bool
     {
-        return $secret->update(['content' => null]);
+        return DB::transaction(function () use ($secret) {
+            $updated = $secret->update(['content' => null]);
+
+            return $updated;
+        });
     }
 }

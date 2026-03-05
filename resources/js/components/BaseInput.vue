@@ -1,5 +1,5 @@
 <script setup>
-import { useTemplateRef, defineModel } from 'vue';
+import { useTemplateRef } from 'vue';
 
 const input = useTemplateRef('input');
 

@@ -81,11 +81,11 @@
 
 /* toast: error */
 .Vue-Toastification__toast--error {
-    @apply border-red-500 bg-white;
+    @apply border-rose-500 bg-white;
 }
 
 .Vue-Toastification__toast--error .Vue-Toastification__toast-body {
-    @apply text-red-500;
+    @apply text-rose-500;
 }
 
 @media only screen and (max-width: 600px) {

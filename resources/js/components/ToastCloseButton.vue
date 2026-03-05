@@ -7,18 +7,25 @@ const props = defineProps({
         type: String,
         default: 'default',
         validator(value) {
+            // Value must be a toast type
             return ['default', 'success', 'info', 'warning', 'danger'].includes(value);
         },
     },
 });
 
-const iconButtonType = computed(() => (props.type === 'default' ? 'light' : props.type === 'info' ? 'primary' : props.type));
+// Convert toast type to appropriate button type
+const iconButtonType = computed(() => {
+    if (props.type === 'default') return 'light';
+    if (props.type === 'info') return 'primary';
+
+    return props.type;
+});
 </script>
 
 <template>
     <div class="ml-auto">
         <div class="ml-3">
-            <BaseIconButton icon-classes="fa-solid fa-xmark fa-sm" size="toast" :type="iconButtonType" />
+            <BaseIconButton :type="iconButtonType" icon="fa-solid fa-xmark" size="toast" />
         </div>
     </div>
 </template>

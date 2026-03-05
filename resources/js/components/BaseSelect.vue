@@ -1,5 +1,5 @@
 <script setup>
-import { computed, useAttrs, defineModel } from 'vue';
+import { computed, useAttrs } from 'vue';
 
 defineOptions({
     inheritAttrs: false,
@@ -24,7 +24,6 @@ const classes = computed(() =>
         'py-3.5',
         'focus:outline-hidden',
         'focus:border-sky-500',
-        'cursor-pointer',
         'appearance-none',
         'select-none',
         'transition-all',
@@ -42,6 +41,6 @@ const handleChange = (event) => {
         <select v-bind="attrs" :class="classes" :value="model" @change="handleChange">
             <slot></slot>
         </select>
-        <i class="fa-solid fa-chevron-down text-muted pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"></i>
+        <i class="fa-solid fa-chevron-down pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"></i>
     </div>
 </template>

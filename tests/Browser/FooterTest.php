@@ -1,18 +1,24 @@
 <?php
 
-it('was built with love', function () {
+it('shows copyright symbol', function () {
+    $page = visit('/');
+
+    $page->assertSeeIn('@footer', '©');
+});
+
+it('shows built with love message', function () {
     $page = visit('/');
 
     $page->assertSeeIn('@footer', 'Built with ❤️');
 });
 
-it('has author attribution', function () {
+it('shows author attribution', function () {
     $page = visit('/');
 
     $page->assertSeeIn('@footer', '@fadez');
 });
 
-it('has link to GitHub repository', function () {
+it('shows link to GitHub repository', function () {
     $page = visit('/');
 
     $page->assertSeeIn('@footer', 'View source code on GitHub');

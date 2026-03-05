@@ -1,5 +1,5 @@
 <script setup>
-import { useTemplateRef, defineModel } from 'vue';
+import { useTemplateRef } from 'vue';
 
 const textarea = useTemplateRef('textarea');
 
@@ -8,7 +8,6 @@ const model = defineModel({
 });
 
 const classes = [
-    'font-mono',
     'w-full',
     'bg-white',
     'dark:bg-black',

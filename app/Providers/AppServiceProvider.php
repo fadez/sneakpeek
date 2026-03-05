@@ -40,9 +40,11 @@ class AppServiceProvider extends ServiceProvider
             return $this->create($attributes, $parent)->fresh();
         });
 
-        // Throttle API requests to 60 per minute per IP address
+        // Configure rate limiting for API routes based on the client's IP address
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->ip());
+            $limit = app()->environment('production') ? 60 : 600;
+
+            return Limit::perMinute($limit)->by($request->ip());
         });
     }
 }
