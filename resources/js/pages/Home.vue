@@ -23,7 +23,7 @@ const secretContentTextarea = useTemplateRef('secret-content-textarea');
 const content = ref('');
 const ttl = ref(86400); // 1 day by default
 const passphrase = ref('');
-const isLoading = ref(false);
+const isCreatingSecret = ref(false);
 
 const ttlOptions = [
     { value: 60, label: 'Expires in 1 minute' },
@@ -43,7 +43,7 @@ const canCreateSecret = computed(() => !!content.value.trim() && !!ttl.value);
 const createSecret = async () => {
     if (!canCreateSecret.value) return;
 
-    isLoading.value = true;
+    isCreatingSecret.value = true;
 
     try {
         const secret = await storeSecret({
@@ -62,7 +62,7 @@ const createSecret = async () => {
     } catch (error) {
         //
     } finally {
-        isLoading.value = false;
+        isCreatingSecret.value = false;
     }
 };
 
@@ -136,7 +136,8 @@ onMounted(() => {
                 <BaseButton
                     data-test="create-secret-btn"
                     icon-before="fa-solid fa-lock"
-                    :disabled="!canCreateSecret || isLoading"
+                    :disabled="!canCreateSecret || isCreatingSecret"
+                    :loading="isCreatingSecret"
                     @click="createSecret"
                 >
                     Create Link

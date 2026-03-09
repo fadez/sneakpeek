@@ -14,6 +14,7 @@ import BaseLink from '@/components/BaseLink.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
 import BaseProgressBar from '@/components/BaseProgressBar.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
+import BaseSpinner from '@/components/BaseSpinner.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 
 const notify = useNotificationStore();
@@ -101,6 +102,16 @@ onBeforeUnmount(() => {
         </BaseCard>
 
         <BaseCard>
+            <template #title>Toast notifications</template>
+            <div class="form">
+                <div class="flex flex-wrap items-start gap-2">
+                    <BaseButton @click="notify.test()">Show All</BaseButton>
+                    <BaseButton @click="notify.clearTest()">Hide All</BaseButton>
+                </div>
+            </div>
+        </BaseCard>
+
+        <BaseCard>
             <template #title>Typography</template>
             <div class="form">
                 <div class="form-group">
@@ -142,6 +153,16 @@ onBeforeUnmount(() => {
                     <BaseLabel>Disabled buttons</BaseLabel>
                     <div class="flex flex-wrap items-start gap-2">
                         <BaseButton v-for="type in buttonTypes" :key="type" :type="type" disabled>
+                            {{ type }}
+                        </BaseButton>
+                    </div>
+                </div>
+            </div>
+            <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+                <div class="form-group">
+                    <BaseLabel>Disabled buttons with spinner</BaseLabel>
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseButton v-for="type in buttonTypes" :key="type" :type="type" :loading="true" disabled>
                             {{ type }}
                         </BaseButton>
                     </div>
@@ -343,9 +364,12 @@ onBeforeUnmount(() => {
         </BaseCard>
 
         <BaseCard>
-            <template #title>Loaders</template>
-            <div>
-                <BaseLoader />
+            <template #title>Loaders & spinners</template>
+            <div class="form">
+                <BaseLoader padding="" />
+            </div>
+            <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+                <BaseSpinner />
             </div>
         </BaseCard>
 
@@ -361,16 +385,6 @@ onBeforeUnmount(() => {
             </div>
             <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
                 <BaseProgressBar type="info" :value="progressValue" label="Progress bar with label" :value-label="progressValue + '%'" />
-            </div>
-        </BaseCard>
-
-        <BaseCard>
-            <template #title>Toast notifications</template>
-            <div class="form">
-                <div class="flex flex-wrap items-start gap-2">
-                    <BaseButton @click="notify.test()">Show All</BaseButton>
-                    <BaseButton @click="notify.clearTest()">Hide All</BaseButton>
-                </div>
             </div>
         </BaseCard>
     </div>

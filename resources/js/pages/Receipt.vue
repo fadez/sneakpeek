@@ -264,6 +264,7 @@ onUnmounted(() => {
                     type="danger"
                     icon-before="fa-solid fa-trash"
                     :disabled="isDeletingSecret || (showPassphraseInput && !passphrase)"
+                    :loading="isDeletingSecret"
                     @click="handleSecretDelete"
                 >
                     Delete Secret

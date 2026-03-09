@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import BaseSpinner from '@/components/BaseSpinner.vue';
 
 const props = defineProps({
     iconBefore: {
@@ -9,6 +10,10 @@ const props = defineProps({
     iconAfter: {
         type: String,
         default: '',
+    },
+    loading: {
+        type: Boolean,
+        default: false,
     },
     disabled: {
         type: Boolean,
@@ -77,21 +82,30 @@ const typeClasses = {
     ].join(' '),
 };
 
-const buttonClasses = computed(() => {
-    return typeClasses[props.type];
+const buttonClasses = computed(() => typeClasses[props.type]);
+
+// Return position if spinner should render in a specific position, or null if it should be hidden
+const spinnerPosition = computed(() => {
+    if (!props.loading) return null;
+
+    return props.iconAfter && !props.iconBefore ? 'after' : 'before';
 });
 </script>
 
 <template>
     <button
-        class="flex cursor-pointer items-center justify-center gap-1 rounded-md border-2 px-4 py-2.5 whitespace-nowrap transition-all select-none focus-visible:border-black focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:border-white"
+        class="flex cursor-pointer items-center justify-center gap-1.5 rounded-md border-2 px-4 py-2.5 whitespace-nowrap transition-all select-none focus-visible:border-black focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:border-white"
         :class="buttonClasses"
         :disabled="disabled"
     >
-        <i v-if="iconBefore" :class="iconBefore" />
+        <BaseSpinner v-if="spinnerPosition === 'before'" />
+        <i v-else-if="iconBefore" :class="iconBefore" />
+
         <span>
-            <slot></slot>
+            <slot />
         </span>
-        <i v-if="iconAfter" :class="iconAfter" />
+
+        <BaseSpinner v-if="spinnerPosition === 'after'" />
+        <i v-else-if="iconAfter && !loading" :class="iconAfter" />
     </button>
 </template>

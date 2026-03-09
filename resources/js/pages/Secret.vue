@@ -200,6 +200,7 @@ onUnmounted(() => {
                     type="primary"
                     icon-before="fa-solid fa-unlock"
                     :disabled="isRevealingSecret || (secret.is_passphrase_protected && !passphrase)"
+                    :loading="isRevealingSecret"
                     @click="handleSecretReveal"
                 >
                     Reveal Secret
