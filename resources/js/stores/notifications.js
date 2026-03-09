@@ -31,8 +31,13 @@ export const useNotificationStore = defineStore('notifications', {
             return toast.warning(content, options);
         },
         dismiss(toastId, toastIdVarName) {
-            if (toastId) toast.dismiss(toastId);
-            if (toastIdVarName) this[toastIdVarName] = null;
+            if (toastId !== undefined && toastId !== null) {
+                toast.dismiss(toastId);
+            }
+
+            if (toastIdVarName) {
+                this[toastIdVarName] = null;
+            }
         },
         clear() {
             toast.clear();
