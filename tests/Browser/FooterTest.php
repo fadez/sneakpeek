@@ -21,5 +21,5 @@ it('shows author attribution', function () {
 it('shows link to GitHub repository', function () {
     $page = visit('/');
 
-    $page->assertSeeIn('@footer', 'View source code on GitHub');
+    $page->assertSeeIn('@footer', 'GitHub');
 });

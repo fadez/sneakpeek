@@ -1,10 +1,8 @@
 <script setup>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
 import { useFeatureStore } from '@/stores/features';
 import BaseLink from '@/components/BaseLink.vue';
 
-const route = useRoute();
 const features = useFeatureStore();
 
 const appName = import.meta.env.VITE_APP_NAME;
@@ -32,15 +30,10 @@ const abGroupLabel = computed(() => {
             <div>© {{ currentYear }} {{ appName }}. All rights reserved.</div>
 
             <div class="bullet-divider">
-                <div v-if="route.name !== 'ui'" class="inline-flex">
-                    View&nbsp;
+                <div class="inline-flex">
                     <BaseLink :to="{ name: 'ui' }">UI kit</BaseLink>
                 </div>
-                <div v-else class="inline-flex">
-                    <BaseLink :to="{ name: 'home' }">Go back</BaseLink>
-                </div>
                 <div class="inline-flex">
-                    View source code on&nbsp;
                     <BaseLink :href="repositoryUrl" target="_blank">GitHub</BaseLink>
                 </div>
             </div>
@@ -53,7 +46,7 @@ const abGroupLabel = computed(() => {
             <div class="bullet-divider">
                 <div v-if="abGroupLabel" class="inline-flex">{{ abGroupLabel }}</div>
                 <div v-if="currentVersionUrl" class="inline-flex">
-                    Current version:&nbsp;
+                    Version:&nbsp;
                     <BaseLink :href="currentVersionUrl" target="_blank">
                         {{ commitHash }}
                     </BaseLink>
