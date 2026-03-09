@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useNotificationStore } from '@/stores/notifications';
 import sleep from '@/utils/sleep';
 import AppLogo from '@/components/AppLogo.vue';
 import BaseAlert from '@/components/BaseAlert.vue';
@@ -15,10 +16,13 @@ import BaseProgressBar from '@/components/BaseProgressBar.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 
+const notify = useNotificationStore();
+
 const rating = ref(0);
 const progressValue = ref(0);
 const input = ref('Input value');
 const textarea = ref('Textarea value');
+const iconButtonsToggled = ref(true);
 let progressIntervalId = null;
 let progressTimeoutId = null;
 
@@ -27,9 +31,9 @@ const alertTypes = ['success', 'danger', 'info', 'warning'];
 const buttonTypes = ['primary', 'secondary', 'success', 'danger', 'light'];
 
 const iconButtonVariants = [
-    { type: 'primary', icon: 'fa-solid fa-paperclip' },
     { type: 'success', icon: 'fa-solid fa-check' },
     { type: 'danger', icon: 'fa-solid fa-trash' },
+    { type: 'info', icon: 'fa-solid fa-paperclip' },
     { type: 'warning', icon: 'fa-solid fa-lightbulb' },
     { type: 'light', icon: 'fa-solid fa-volume-xmark' },
 ];
@@ -71,9 +75,12 @@ const startProgressLoop = async () => {
 
 onMounted(() => {
     startProgressLoop();
+    notify.test();
 });
 
 onBeforeUnmount(() => {
+    notify.clearTest();
+
     if (progressIntervalId) clearInterval(progressIntervalId);
     if (progressTimeoutId) clearTimeout(progressTimeoutId);
 });
@@ -111,36 +118,50 @@ onBeforeUnmount(() => {
                     {{ type }}
                 </BaseAlert>
             </div>
+            <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+                <BaseAlert v-for="type in alertTypes" :key="type" :type="type" :dismissible="true">
+                    {{ type }}
+                </BaseAlert>
+            </div>
         </BaseCard>
 
         <BaseCard>
             <template #title>Buttons</template>
             <div class="form">
-                <div class="flex flex-wrap items-start gap-2">
-                    <BaseButton v-for="type in buttonTypes" :key="type" :type="type">
-                        {{ type }}
-                    </BaseButton>
+                <div class="form-group">
+                    <BaseLabel>Default buttons</BaseLabel>
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseButton v-for="type in buttonTypes" :key="type" :type="type">
+                            {{ type }}
+                        </BaseButton>
+                    </div>
                 </div>
             </div>
             <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
-                <div class="flex flex-wrap items-start gap-2">
-                    <BaseButton v-for="type in buttonTypes" :key="type" :type="type" disabled>
-                        {{ type }}
-                    </BaseButton>
+                <div class="form-group">
+                    <BaseLabel>Disabled buttons</BaseLabel>
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseButton v-for="type in buttonTypes" :key="type" :type="type" disabled>
+                            {{ type }}
+                        </BaseButton>
+                    </div>
                 </div>
             </div>
             <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
-                <div class="flex flex-wrap items-start gap-2">
-                    <BaseButton icon-before="fa-solid fa-lock">Create Link</BaseButton>
-                    <BaseButton icon-after="fa-solid fa-paper-plane">Send Message</BaseButton>
-                    <BaseButton
-                        :icon-before="rating === 1 ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"
-                        :icon-after="rating === -1 ? 'fa-solid fa-thumbs-down' : 'fa-regular fa-thumbs-down'"
-                        :type="rating === 1 ? 'success' : rating === -1 ? 'danger' : 'secondary'"
-                        @click="rateMessage"
-                    >
-                        Rate Message
-                    </BaseButton>
+                <div class="form-group">
+                    <BaseLabel>Buttons with icons</BaseLabel>
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseButton icon-before="fa-solid fa-lock">Create Link</BaseButton>
+                        <BaseButton icon-after="fa-solid fa-paper-plane">Send Message</BaseButton>
+                        <BaseButton
+                            :icon-before="rating === 1 ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"
+                            :icon-after="rating === -1 ? 'fa-solid fa-thumbs-down' : 'fa-regular fa-thumbs-down'"
+                            :type="rating === 1 ? 'success' : rating === -1 ? 'danger' : 'secondary'"
+                            @click="rateMessage"
+                        >
+                            Rate Message
+                        </BaseButton>
+                    </div>
                 </div>
             </div>
         </BaseCard>
@@ -148,19 +169,56 @@ onBeforeUnmount(() => {
         <BaseCard>
             <template #title>Icon buttons</template>
             <div class="form">
-                <div class="flex flex-wrap items-start gap-2">
-                    <BaseIconButton v-for="button in iconButtonVariants" :key="button.type" :type="button.type" :icon="button.icon" />
+                <div class="form-group">
+                    <BaseLabel>Default buttons</BaseLabel>
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseIconButton v-for="button in iconButtonVariants" :key="button.type" :type="button.type" :icon="button.icon" />
+                    </div>
                 </div>
             </div>
             <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
-                <div class="flex flex-wrap items-start gap-2">
-                    <BaseIconButton
-                        v-for="button in iconButtonVariants"
-                        :key="button.type"
-                        :type="button.type"
-                        icon="fa-solid fa-xmark"
-                        size="toast"
-                    />
+                <div class="form-group">
+                    <BaseLabel>Disabled buttons</BaseLabel>
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseIconButton
+                            v-for="button in iconButtonVariants"
+                            :key="button.type"
+                            :type="button.type"
+                            :icon="button.icon"
+                            disabled
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+                <div class="form-group">
+                    <BaseLabel>Colored toggleable buttons</BaseLabel>
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseIconButton
+                            v-for="button in iconButtonVariants"
+                            :key="button.type"
+                            :type="button.type"
+                            :icon="iconButtonsToggled ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"
+                            :colored="true"
+                            :active="iconButtonsToggled"
+                            @click="iconButtonsToggled = !iconButtonsToggled"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+                <div class="form-group">
+                    <BaseLabel>Small colored buttons</BaseLabel>
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseIconButton
+                            v-for="button in iconButtonVariants"
+                            :key="button.type"
+                            :type="button.type"
+                            icon="fa-solid fa-xmark"
+                            :colored="true"
+                            size="sm"
+                        />
+                    </div>
                 </div>
             </div>
         </BaseCard>
@@ -302,7 +360,17 @@ onBeforeUnmount(() => {
                 <BaseProgressBar type="expiration" :value="progressValue" />
             </div>
             <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
-                <BaseProgressBar type="primary" :value="progressValue" label="Progress bar with label" :value-label="progressValue + '%'" />
+                <BaseProgressBar type="info" :value="progressValue" label="Progress bar with label" :value-label="progressValue + '%'" />
+            </div>
+        </BaseCard>
+
+        <BaseCard>
+            <template #title>Toast notifications</template>
+            <div class="form">
+                <div class="flex flex-wrap items-start gap-2">
+                    <BaseButton @click="notify.test()">Show All</BaseButton>
+                    <BaseButton @click="notify.clearTest()">Hide All</BaseButton>
+                </div>
             </div>
         </BaseCard>
     </div>

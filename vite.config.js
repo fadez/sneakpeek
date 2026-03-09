@@ -1,9 +1,12 @@
+import { readFileSync } from 'fs';
+import { execSync } from 'child_process';
+import path from 'path';
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
-import { execSync } from 'child_process';
+
+const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
 
 // Get the current short Git commit hash to embed in the Vite build
 const commitHash = (() => {
@@ -30,6 +33,8 @@ export default defineConfig({
         vue(),
     ],
     define: {
+        __AUTHOR_URL__: JSON.stringify(pkg.author.url),
         __COMMIT_HASH__: JSON.stringify(commitHash),
+        __REPOSITORY_URL__: JSON.stringify(pkg.repository.url),
     },
 });

@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue';
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
 const props = defineProps({
@@ -12,20 +11,12 @@ const props = defineProps({
         },
     },
 });
-
-// Convert toast type to appropriate button type
-const iconButtonType = computed(() => {
-    if (props.type === 'default') return 'light';
-    if (props.type === 'info') return 'primary';
-
-    return props.type;
-});
 </script>
 
 <template>
     <div class="ml-auto">
         <div class="ml-3">
-            <BaseIconButton :type="iconButtonType" icon="fa-solid fa-xmark" size="toast" />
+            <BaseIconButton :type="type === 'default' ? 'light' : type" icon="fa-solid fa-xmark" size="sm" :colored="true" />
         </div>
     </div>
 </template>

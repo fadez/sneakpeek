@@ -6,7 +6,7 @@ use App\Models\Secret;
 use App\Services\SecretService;
 use Illuminate\Console\Command;
 
-class WipeExpiredSecrets extends Command
+class WipeExpiredSecretsCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -35,6 +35,6 @@ class WipeExpiredSecrets extends Command
             }
         });
 
-        $this->info('Wiped ' . $wipedCount . ' expired ' . str('secret')->plural($wipedCount) . '.');
+        $this->components->info('Wiped ' . $wipedCount . ' expired ' . str('secret')->plural($wipedCount) . '.');
     }
 }

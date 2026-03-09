@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Lottery;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -56,6 +59,13 @@ class AppServiceProvider extends ServiceProvider
 
             return Limit::perMinute($limit)->by($request->ip());
         });
+
+        // Use session IDs as the feature flag scope since user authentication is not implemented
+        Feature::resolveScopeUsing(fn () => Session::getId());
+
+        Feature::define('lucky-message', Lottery::odds(1, 100));
+
+        Feature::define('ab-group', fn () => Arr::random(['control', 'variant']));
 
         // Add ->createFresh() method to all model factories to avoid calling ->fresh() all the time
         Factory::macro('createFresh', function ($attributes = [], ?Model $parent = null) {

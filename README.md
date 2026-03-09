@@ -29,6 +29,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - A scheduled command to permanently wipe expired secrets from the database
     - Custom error response handling
     - Real-time event broadcasting
+    - A/B testing and feature flags, powered by **[Laravel Pennant](https://laravel.com/docs/pennant)**
 - **Maximum privacy & security**
     - End-to-end privacy — no authentication, no logs
     - **[Custom privacy-first session handler](app/Extensions/Session/DatabaseSessionHandler.php)** that doesn't store any user information

@@ -5,6 +5,10 @@
     --font-mono: 'Ubuntu Mono', monospace;
     --font-brand: 'Fredoka', 'sans-serif';
     --font-error: 'Rubik', 'sans-serif';
+    --color-emerald-75: color-mix(in srgb, var(--color-emerald-50), var(--color-emerald-100));
+    --color-rose-75: color-mix(in srgb, var(--color-rose-50), var(--color-rose-100));
+    --color-sky-75: color-mix(in srgb, var(--color-sky-50), var(--color-sky-100));
+    --color-yellow-75: color-mix(in srgb, var(--color-yellow-50), var(--color-yellow-100));
     --color-zinc-75: color-mix(in srgb, var(--color-zinc-50), var(--color-zinc-100));
     --height-receipt-card-skeleton: 162px;
     --height-secret-card-skeleton: 248px;
@@ -75,6 +79,10 @@
 
     .card-title {
         @apply flex border-b-2 border-zinc-200 bg-zinc-75 p-4 font-semibold text-title dark:border-zinc-700 dark:bg-zinc-800;
+    }
+
+    .bullet-divider > * + *::before {
+        @apply mx-1.5 font-black text-muted content-['·'] select-none;
     }
 }
 

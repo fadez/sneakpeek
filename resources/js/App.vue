@@ -1,9 +1,11 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
+import { useFeatureStore } from '@/stores/features';
 import { useNotificationStore } from '@/stores/notifications';
 import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
 
+const features = useFeatureStore();
 const notify = useNotificationStore();
 
 const handleBrowserOffline = () => {
@@ -15,6 +17,8 @@ const handleBrowserOnline = () => {
 };
 
 onMounted(() => {
+    features.reload();
+
     window.addEventListener('offline', handleBrowserOffline);
     window.addEventListener('online', handleBrowserOnline);
 });

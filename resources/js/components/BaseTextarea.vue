@@ -1,33 +1,23 @@
 <script setup>
 import { useTemplateRef } from 'vue';
 
-const textarea = useTemplateRef('textarea');
-
 const model = defineModel({
     type: String,
 });
-
-const classes = [
-    'w-full',
-    'bg-white',
-    'dark:bg-black',
-    'border-2',
-    'border-zinc-200',
-    'dark:border-zinc-700',
-    'rounded-md',
-    'p-3',
-    'focus:outline-hidden',
-    'focus:border-sky-500',
-    'transition-all',
-    'resize-none',
-].join(' ');
 
 defineExpose({
     focus: () => textarea.value?.focus(),
     select: () => textarea.value?.select(),
 });
+
+const textarea = useTemplateRef('textarea');
 </script>
 
 <template>
-    <textarea ref="textarea" :class="classes" :value="model" @input="model = $event.target.value"></textarea>
+    <textarea
+        ref="textarea"
+        class="w-full resize-none rounded-md border-2 border-zinc-200 bg-white p-3 transition-all focus:border-sky-500 focus:outline-hidden dark:border-zinc-700 dark:bg-black"
+        :value="model"
+        @input="model = $event.target.value"
+    ></textarea>
 </template>

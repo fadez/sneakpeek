@@ -3,6 +3,7 @@ import { ref, computed, useTemplateRef, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeSecret } from '@/api';
 import { useElementFocus } from '@/composables/useElementFocus';
+import { useFeatureStore } from '@/stores/features';
 import { useNotificationStore } from '@/stores/notifications';
 import BaseAlert from '@/components/BaseAlert.vue';
 import BaseButton from '@/components/BaseButton.vue';
@@ -11,6 +12,18 @@ import BaseInput from '@/components/BaseInput.vue';
 import BaseLabel from '@/components/BaseLabel.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
+
+const features = useFeatureStore();
+const router = useRouter();
+const notify = useNotificationStore();
+const { focus } = useElementFocus();
+
+const secretContentTextarea = useTemplateRef('secret-content-textarea');
+
+const content = ref('');
+const ttl = ref(86400); // 1 day by default
+const passphrase = ref('');
+const isLoading = ref(false);
 
 const ttlOptions = [
     { value: 60, label: 'Expires in 1 minute' },
@@ -24,17 +37,6 @@ const ttlOptions = [
     { value: 2592000, label: 'Expires in 30 days' },
     { value: 7776000, label: 'Expires in 90 days' },
 ];
-
-const router = useRouter();
-const notify = useNotificationStore();
-const { focus } = useElementFocus();
-
-const secretContentTextarea = useTemplateRef('secret-content-textarea');
-
-const content = ref('');
-const ttl = ref(86400); // 1 day by default
-const passphrase = ref('');
-const isLoading = ref(false);
 
 const canCreateSecret = computed(() => !!content.value.trim() && !!ttl.value);
 
@@ -71,12 +73,22 @@ onMounted(() => {
 
 <template>
     <div>
-        <div class="mb-4 text-center sm:my-8">
+        <div class="mb-4 text-center md:my-8">
             <div class="mb-2 text-2xl font-semibold text-title">Paste a password, secret message or private link below.</div>
             <div class="text-secondary">Keep sensitive data out of your messages or inbox.</div>
         </div>
         <BaseCard>
             <div class="form">
+                <BaseAlert
+                    v-if="features.isActive('lucky-message')"
+                    type="success"
+                    icon="fa-solid fa-trophy"
+                    dismissible
+                    @dismiss="features.deactivate('lucky-message')"
+                >
+                    Only 1 in 100 visitors see this special message. You're one of them!
+                </BaseAlert>
+
                 <div class="form-group">
                     <BaseLabel for="secret-content-textarea" required>Content</BaseLabel>
                     <BaseTextarea

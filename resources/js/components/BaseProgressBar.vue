@@ -17,7 +17,7 @@ const props = defineProps({
     type: {
         type: String,
         default: 'default',
-        validator: (value) => ['default', 'primary', 'success', 'danger', 'info', 'warning', 'expiration'].includes(value),
+        validator: (value) => ['default', 'success', 'danger', 'info', 'warning', 'expiration'].includes(value),
     },
 });
 
@@ -26,7 +26,6 @@ const isIncreasing = ref(true);
 
 const typeClasses = {
     default: 'bg-zinc-400',
-    primary: 'bg-sky-500',
     success: 'bg-emerald-500',
     danger: 'bg-red-500',
     info: 'bg-sky-500',

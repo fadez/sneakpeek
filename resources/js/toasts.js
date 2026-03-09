@@ -23,7 +23,6 @@ const toastNotifications = {
                 },
                 [TOAST_TYPE.SUCCESS]: {
                     closeButton: () => h(ToastCloseButton, { type: 'success' }),
-                    timeout: 3000,
                 },
                 [TOAST_TYPE.INFO]: {
                     closeButton: () => h(ToastCloseButton, { type: 'info' }),

@@ -6,15 +6,23 @@ const toast = useToast();
 export const useNotificationStore = defineStore('notifications', {
     state: () => ({
         internetDisconnectedToastId: null,
+        defaultTestToastId: null,
+        successTestToastId: null,
+        dangerTestToastId: null,
+        infoTestToastId: null,
+        warningTestToastId: null,
     }),
 
     actions: {
-        // Proxy methods to VueToastification
+        // Proxy methods to vue-toastification
         default(content, options) {
             return toast(content, options);
         },
         success(content, options) {
             return toast.success(content, options);
+        },
+        danger(content, options) {
+            return toast.error(content, options);
         },
         info(content, options) {
             return toast.info(content, options);
@@ -22,50 +30,81 @@ export const useNotificationStore = defineStore('notifications', {
         warning(content, options) {
             return toast.warning(content, options);
         },
-        error(content, options) {
-            return toast.error(content, options);
+        dismiss(toastId, toastIdVarName) {
+            if (toastId) toast.dismiss(toastId);
+            if (toastIdVarName) this[toastIdVarName] = null;
+        },
+        clear() {
+            toast.clear();
         },
 
-        // Custom notification messages
+        // Methods to preview and test all notifications in UI
+        test() {
+            this.defaultTestToastId = this.default('default notification', { timeout: false });
+            this.successTestToastId = this.success('success notification', { timeout: false });
+            this.dangerTestToastId = this.danger('danger notification', { timeout: false });
+            this.infoTestToastId = this.info('info notification', { timeout: false });
+            this.warningTestToastId = this.warning('warning notification', { timeout: false });
+        },
+        clearTest() {
+            let delay = 200; // ms
+
+            // Gather toast IDs and their corresponding state variable names
+            const testToasts = [
+                { id: this.defaultTestToastId, varName: 'defaultTestToastId' },
+                { id: this.successTestToastId, varName: 'successTestToastId' },
+                { id: this.dangerTestToastId, varName: 'dangerTestToastId' },
+                { id: this.infoTestToastId, varName: 'infoTestToastId' },
+                { id: this.warningTestToastId, varName: 'warningTestToastId' },
+            ].filter((toast) => toast.id != null);
+
+            // Dismiss toasts one by one to have pretty animations vs just calling "this.clear()"
+            testToasts.forEach((toast, i) => {
+                setTimeout(() => this.dismiss(toast.id, toast.varName), delay * i);
+            });
+        },
+
+        // All notification messages in the app
         secretCreated() {
-            toast.success('Secret has been created.');
+            this.success('Secret has been created.');
         },
         secretRevealed() {
-            toast.success('Secret has been revealed.');
+            this.success('Secret has been revealed.');
         },
         secretDeleted() {
-            toast.success('Secret has been deleted.');
+            this.success('Secret has been deleted.');
         },
         secretLinkCopied() {
-            toast.info("Secret link copied! You're ready to share.");
+            this.info("Secret link copied! You're ready to share.");
         },
         failedToCopySecretLink() {
-            toast.error('Failed to copy secret link.');
+            this.danger('Failed to copy secret link.');
         },
         secretMessageCopied() {
-            toast.info('Secret message copied!');
+            this.info('Secret message copied!');
         },
         failedToCopySecretMessage() {
-            toast.error('Failed to copy secret message.');
+            this.danger('Failed to copy secret message.');
         },
         copiedToClipboard() {
-            toast.info('Copied to clipboard!');
+            this.info('Copied to clipboard!');
         },
         failedToCopyToClipboard() {
-            toast.error('Failed to copy to clipboard.');
+            this.danger('Failed to copy to clipboard.');
         },
         pageNotFound() {
-            toast.error("Whoops! We couldn't find that page.");
+            this.danger("Whoops! We couldn't find that page.");
         },
         internetDisconnected() {
-            this.internetDisconnectedToastId = toast.error("You're offline, trying to reconnect...", { timeout: false, closeButton: false });
+            this.internetDisconnectedToastId = this.danger("You're offline, trying to reconnect...", {
+                timeout: false,
+                closeButton: false,
+            });
         },
         internetReconnected() {
-            toast.success('You are back online!', { closeButton: false });
+            this.success('You are back online!', { closeButton: false });
 
-            toast.dismiss(this.internetDisconnectedToastId);
-
-            this.internetDisconnectedToastId = null;
+            this.dismiss(this.internetDisconnectedToastId, 'internetDisconnectedToastId');
         },
     },
 });

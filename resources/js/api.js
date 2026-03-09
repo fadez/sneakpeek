@@ -1,5 +1,13 @@
 import axios from '@/axios';
 
+export const getFeatures = () => {
+    return axios.get('/api/features').then((response) => response.data);
+};
+
+export const deactivateFeature = (feature) => {
+    return axios.post(`/api/features/${feature}/deactivate`);
+};
+
 export const storeSecret = (data) => {
     return axios.post('/api/secrets', data).then((response) => response.data.secret);
 };

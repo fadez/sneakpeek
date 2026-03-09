@@ -25,7 +25,7 @@ axios.interceptors.response.use(
 
         const message = extractErrorMessage(error);
 
-        notify.error(message);
+        notify.danger(message);
 
         return Promise.reject(error);
     },

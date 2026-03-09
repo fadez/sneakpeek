@@ -1,4 +1,5 @@
 @import 'vue-toastification/dist/index.css';
+/* Vue-Toastification__bounce */
 
 .Vue-Toastification__close-button {
     all: unset;
@@ -45,47 +46,27 @@
 
 /* toast: default  */
 .Vue-Toastification__toast--default {
-    @apply border-zinc-950 bg-white;
-}
-
-.Vue-Toastification__toast--default .Vue-Toastification__toast-body {
-    @apply text-zinc-950;
-}
-
-/* toast: info */
-.Vue-Toastification__toast--info {
-    @apply border-sky-500 bg-white;
-}
-
-.Vue-Toastification__toast--info .Vue-Toastification__toast-body {
-    @apply text-sky-500;
+    @apply border-zinc-950 bg-white text-zinc-950 dark:border-zinc-100 dark:bg-zinc-900 dark:text-zinc-100;
 }
 
 /* toast: success */
 .Vue-Toastification__toast--success {
-    @apply border-emerald-500 bg-white;
+    @apply border-emerald-500 bg-emerald-100 text-emerald-500 dark:bg-emerald-950;
 }
 
-.Vue-Toastification__toast--success .Vue-Toastification__toast-body {
-    @apply text-emerald-500;
+/* toast: info */
+.Vue-Toastification__toast--info {
+    @apply border-sky-500 bg-sky-100 text-sky-500 dark:bg-sky-950;
+}
+
+/* toast: danger */
+.Vue-Toastification__toast--error {
+    @apply border-rose-500 bg-rose-100 text-rose-500 dark:bg-rose-950;
 }
 
 /* toast: warning */
 .Vue-Toastification__toast--warning {
-    @apply border-yellow-500 bg-white;
-}
-
-.Vue-Toastification__toast--warning .Vue-Toastification__toast-body {
-    @apply text-yellow-500;
-}
-
-/* toast: error */
-.Vue-Toastification__toast--error {
-    @apply border-rose-500 bg-white;
-}
-
-.Vue-Toastification__toast--error .Vue-Toastification__toast-body {
-    @apply text-rose-500;
+    @apply border-yellow-500 bg-yellow-100 text-yellow-500 dark:bg-yellow-950;
 }
 
 @media only screen and (max-width: 600px) {
@@ -95,5 +76,23 @@
 
     .Vue-Toastification__toast {
         @apply w-full max-w-full min-w-full;
+    }
+
+    .Vue-Toastification__bounce-enter-active,
+    .Vue-Toastification__bounce-leave-active {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .Vue-Toastification__bounce-enter-from,
+    .Vue-Toastification__bounce-leave-to {
+        opacity: 0;
+    }
+
+    .Vue-Toastification__bounce-leave-active {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
     }
 }

@@ -2,30 +2,27 @@
 import { computed, useAttrs } from 'vue';
 import { RouterLink } from 'vue-router';
 
-const attrs = useAttrs();
-
 const props = defineProps({
     to: [String, Object],
+    fontWeight: {
+        type: String,
+        default: 'font-medium',
+    },
 });
 
-const linkClasses = [
-    'text-sky-500',
-    'active:text-sky-600',
-    'border-b-2',
-    'border-transparent',
-    'hover:border-sky-500',
-    'active:border-transparent',
-    'focus-visible:outline-hidden',
-    'focus-visible:border-b-2',
-    'focus-visible:border-sky-500',
-    'transition-all',
-].join(' ');
+const attrs = useAttrs();
 
 const isRouterLink = computed(() => !!props.to);
 </script>
 
 <template>
-    <component :is="isRouterLink ? RouterLink : 'a'" :to="isRouterLink ? props.to : undefined" :class="linkClasses" v-bind="attrs">
+    <component
+        :is="isRouterLink ? RouterLink : 'a'"
+        :to="isRouterLink ? to : undefined"
+        class="border-b-2 border-transparent text-sky-500 transition-all hover:border-sky-500 focus-visible:border-b-2 focus-visible:border-sky-500 focus-visible:outline-hidden active:border-transparent active:text-sky-600"
+        :class="[fontWeight]"
+        v-bind="attrs"
+    >
         <slot />
     </component>
 </template>
