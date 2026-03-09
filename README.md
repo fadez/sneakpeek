@@ -88,6 +88,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Automated onboarding via a single command that handles environment setup, SQLite database creation, and dependency installation
     - **[Laravel Boost](https://laravel.com/ai/boost)** integration for **[Cursor](https://cursor.com)** via **[MCP (Model Context Protocol)](https://modelcontextprotocol.io)** server accelerates AI-assisted development by providing the essential context and structure that AI needs
     - Automated linting and formatting using Prettier to ensure a standardized code style across all Vue and CSS files
+    - **[Laravel Debugbar](https://github.com/fruitcake/laravel-debugbar)** is included for local debugging and profiling
 
 # Installation
 
