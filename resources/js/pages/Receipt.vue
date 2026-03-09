@@ -2,6 +2,8 @@
 import { ref, computed, watch, onMounted, onUnmounted, useTemplateRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
+import { DateTime } from 'luxon';
+import { useNow } from '@/composables/useNow';
 import { getSecret, deleteSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
@@ -20,6 +22,7 @@ import SecretPreview from '@/components/SecretPreview.vue';
 const route = useRoute();
 const router = useRouter();
 const notify = useNotificationStore();
+const { now } = useNow();
 const { copyToClipboard } = useClipboard();
 const { focus, focusAndSelect } = useElementFocus();
 
@@ -34,6 +37,14 @@ const isDeletingSecret = ref(false);
 
 const hasAccessToken = computed(() => {
     return !!secretAccessToken.value;
+});
+
+const expiresInDiffForHumans = computed(() => {
+    if (!secret.value?.expires_at) return '';
+
+    now.value;
+
+    return DateTime.fromISO(secret.value.expires_at).toRelative({ unit: ['days', 'hours', 'minutes', 'seconds'] });
 });
 
 const secretUrl = computed(() => {
@@ -212,7 +223,7 @@ onUnmounted(() => {
             <section v-if="!secret.is_revealed && !secret.is_expired" class="border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
                 <BaseProgressBar
                     type="expiration"
-                    :label="secretExpirationProgress >= 100 ? 'Expired' : 'Expires: ' + formatDate(secret.expires_at)"
+                    :label="`${secretExpirationProgress >= 100 ? 'Expired' : 'Expires'} ${expiresInDiffForHumans}`"
                     :value="secretExpirationProgress"
                 />
             </section>
