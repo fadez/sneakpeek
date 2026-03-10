@@ -16,18 +16,24 @@ use Illuminate\Validation\ValidationException;
  */
 class SecretService
 {
+    public function __construct(private readonly StatisticService $statisticService) {}
+
     /**
      * Create a new secret from a request.
      */
     public function createFromRequest(StoreSecretRequest $request, string $accessToken): Secret
     {
-        return Secret::create([
+        $secret = Secret::create([
             'id' => Str::random(64),
             'access_token' => $accessToken,
             'content' => $request->input('content'),
             'passphrase' => $request->input('passphrase'),
             'expires_at' => now()->addSeconds($request->integer('ttl')),
         ]);
+
+        $this->statisticService->incrementValue(key: 'secrets_created');
+
+        return $secret;
     }
 
     /**
@@ -48,6 +54,8 @@ class SecretService
                 'content' => null,
                 'revealed_at' => now(),
             ]);
+
+            $this->statisticService->incrementValue(key: 'secrets_revealed');
 
             event(new SecretRevealed($secret));
 

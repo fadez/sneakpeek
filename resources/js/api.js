@@ -1,5 +1,9 @@
 import axios from '@/axios';
 
+export const getStatistics = () => {
+    return axios.get('/api/statistics').then((response) => response.data);
+};
+
 export const getFeatures = () => {
     return axios.get('/api/features').then((response) => response.data);
 };

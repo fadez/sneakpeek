@@ -4,9 +4,9 @@ use App\Models\Secret;
 use Illuminate\Support\Carbon;
 
 test('toArray', function () {
-    $secret = Secret::factory()->createFresh();
+    $model = Secret::factory()->createFresh();
 
-    expect(array_keys($secret->toArray()))->toBe([
+    expect(array_keys($model->toArray()))->toBe([
         'id',
         'expires_at',
         'revealed_at',
@@ -18,7 +18,7 @@ test('toArray', function () {
         'is_available',
     ]);
 
-    expect($secret->toArray())->not->toHaveKeys([
+    expect($model->toArray())->not->toHaveKeys([
         'content',
         'access_token',
         'passphrase',

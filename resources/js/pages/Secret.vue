@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, useTemplateRef, onMounted, onUnmounted } from 'vue';
+import { ref, watch, useTemplateRef, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { getSecret, revealSecret } from '@/api';
@@ -127,7 +127,7 @@ onMounted(() => {
     window.addEventListener('pageshow', handlePageShow);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
     if (secret.value?.id) echo().leave(`secrets.${secret.value.id}`);
 
     window.removeEventListener('pageshow', handlePageShow);

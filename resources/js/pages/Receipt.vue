@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted, useTemplateRef } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { DateTime } from 'luxon';
@@ -188,7 +188,7 @@ onMounted(() => {
     window.addEventListener('pageshow', handlePageShow);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
     if (secret.value?.id) echo().leave(`secrets.${secret.value.id}`);
 
     window.removeEventListener('pageshow', handlePageShow);

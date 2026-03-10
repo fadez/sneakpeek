@@ -5,11 +5,14 @@
     --font-mono: 'Ubuntu Mono', monospace;
     --font-brand: 'Fredoka', 'sans-serif';
     --font-error: 'Rubik', 'sans-serif';
+
     --color-emerald-75: color-mix(in srgb, var(--color-emerald-50), var(--color-emerald-100));
     --color-rose-75: color-mix(in srgb, var(--color-rose-50), var(--color-rose-100));
     --color-sky-75: color-mix(in srgb, var(--color-sky-50), var(--color-sky-100));
     --color-yellow-75: color-mix(in srgb, var(--color-yellow-50), var(--color-yellow-100));
     --color-zinc-75: color-mix(in srgb, var(--color-zinc-50), var(--color-zinc-100));
+
+    --height-dashboard-card-skeleton: 166px;
     --height-receipt-card-skeleton: 162px;
     --height-secret-card-skeleton: 248px;
 }

@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\SecretController;
+use App\Http\Controllers\Api\StatisticController;
 use Illuminate\Support\Facades\Route;
 
 // The "cache.headers:no_store" middleware is needed to prevent sensitive data from being cached in the browser's Back-Forward Cache (bfcache).
 // This ensures secrets aren't accessible when navigating via the browser's back or forward buttons and forces the app to always fetch fresh data from API.
 Route::name('api.')->middleware(['throttle:api', 'cache.headers:no_store'])->group(function () {
+    Route::get('/statistics', StatisticController::class);
+
     Route::name('features.')->prefix('features')->group(function () {
         Route::get('/', [FeatureController::class, 'index'])
             ->name('index');

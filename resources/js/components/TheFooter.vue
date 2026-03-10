@@ -25,31 +25,36 @@ const abGroupLabel = computed(() => {
 </script>
 
 <template>
-    <footer data-test="footer" class="container mx-auto my-4 max-w-4xl px-4">
-        <div class="flex flex-col justify-between text-secondary md:flex-row">
-            <div>© {{ currentYear }} {{ appName }}. All rights reserved.</div>
+    <footer data-test="footer" class="my-4">
+        <div class="container mx-auto max-w-4xl px-4">
+            <div class="flex flex-col justify-between text-secondary md:flex-row">
+                <div>© {{ currentYear }} {{ appName }}. All rights reserved.</div>
 
-            <div class="bullet-divider">
-                <div class="inline-flex">
-                    <BaseLink :to="{ name: 'ui' }">UI kit</BaseLink>
-                </div>
-                <div class="inline-flex">
-                    <BaseLink :href="repositoryUrl" target="_blank">GitHub</BaseLink>
+                <div class="bullet-divider">
+                    <div class="inline-flex">
+                        <BaseLink :to="{ name: 'dashboard' }">Dashboard</BaseLink>
+                    </div>
+                    <div class="inline-flex">
+                        <BaseLink :to="{ name: 'ui' }">UI kit</BaseLink>
+                    </div>
+                    <div class="inline-flex">
+                        <BaseLink :href="repositoryUrl" target="_blank">GitHub</BaseLink>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="flex flex-col justify-between text-muted md:flex-row">
-            <div class="inline-flex">
-                Built with ❤️ in 🇺🇦 by&nbsp;
-                <BaseLink :href="authorUrl" target="_blank">@fadez</BaseLink>
-            </div>
-            <div class="bullet-divider">
-                <div v-if="abGroupLabel" class="inline-flex">{{ abGroupLabel }}</div>
-                <div v-if="currentVersionUrl" class="inline-flex">
-                    Version:&nbsp;
-                    <BaseLink :href="currentVersionUrl" target="_blank">
-                        {{ commitHash }}
-                    </BaseLink>
+            <div class="flex flex-col justify-between text-muted md:flex-row">
+                <div class="inline-flex">
+                    Built with ❤️ in 🇺🇦 by&nbsp;
+                    <BaseLink :href="authorUrl" target="_blank">@fadez</BaseLink>
+                </div>
+                <div class="bullet-divider">
+                    <div v-if="abGroupLabel" class="inline-flex">{{ abGroupLabel }}</div>
+                    <div v-if="currentVersionUrl" class="inline-flex">
+                        Version:&nbsp;
+                        <BaseLink :href="currentVersionUrl" target="_blank">
+                            {{ commitHash }}
+                        </BaseLink>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useNotificationStore } from '@/stores/notifications';
+import Dashboard from '@/pages/Dashboard.vue';
 import Home from '@/pages/Home.vue';
 import Receipt from '@/pages/Receipt.vue';
 import Secret from '@/pages/Secret.vue';
@@ -20,6 +21,11 @@ const routes = [
         path: '/secrets/:id',
         name: 'secret',
         component: Secret,
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
     },
     {
         path: '/ui',

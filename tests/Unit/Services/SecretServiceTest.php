@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 it('passes passphrase check with an empty passphrase when secret is not passphrase-protected', function () {
     $secret = Secret::factory()->revealed()->createFresh();
 
-    $secretService = new SecretService;
+    $secretService = app(SecretService::class);
 
     expect($secretService->checkPassphrase(secret: $secret, passphrase: null))->toBeTrue();
 });
@@ -15,7 +15,7 @@ it('passes passphrase check with an empty passphrase when secret is not passphra
 it('passes passphrase check with any passphrase when secret is not passphrase-protected', function () {
     $secret = Secret::factory()->createFresh();
 
-    $secretService = new SecretService;
+    $secretService = app(SecretService::class);
 
     expect($secretService->checkPassphrase(secret: $secret, passphrase: 'some passphrase'))->toBeTrue();
 });
@@ -23,7 +23,7 @@ it('passes passphrase check with any passphrase when secret is not passphrase-pr
 it('passes passphrase check for passphrase-protected secret only when the correct passphrase is provided', function () {
     $secret = Secret::factory()->passphraseProtected(passphrase: ' tricky!passphrase ')->createFresh();
 
-    $secretService = new SecretService;
+    $secretService = app(SecretService::class);
 
     expect($secretService->checkPassphrase(secret: $secret, passphrase: null))->toBeFalse();
     expect($secretService->checkPassphrase(secret: $secret, passphrase: ''))->toBeFalse();
@@ -34,7 +34,7 @@ it('passes passphrase check for passphrase-protected secret only when the correc
 it('wipes content of the secret but preserves the model', function () {
     $secret = Secret::factory()->createFresh();
 
-    (new SecretService)->wipeContent($secret);
+    (app(SecretService::class))->wipeContent($secret);
 
     $secret->refresh();
 
@@ -47,7 +47,7 @@ it('reveals secret content and wipes it', function () {
 
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
-    $revealedContent = (new SecretService)->revealSecret($secret);
+    $revealedContent = app(SecretService::class)->revealSecret($secret);
 
     $secret->refresh();
 
@@ -62,8 +62,8 @@ it('reveals secret content and wipes it atomically under race conditions', funct
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
     // We'll simulate two concurrent reveals using transactions with artificial delay
-    $serviceA = new SecretService;
-    $serviceB = new SecretService;
+    $serviceA = app(SecretService::class);
+    $serviceB = app(SecretService::class);
 
     // Simulate a slow transaction, where reveal locks the row and succeeds
     $revealedContent = DB::transaction(function () use ($serviceA, $secret) {
@@ -91,7 +91,7 @@ it('fails to reveal an expired secret', function () {
 
     $secret = Secret::factory()->expiresNow()->createFresh();
 
-    $service = new SecretService;
+    $service = app(SecretService::class);
 
     $this->travel(1)->second();
 
