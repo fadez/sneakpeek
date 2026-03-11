@@ -2,11 +2,15 @@
 
 namespace App\Events;
 
-use App\Services\StatisticService;
 use Illuminate\Broadcasting\Channel;
 
-class StatisticUpdated extends Event
+class SecretBurned extends Event
 {
+    /**
+     * Create a new event instance.
+     */
+    public function __construct(public string $secretId) {}
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -15,7 +19,7 @@ class StatisticUpdated extends Event
     public function broadcastOn(): array
     {
         return [
-            new Channel('dashboard'),
+            new Channel('secrets.' . $this->secretId),
         ];
     }
 
@@ -24,16 +28,6 @@ class StatisticUpdated extends Event
      */
     public function broadcastAs(): string
     {
-        return 'statistic.updated';
-    }
-
-    /**
-     * Get the data to broadcast.
-     *
-     * @return array<string, mixed>
-     */
-    public function broadcastWith(): array
-    {
-        return app(StatisticService::class)->getSnapshot();
+        return 'secret.burned';
     }
 }

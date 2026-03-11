@@ -73,7 +73,7 @@ onMounted(() => {
 
 <template>
     <div>
-        <div class="mb-4 text-center md:my-8">
+        <div class="my-4">
             <div class="mb-2 text-2xl font-semibold text-title">Paste a password, secret message or private link below.</div>
             <div class="text-secondary">Keep sensitive data out of your messages or inbox.</div>
         </div>
@@ -88,6 +88,8 @@ onMounted(() => {
                 >
                     Only 1 in 100 visitors see this special message. You're one of them!
                 </BaseAlert>
+
+                <BaseAlert type="info">Your message will self-destruct after being revealed.</BaseAlert>
 
                 <div class="form-group">
                     <BaseLabel for="secret-content-textarea" required>Content</BaseLabel>
@@ -105,31 +107,31 @@ onMounted(() => {
                     />
                 </div>
 
-                <div class="form-group">
-                    <BaseLabel for="passphrase-input">Passphrase</BaseLabel>
-                    <BaseInput
-                        id="passphrase-input"
-                        data-test="passphrase-input"
-                        type="password"
-                        placeholder="Enter a passphrase"
-                        maxlength="255"
-                        autocomplete="off"
-                        v-model="passphrase"
-                        @keydown.meta.enter.exact.prevent="createSecret"
-                        @keydown.ctrl.enter.exact.prevent="createSecret"
-                    />
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <BaseLabel for="passphrase-input">Passphrase</BaseLabel>
+                        <BaseInput
+                            id="passphrase-input"
+                            data-test="passphrase-input"
+                            type="password"
+                            placeholder="Enter a passphrase"
+                            maxlength="255"
+                            autocomplete="off"
+                            v-model="passphrase"
+                            @keydown.meta.enter.exact.prevent="createSecret"
+                            @keydown.ctrl.enter.exact.prevent="createSecret"
+                        />
+                    </div>
 
-                <div class="form-group">
-                    <BaseLabel for="ttl-select" required>Expiration Time</BaseLabel>
-                    <BaseSelect id="ttl-select" data-test="ttl-select" v-model.number="ttl" required>
-                        <option v-for="option in ttlOptions" :key="option.value" :value="option.value">
-                            {{ option.label }}
-                        </option>
-                    </BaseSelect>
+                    <div class="form-group">
+                        <BaseLabel for="ttl-select" required>Expiration Time</BaseLabel>
+                        <BaseSelect id="ttl-select" data-test="ttl-select" v-model.number="ttl" required>
+                            <option v-for="option in ttlOptions" :key="option.value" :value="option.value">
+                                {{ option.label }}
+                            </option>
+                        </BaseSelect>
+                    </div>
                 </div>
-
-                <BaseAlert type="info">Your message will self-destruct after being revealed.</BaseAlert>
             </div>
 
             <template #actions>

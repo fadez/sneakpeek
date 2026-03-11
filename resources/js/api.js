@@ -24,6 +24,6 @@ export const revealSecret = (id, data) => {
     return axios.post(`/api/secrets/${id}/reveal`, data).then((response) => response.data.content);
 };
 
-export const deleteSecret = (id, data) => {
+export const burnSecret = (id, data) => {
     return axios.delete(`/api/secrets/${id}`, { data });
 };

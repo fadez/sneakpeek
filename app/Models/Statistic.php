@@ -14,6 +14,10 @@ class Statistic extends Model
 
     public const KEY_SECRETS_REVEALED = 'secrets_revealed';
 
+    public const KEY_SECRETS_EXPIRED = 'secrets_expired';
+
+    public const KEY_SECRETS_BURNED = 'secrets_burned';
+
     /**
      * Indicates if the model's ID is auto-incrementing.
      *

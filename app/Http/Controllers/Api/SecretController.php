@@ -77,8 +77,8 @@ class SecretController extends Controller
     }
 
     /**
-     * Delete a secret.
-     * Only secrets that have not been revealed can be deleted.
+     * Delete a secret from the database permanently.
+     * Only available secrets can be deleted.
      */
     public function destroy(Request $request, Secret $secret): Response
     {
@@ -88,7 +88,7 @@ class SecretController extends Controller
             passphrase: $request->string('passphrase')
         );
 
-        $secret->delete();
+        $this->secretService->burnSecret($secret);
 
         return response()->noContent();
     }

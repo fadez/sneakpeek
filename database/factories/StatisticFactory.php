@@ -6,7 +6,7 @@ use App\Models\Statistic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Statistic>
+ * @extends Factory<Statistic>
  */
 class StatisticFactory extends Factory
 {
@@ -21,13 +21,15 @@ class StatisticFactory extends Factory
             'key' => $this->faker->randomElement([
                 Statistic::KEY_SECRETS_CREATED,
                 Statistic::KEY_SECRETS_REVEALED,
+                Statistic::KEY_SECRETS_EXPIRED,
+                Statistic::KEY_SECRETS_BURNED,
             ]),
             'value' => $this->faker->numberBetween(0, 1000000),
         ];
     }
 
     /**
-     * Indicate that the statistic is for created secrets count.
+     * Indicate that the statistic is for created secrets.
      */
     public function secretsCreated(int $value = 0): static
     {
@@ -38,12 +40,34 @@ class StatisticFactory extends Factory
     }
 
     /**
-     * Indicate that the statistic is for revealed secrets count.
+     * Indicate that the statistic is for revealed secrets.
      */
     public function secretsRevealed(int $value = 0): static
     {
         return $this->state([
             'key' => Statistic::KEY_SECRETS_REVEALED,
+            'value' => $value,
+        ]);
+    }
+
+    /**
+     * Indicate that the statistic is for expired secrets.
+     */
+    public function secretsExpired(int $value = 0): static
+    {
+        return $this->state([
+            'key' => Statistic::KEY_SECRETS_EXPIRED,
+            'value' => $value,
+        ]);
+    }
+
+    /**
+     * Indicate that the statistic is for burned secrets.
+     */
+    public function secretsBurned(int $value = 0): static
+    {
+        return $this->state([
+            'key' => Statistic::KEY_SECRETS_BURNED,
             'value' => $value,
         ]);
     }

@@ -28,8 +28,8 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Database migrations with proper indexing for performance and integrity
     - A scheduled command to permanently wipe expired secrets from the database
     - Custom error response handling
-    - Real-time event broadcasting
     - A/B testing and feature flags, powered by **[Laravel Pennant](https://laravel.com/docs/pennant)**
+    - Real-time event broadcasting and statistics dashboard, powered by **[Laravel Echo](https://laravel.com/docs/broadcasting)**
 - **Maximum privacy & security**
     - End-to-end privacy — no authentication, no logs
     - **[Custom privacy-first session handler](app/Extensions/Session/DatabaseSessionHandler.php)** that doesn't store any user information
@@ -56,13 +56,12 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - Modular, component-based structure with reusable Single File Components (SFC)
     - Single-page application (SPA) architecture powered by **[Vue Router](https://router.vuejs.org)**
     - Consistent naming conventions and directory organization for ease of navigation and scalability
-    - **[Pinia](https://pinia.vuejs.org)** is used for centralized state management and application-wide reactive data
-    - A notification system implemented in the Pinia store that abstracts the underlying toast notification library for clean, consistent usage across the app
-    - **[Laravel Echo](https://laravel.com/docs/broadcasting)** is used for real-time event broadcasting
+    - **[Pinia](https://pinia.vuejs.org)** for centralized state management and application-wide reactive data
+    - Centralized notification system powered by Pinia store, providing a unified API for toast notifications across the entire application
 - **Tailwind CSS v4.2**
+    - Fully custom UI/UX design crafted from scratch, with no third-party UI component libraries
     - Modern utility-first styling for mobile-first responsive design
     - Light and dark mode support with automatic switching
-    - Bespoke toast notification styling that aligns with the app's core design language
     - Comprehensive support for seamless keyboard-only navigation, ensuring full accessibility compliance and superior user experience for power users
 - **Vite**
     - Lightning-fast builds and production optimization

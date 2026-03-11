@@ -7,7 +7,7 @@ const props = defineProps({
     type: {
         type: String,
         default: 'info',
-        validator: (value) => ['success', 'danger', 'info', 'warning'].includes(value),
+        validator: (value) => ['success', 'danger', 'info', 'warning', 'neutral'].includes(value),
     },
     showIcon: {
         type: Boolean,
@@ -61,13 +61,23 @@ const typeClasses = {
         'dark:bg-yellow-950',
         'dark:border-yellow-600',
     ].join(' '),
+
+    neutral: [
+        'bg-white',
+        'text-zinc-950',
+        'border-zinc-950',
+        'dark:bg-zinc-900',
+        'dark:text-zinc-100',
+        'dark:border-zinc-100',
+    ].join(' '),
 };
 
 const typeIcons = {
     success: 'fa-solid fa-circle-check',
-    danger: 'fa-solid fa-circle-exclamation',
+    danger: 'fa-solid fa-circle-xmark',
     info: 'fa-solid fa-circle-info',
-    warning: 'fa-solid fa-triangle-exclamation',
+    warning: 'fa-solid fa-circle-exclamation',
+    neutral: 'fa-solid fa-circle-dot',
 };
 
 const alertClasses = computed(() => {
@@ -92,7 +102,13 @@ const dismiss = () => {
             <slot></slot>
         </div>
         <div v-if="dismissible" class="ml-auto flex">
-            <BaseIconButton :type="type" icon="fa-solid fa-xmark" size="sm" :colored="true" @click="dismiss" />
+            <BaseIconButton
+                :type="type === 'neutral' ? 'light' : type"
+                icon="fa-solid fa-xmark"
+                size="sm"
+                :colored="true"
+                @click="dismiss"
+            />
         </div>
     </div>
 </template>

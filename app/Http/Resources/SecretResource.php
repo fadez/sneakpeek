@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Secret;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\Secret
+ * @mixin Secret
  */
 class SecretResource extends JsonResource
 {

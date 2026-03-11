@@ -4,7 +4,7 @@ import AppLogo from '@/components/AppLogo.vue';
 
 <template>
     <header data-test="header" class="mb-4 border-b-2 border-zinc-200 bg-white dark:border-zinc-700 dark:bg-transparent">
-        <div class="container mx-auto max-w-4xl p-4">
+        <div class="page-container py-4">
             <div class="flex w-full flex-col items-center justify-between md:flex-row">
                 <div class="mb-2 flex items-center justify-between md:mb-0">
                     <AppLogo :link="true" />

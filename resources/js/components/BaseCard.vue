@@ -2,8 +2,16 @@
 import { computed, useSlots } from 'vue';
 
 const slots = useSlots();
-const hasActions = computed(() => slots.actions?.());
+
+const props = defineProps({
+    showActions: {
+        type: Boolean,
+        default: true,
+    },
+});
+
 const hasTitle = computed(() => slots.title?.());
+const hasActions = computed(() => slots.actions?.());
 </script>
 
 <template>
@@ -15,7 +23,7 @@ const hasTitle = computed(() => slots.title?.());
         <slot></slot>
 
         <section
-            v-if="hasActions"
+            v-if="hasActions && showActions"
             class="flex flex-col justify-between gap-2 border-t-2 border-zinc-200 p-4 md:flex-row dark:border-zinc-700"
         >
             <slot name="actions"></slot>

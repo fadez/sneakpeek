@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Secret;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Secret>
+ * @extends Factory<Secret>
  */
 class SecretFactory extends Factory
 {

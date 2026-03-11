@@ -26,7 +26,7 @@ const abGroupLabel = computed(() => {
 
 <template>
     <footer data-test="footer" class="my-4">
-        <div class="container mx-auto max-w-4xl px-4">
+        <div class="page-container">
             <div class="flex flex-col justify-between text-secondary md:flex-row">
                 <div>© {{ currentYear }} {{ appName }}. All rights reserved.</div>
 

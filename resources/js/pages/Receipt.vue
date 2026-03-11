@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { DateTime } from 'luxon';
 import { useNow } from '@/composables/useNow';
-import { getSecret, deleteSecret } from '@/api';
+import { getSecret, burnSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';
@@ -85,7 +85,7 @@ const fetchSecret = async () => {
     }
 };
 
-const handleSecretDelete = async () => {
+const deleteSecret = async () => {
     if (isDeletingSecret.value) return;
 
     // If the secret is passphrase-protected we need to show the passphrase input first
@@ -97,12 +97,12 @@ const handleSecretDelete = async () => {
     isDeletingSecret.value = true;
 
     try {
-        await deleteSecret(secret.value.id, {
+        await burnSecret(secret.value.id, {
             passphrase: passphrase.value,
             access_token: secretAccessToken.value,
         });
 
-        notify.secretDeleted();
+        notify.secretBurned();
 
         router.replace({ name: 'home' });
     } catch (error) {
@@ -202,7 +202,7 @@ onBeforeUnmount(() => {
         </BaseCard>
     </div>
     <div v-else>
-        <BaseCard>
+        <BaseCard :show-actions="secret.is_available && hasAccessToken">
             <section class="form">
                 <BaseAlert v-if="secret.is_revealed" type="success">
                     Secret has been revealed on {{ formatDate(secret.revealed_at) }}.
@@ -244,7 +244,7 @@ onBeforeUnmount(() => {
                 <BaseAlert type="warning">You will only see this link once.</BaseAlert>
             </section>
 
-            <template v-if="secret.is_available && hasAccessToken" #actions>
+            <template #actions>
                 <BaseInput
                     v-if="secret.is_passphrase_protected && showPassphraseInput"
                     id="passphrase-input"
@@ -254,7 +254,7 @@ onBeforeUnmount(() => {
                     v-model="passphrase"
                     :disabled="isDeletingSecret"
                     placeholder="Enter passphrase..."
-                    @keyup.enter="handleSecretDelete"
+                    @keyup.enter="deleteSecret"
                     @keyup.esc="cancelSecretDeletion"
                 />
 
@@ -262,12 +262,12 @@ onBeforeUnmount(() => {
 
                 <BaseButton
                     type="danger"
-                    icon-before="fa-solid fa-trash"
+                    icon-before="fa-solid fa-fire"
                     :disabled="isDeletingSecret || (showPassphraseInput && !passphrase)"
                     :loading="isDeletingSecret"
-                    @click="handleSecretDelete"
+                    @click="deleteSecret"
                 >
-                    Delete Secret
+                    Burn Secret
                 </BaseButton>
                 <BaseButton v-if="showPassphraseInput" type="light" :disabled="isDeletingSecret" @click="cancelSecretDeletion">
                     Cancel

@@ -1,5 +1,6 @@
 <?php
 
+use App\Extensions\Session\DatabaseSessionHandler;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * We have a privacy-first application, meaning no user_id, ip_address, or user_agent columns.
  *
- * @see \App\Extensions\Session\DatabaseSessionHandler
+ * @see DatabaseSessionHandler
  */
 return new class extends Migration
 {

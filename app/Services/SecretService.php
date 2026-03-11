@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Events\SecretBurned;
 use App\Events\SecretRevealed;
 use App\Http\Requests\StoreSecretRequest;
 use App\Models\Secret;
+use App\Models\Statistic;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -31,7 +33,7 @@ class SecretService
             'expires_at' => now()->addSeconds($request->integer('ttl')),
         ]);
 
-        $this->statisticService->incrementValue(key: 'secrets_created');
+        $this->statisticService->incrementValue(key: Statistic::KEY_SECRETS_CREATED);
 
         return $secret;
     }
@@ -55,7 +57,7 @@ class SecretService
                 'revealed_at' => now(),
             ]);
 
-            $this->statisticService->incrementValue(key: 'secrets_revealed');
+            $this->statisticService->incrementValue(key: Statistic::KEY_SECRETS_REVEALED);
 
             event(new SecretRevealed($secret));
 
@@ -149,12 +151,24 @@ class SecretService
      *
      * The Secret model is preserved so the creator can still view its status on the receipt page.
      */
-    public function wipeContent(Secret $secret): bool
+    public function wipeContent(Secret $secret): void
     {
-        return DB::transaction(function () use ($secret) {
-            $updated = $secret->update(['content' => null]);
+        DB::transaction(function () use ($secret) {
+            $secret->update(['content' => null]);
+        });
+    }
 
-            return $updated;
+    /**
+     * Delete the secret from the database permanently.
+     */
+    public function burnSecret(Secret $secret): void
+    {
+        DB::transaction(function () use ($secret) {
+            $secret->delete();
+
+            $this->statisticService->incrementValue(key: Statistic::KEY_SECRETS_BURNED);
+
+            event(new SecretBurned($secret->id));
         });
     }
 }

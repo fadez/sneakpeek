@@ -94,7 +94,7 @@ const spinnerPosition = computed(() => {
 
 <template>
     <button
-        class="flex cursor-pointer items-center justify-center gap-1.5 rounded-md border-2 px-4 py-2.5 whitespace-nowrap transition-all select-none focus-visible:border-black focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:border-white"
+        class="flex min-w-20 cursor-pointer items-center justify-center gap-1.5 rounded-md border-2 px-4 py-2.5 whitespace-nowrap transition-all select-none focus-visible:border-black focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:border-white"
         :class="buttonClasses"
         :disabled="disabled"
     >

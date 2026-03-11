@@ -6,7 +6,7 @@ const toast = useToast();
 export const useNotificationStore = defineStore('notifications', {
     state: () => ({
         internetDisconnectedToastId: null,
-        defaultTestToastId: null,
+        neutralTestToastId: null,
         successTestToastId: null,
         dangerTestToastId: null,
         infoTestToastId: null,
@@ -15,7 +15,7 @@ export const useNotificationStore = defineStore('notifications', {
 
     actions: {
         // Proxy methods to vue-toastification
-        default(content, options) {
+        neutral(content, options) {
             return toast(content, options);
         },
         success(content, options) {
@@ -45,7 +45,7 @@ export const useNotificationStore = defineStore('notifications', {
 
         // Methods to preview and test all notifications in UI
         test() {
-            this.defaultTestToastId = this.default('default notification', { timeout: false });
+            this.neutralTestToastId = this.neutral('neutral notification', { timeout: false });
             this.successTestToastId = this.success('success notification', { timeout: false });
             this.dangerTestToastId = this.danger('danger notification', { timeout: false });
             this.infoTestToastId = this.info('info notification', { timeout: false });
@@ -56,7 +56,7 @@ export const useNotificationStore = defineStore('notifications', {
 
             // Gather toast IDs and their corresponding state variable names
             const testToasts = [
-                { id: this.defaultTestToastId, varName: 'defaultTestToastId' },
+                { id: this.neutralTestToastId, varName: 'neutralTestToastId' },
                 { id: this.successTestToastId, varName: 'successTestToastId' },
                 { id: this.dangerTestToastId, varName: 'dangerTestToastId' },
                 { id: this.infoTestToastId, varName: 'infoTestToastId' },
@@ -76,8 +76,8 @@ export const useNotificationStore = defineStore('notifications', {
         secretRevealed() {
             this.success('Secret has been revealed.');
         },
-        secretDeleted() {
-            this.success('Secret has been deleted.');
+        secretBurned() {
+            this.success('Secret has been burned.');
         },
         secretLinkCopied() {
             this.info("Secret link copied! You're ready to share.");

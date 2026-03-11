@@ -105,6 +105,10 @@ const handleSecretIdChange = (newId, oldId) => {
             if (!isRevealingSecret.value) {
                 secret.value = e.secret;
             }
+        })
+        .listen('.secret.burned', (e) => {
+            secret.value.is_available = false;
+            secret.value.is_burned = true;
         });
 };
 
@@ -164,9 +168,10 @@ onBeforeUnmount(() => {
                 <BaseButton type="primary" icon-before="fa-solid fa-copy" @click="copySecret">Copy to Clipboard</BaseButton>
             </template>
         </BaseCard>
-        <BaseCard v-else>
+        <BaseCard :show-actions="secret.is_available" v-else>
             <section class="p-4">
-                <BaseAlert v-if="secret.is_revealed" type="danger">
+                <BaseAlert v-if="secret.is_burned" type="danger">Secret has been burned by its creator.</BaseAlert>
+                <BaseAlert v-else-if="secret.is_revealed" type="danger">
                     Secret has been revealed by someone else! Looks like there might be a problem...
                 </BaseAlert>
                 <BaseAlert v-else-if="secret.is_expired" type="danger">Secret has expired. You'll need to ask for a fresh one.</BaseAlert>
@@ -182,7 +187,7 @@ onBeforeUnmount(() => {
                 <SecretPreview :passphrase-protected="secret.is_passphrase_protected" />
             </section>
 
-            <template v-if="secret.is_available" #actions>
+            <template #actions>
                 <BaseInput
                     v-if="secret.is_passphrase_protected"
                     id="passphrase-input"

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RequireHttps;
 use App\Http\Middleware\ThrottleRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Trust all proxies (e.g. Cloudflare) as proxy management is handled securely at the server level
         $middleware->trustProxies(at: '*');
 
-        $middleware->prepend(\App\Http\Middleware\RequireHttps::class);
+        $middleware->prepend(RequireHttps::class);
 
         $middleware->alias([
             'throttle' => ThrottleRequests::class,
