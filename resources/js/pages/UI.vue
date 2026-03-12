@@ -25,6 +25,7 @@ const rating = ref(0);
 const progressValue = ref(0);
 const input = ref('Input value');
 const textarea = ref('Textarea value');
+const select = ref('');
 const iconButtonsToggled = ref(true);
 const progressIntervalId = ref(null);
 const progressTimeoutId = ref(null);
@@ -43,13 +44,7 @@ const iconButtonVariants = [
     { type: 'light', icon: 'fa-solid fa-volume-xmark' },
 ];
 
-const optionalSelectOptions = [
-    { value: '', label: 'Option with empty value' },
-    { value: 1, label: 'Option with value' },
-    { value: 2, label: 'Disabled option with value', disabled: true },
-];
-
-const requiredSelectOptions = [
+const selectOptions = [
     { value: '', label: 'Option with empty value' },
     { value: 1, label: 'Option with value' },
     { value: 2, label: 'Disabled option with value', disabled: true },
@@ -287,18 +282,18 @@ onBeforeUnmount(() => {
                 <div class="form">
                     <div class="form-row">
                         <div class="form-group">
-                            <BaseLabel>Default input</BaseLabel>
-                            <BaseInput placeholder="Placeholder" v-model="input" />
+                            <BaseLabel for="input-default">Default input</BaseLabel>
+                            <BaseInput id="input-default" placeholder="Placeholder" v-model="input" />
                         </div>
 
                         <div class="form-group">
-                            <BaseLabel>Read-only input</BaseLabel>
-                            <BaseInput placeholder="Placeholder" v-model="input" readonly />
+                            <BaseLabel for="input-readonly">Read-only password input</BaseLabel>
+                            <BaseInput id="input-readonly" placeholder="Placeholder" v-model="input" type="password" readonly />
                         </div>
 
                         <div class="form-group">
-                            <BaseLabel>Disabled input</BaseLabel>
-                            <BaseInput placeholder="Placeholder" v-model="input" disabled />
+                            <BaseLabel for="input-disabled">Disabled input</BaseLabel>
+                            <BaseInput id="input-disabled" placeholder="Placeholder" v-model="input" disabled />
                         </div>
                     </div>
                 </div>
@@ -309,18 +304,18 @@ onBeforeUnmount(() => {
                 <div class="form">
                     <div class="form-row">
                         <div class="form-group">
-                            <BaseLabel>Default textarea</BaseLabel>
-                            <BaseTextarea placeholder="Placeholder" v-model="textarea" />
+                            <BaseLabel for="textarea-default">Default textarea</BaseLabel>
+                            <BaseTextarea id="textarea-default" placeholder="Placeholder" v-model="textarea" />
                         </div>
 
                         <div class="form-group">
-                            <BaseLabel>Read-only textarea</BaseLabel>
-                            <BaseTextarea placeholder="Placeholder" v-model="textarea" readonly />
+                            <BaseLabel for="textarea-readonly">Read-only textarea</BaseLabel>
+                            <BaseTextarea id="textarea-readonly" placeholder="Placeholder" v-model="textarea" readonly />
                         </div>
 
                         <div class="form-group">
-                            <BaseLabel>Disabled textarea</BaseLabel>
-                            <BaseTextarea placeholder="Placeholder" v-model="textarea" disabled />
+                            <BaseLabel for="textarea-disabled">Disabled textarea</BaseLabel>
+                            <BaseTextarea id="textarea-disabled" placeholder="Placeholder" v-model="textarea" disabled />
                         </div>
                     </div>
                 </div>
@@ -331,10 +326,10 @@ onBeforeUnmount(() => {
                 <div class="form">
                     <div class="form-row">
                         <div class="form-group">
-                            <BaseLabel>Optional select</BaseLabel>
-                            <BaseSelect>
+                            <BaseLabel for="select-default">Optional select</BaseLabel>
+                            <BaseSelect id="select-default" v-model="select">
                                 <option
-                                    v-for="option in optionalSelectOptions"
+                                    v-for="option in selectOptions"
                                     :key="option.value"
                                     :value="option.value"
                                     :disabled="option.disabled"
@@ -344,10 +339,10 @@ onBeforeUnmount(() => {
                             </BaseSelect>
                         </div>
                         <div class="form-group">
-                            <BaseLabel required>Required select</BaseLabel>
-                            <BaseSelect required>
+                            <BaseLabel for="select-required" required>Required select</BaseLabel>
+                            <BaseSelect id="select-required" v-model="select" required>
                                 <option
-                                    v-for="option in requiredSelectOptions"
+                                    v-for="option in selectOptions"
                                     :key="option.value"
                                     :value="option.value"
                                     :disabled="option.disabled"
@@ -357,10 +352,10 @@ onBeforeUnmount(() => {
                             </BaseSelect>
                         </div>
                         <div class="form-group">
-                            <BaseLabel>Disabled select</BaseLabel>
-                            <BaseSelect disabled>
+                            <BaseLabel for="select-disabled">Disabled select</BaseLabel>
+                            <BaseSelect id="select-disabled" v-model="select" disabled>
                                 <option
-                                    v-for="option in optionalSelectOptions"
+                                    v-for="option in selectOptions"
                                     :key="option.value"
                                     :value="option.value"
                                     :disabled="option.disabled"

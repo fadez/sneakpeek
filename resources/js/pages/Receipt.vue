@@ -235,7 +235,7 @@ onBeforeUnmount(() => {
                         id="secret-link-input"
                         ref="secret-link-input"
                         data-test="secret-link-input"
-                        :value="secretUrl"
+                        v-model="secretUrl"
                         readonly
                         @click="selectSecretLinkInput"
                     />

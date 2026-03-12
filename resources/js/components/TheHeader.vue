@@ -5,13 +5,13 @@ import AppLogo from '@/components/AppLogo.vue';
 <template>
     <header data-test="header" class="mb-4 border-b-2 border-zinc-200 bg-white dark:border-zinc-700 dark:bg-transparent">
         <div class="page-container py-4">
-            <div class="flex w-full flex-col items-center justify-between md:flex-row">
-                <div class="mb-2 flex items-center justify-between md:mb-0">
+            <div class="flex w-full flex-col justify-between md:flex-row md:items-center">
+                <div class="flex items-center justify-between">
                     <AppLogo :link="true" />
                 </div>
 
-                <div class="flex flex-col">
-                    <div class="text-center text-secondary md:text-right">Secure, one-time secret sharing made simple.</div>
+                <div class="mt-2 flex flex-col md:mt-0">
+                    <div class="text-secondary">Secure, one-time secret sharing made simple.</div>
                 </div>
             </div>
         </div>
