@@ -44,7 +44,11 @@
     @apply flex items-center;
 }
 
-/* toast: default  */
+.Vue-Toastification__icon {
+    @apply my-auto mr-2;
+}
+
+/* toast: neutral  */
 .Vue-Toastification__toast--default {
     @apply border-zinc-950 bg-white text-zinc-950 dark:border-zinc-100 dark:bg-zinc-900 dark:text-zinc-100;
 }

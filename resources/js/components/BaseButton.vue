@@ -67,7 +67,7 @@ const typeClasses = {
         'dark:active:bg-zinc-600',
     ].join(' '),
 
-    'light': [
+    light: [
         'text-zinc-950',
         'bg-white',
         'border-zinc-950',

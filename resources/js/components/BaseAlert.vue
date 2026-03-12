@@ -1,13 +1,14 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { NOTIFICATION_TYPE_ICONS } from '@/constants/icons';
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
 const props = defineProps({
     type: {
         type: String,
         default: 'info',
-        validator: (value) => ['success', 'danger', 'info', 'warning', 'neutral'].includes(value),
+        validator: (value) => ['neutral', 'success', 'danger', 'info', 'warning'].includes(value),
     },
     showIcon: {
         type: Boolean,
@@ -30,6 +31,15 @@ const route = useRoute();
 
 // prettier-ignore
 const typeClasses = {
+    neutral: [
+        'bg-white',
+        'text-zinc-950',
+        'border-zinc-950',
+        'dark:bg-zinc-900',
+        'dark:text-zinc-100',
+        'dark:border-zinc-100',
+    ].join(' '),
+
     success: [
         'bg-emerald-100',
         'text-emerald-500',
@@ -61,30 +71,13 @@ const typeClasses = {
         'dark:bg-yellow-950',
         'dark:border-yellow-600',
     ].join(' '),
-
-    neutral: [
-        'bg-white',
-        'text-zinc-950',
-        'border-zinc-950',
-        'dark:bg-zinc-900',
-        'dark:text-zinc-100',
-        'dark:border-zinc-100',
-    ].join(' '),
-};
-
-const typeIcons = {
-    success: 'fa-solid fa-circle-check',
-    danger: 'fa-solid fa-circle-xmark',
-    info: 'fa-solid fa-circle-info',
-    warning: 'fa-solid fa-circle-exclamation',
-    neutral: 'fa-solid fa-circle-dot',
 };
 
 const alertClasses = computed(() => {
     return typeClasses[props.type];
 });
 
-const iconClasses = computed(() => (!!props.icon ? props.icon : typeIcons[props.type]));
+const iconClasses = computed(() => (!!props.icon ? props.icon : NOTIFICATION_TYPE_ICONS[props.type]));
 
 const dismiss = () => {
     if (route.name !== 'ui') {

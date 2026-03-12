@@ -62,18 +62,18 @@ const rateMessage = () => {
 };
 
 const increaseProgress = () => {
-    progressValue.value += 5; // From 0 to 100 in 4 seconds
+    progressValue.value += 5; // 0 to 100 in 4 seconds
 
     if (progressValue.value >= 100) {
         clearInterval(progressIntervalId.value);
-        progressTimeoutId.value = setTimeout(startProgressLoop, 2000);
+        progressTimeoutId.value = setTimeout(startProgressLoop, 2500);
     }
 };
 
 const startProgressLoop = async () => {
     progressValue.value = 0;
 
-    await sleep(1500);
+    await sleep(1000);
 
     progressIntervalId.value = setInterval(increaseProgress, 201); // Progress bar transition is 200ms by default
 };

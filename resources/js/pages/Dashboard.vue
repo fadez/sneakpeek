@@ -31,7 +31,7 @@ onBeforeUnmount(() => {
     <div>
         <div class="my-4">
             <div class="mb-2 text-2xl font-semibold text-title">Welcome to the dashboard.</div>
-            <div class="text-secondary">We thought you'd be interested to know.</div>
+            <div class="text-secondary">Thought you'd be interested to know.</div>
         </div>
 
         <StatisticGrid class="sm:grid-cols-2 lg:grid-cols-4">

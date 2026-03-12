@@ -54,7 +54,7 @@ export const useNotificationStore = defineStore('notifications', {
         clearTest() {
             let delay = 200; // ms
 
-            // Gather toast IDs and their corresponding state variable names
+            // Collect all test toast IDs along with their related store variable names
             const testToasts = [
                 { id: this.neutralTestToastId, varName: 'neutralTestToastId' },
                 { id: this.successTestToastId, varName: 'successTestToastId' },

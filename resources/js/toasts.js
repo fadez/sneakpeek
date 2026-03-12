@@ -1,6 +1,7 @@
 import { h } from 'vue';
 import Toast, { POSITION as TOAST_POSITION, TYPE as TOAST_TYPE } from 'vue-toastification';
 import ToastCloseButton from '@/components/ToastCloseButton.vue';
+import ToastIcon from '@/components/ToastIcon.vue';
 
 const toastNotifications = {
     install(app) {
@@ -19,21 +20,26 @@ const toastNotifications = {
             shareAppContext: true,
             toastDefaults: {
                 [TOAST_TYPE.DEFAULT]: {
-                    closeButton: () => h(ToastCloseButton, { type: 'default' }),
+                    closeButton: () => h(ToastCloseButton, { type: 'neutral' }),
+                    icon: () => h(ToastIcon, { type: 'neutral' }),
                 },
                 [TOAST_TYPE.SUCCESS]: {
                     closeButton: () => h(ToastCloseButton, { type: 'success' }),
+                    icon: () => h(ToastIcon, { type: 'success' }),
+                },
+                [TOAST_TYPE.ERROR]: {
+                    closeButton: () => h(ToastCloseButton, { type: 'danger' }),
+                    icon: () => h(ToastIcon, { type: 'danger' }),
+                    pauseOnHover: true,
                 },
                 [TOAST_TYPE.INFO]: {
                     closeButton: () => h(ToastCloseButton, { type: 'info' }),
+                    icon: () => h(ToastIcon, { type: 'info' }),
                     timeout: 3000,
                 },
                 [TOAST_TYPE.WARNING]: {
                     closeButton: () => h(ToastCloseButton, { type: 'warning' }),
-                },
-                [TOAST_TYPE.ERROR]: {
-                    closeButton: () => h(ToastCloseButton, { type: 'danger' }),
-                    pauseOnHover: true,
+                    icon: () => h(ToastIcon, { type: 'warning' }),
                 },
             },
             filterBeforeCreate: (toast, toasts) => {
