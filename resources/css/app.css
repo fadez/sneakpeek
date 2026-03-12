@@ -14,9 +14,8 @@
     --color-zinc-325: color-mix(in srgb, var(--color-zinc-300), var(--color-zinc-350));
     --color-zinc-350: color-mix(in srgb, var(--color-zinc-300), var(--color-zinc-400));
 
-    --height-dashboard-card-skeleton: 166px;
-    --height-receipt-card-skeleton: 162px;
-    --height-secret-card-skeleton: 248px;
+    --height-receipt-card-skeleton: 244px;
+    --height-secret-card-skeleton: 244px;
 }
 
 @layer base {
