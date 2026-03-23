@@ -9,7 +9,9 @@ class SecretBurned extends Event
     /**
      * Create a new event instance.
      */
-    public function __construct(public string $secretId) {}
+    public function __construct(
+        public string $secretId
+    ) {}
 
     /**
      * Get the channels the event should broadcast on.

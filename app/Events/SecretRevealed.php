@@ -11,7 +11,9 @@ class SecretRevealed extends Event
     /**
      * Create a new event instance.
      */
-    public function __construct(public Secret $secret) {}
+    public function __construct(
+        public Secret $secret
+    ) {}
 
     /**
      * Get the channels the event should broadcast on.

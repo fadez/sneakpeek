@@ -17,7 +17,9 @@ class SecretController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct(protected SecretService $secretService) {}
+    public function __construct(
+        protected SecretService $secretService
+    ) {}
 
     /**
      * Store a new secret.

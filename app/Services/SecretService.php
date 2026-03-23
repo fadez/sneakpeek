@@ -18,7 +18,9 @@ use Illuminate\Validation\ValidationException;
  */
 class SecretService
 {
-    public function __construct(private readonly StatisticService $statisticService) {}
+    public function __construct(
+        private readonly StatisticService $statisticService
+    ) {}
 
     /**
      * Create a new secret from a request.
