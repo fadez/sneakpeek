@@ -20,10 +20,13 @@ const isRouterLink = computed(() => !!props.to);
         :is="isRouterLink ? RouterLink : 'a'"
         :to="isRouterLink ? to : undefined"
         v-bind="attrs"
-        class="border-b-2 border-transparent text-sky-500 transition-all hover:border-sky-500 focus-visible:border-b-2 focus-visible:border-sky-500 focus-visible:outline-hidden active:border-transparent active:text-sky-600"
+        class="group relative text-sky-500 transition-all focus-visible:outline-hidden active:text-sky-600"
         :class="[fontWeight]"
         draggable="false"
     >
         <slot />
+        <span
+            class="pointer-events-none absolute -bottom-[0.75] block h-0.5 w-full bg-transparent transition-all group-hover:bg-sky-500 group-focus-visible:bg-sky-500 group-active:bg-sky-600"
+        ></span>
     </component>
 </template>
