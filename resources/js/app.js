@@ -6,7 +6,7 @@ import toastNotifications from '@/toasts';
 import App from '@/App.vue';
 
 // Import all files from the resources directories to ensure they're available to Vite and the app
-import.meta.glob(['../images/**']);
+import.meta.glob(['../images/**'], { eager: true });
 
 // Only bootstrap Vue app if "#app" element exists
 if (document.querySelector('#app')) {

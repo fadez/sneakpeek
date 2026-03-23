@@ -43,8 +43,12 @@ const abGroupLabel = computed(() => {
                 </div>
             </div>
             <div class="flex flex-col justify-between text-muted md:flex-row">
-                <div class="inline-flex">
-                    Built with ❤️ in 🇺🇦 by&nbsp;
+                <div class="inline-flex items-center">
+                    Built with&nbsp;
+                    <img src="../../images/heart.svg" alt="love" class="pointer-events-none h-6 w-5" />
+                    &nbsp;in&nbsp;
+                    <img src="../../images/flag-ua.svg" alt="Ukraine" class="pointer-events-none h-6 w-5" />
+                    &nbsp;by&nbsp;
                     <BaseLink :href="authorUrl" target="_blank">@fadez</BaseLink>
                 </div>
                 <div class="bullet-divider">
