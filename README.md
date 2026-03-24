@@ -96,8 +96,9 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 Before beginning installation, make sure that your local machine has:
 
 - **[PHP](https://php.net)** v8.3+
-- **[Node.js and npm](https://nodejs.org)** v20+
 - **[Composer](https://getcomposer.org)**
+- **[Node.js](https://nodejs.org)** v20.19+
+- **[npm](https://www.npmjs.com)**
 - **[Git](https://git-scm.com)**
 
 I highly recommend using **[Laravel Herd](https://herd.laravel.com)** as your local development environment.
