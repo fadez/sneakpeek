@@ -6,24 +6,14 @@ use App\Models\Secret;
 use App\Models\Statistic;
 use App\Services\SecretService;
 use App\Services\StatisticService;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
+#[Signature('secrets:wipe-expired')]
+#[Description('Wipe the content of expired secrets')]
 class WipeExpiredSecretsCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'secrets:wipe-expired';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Wipe the content of expired secrets';
-
     /**
      * Execute the console command.
      */

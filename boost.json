@@ -8,6 +8,7 @@
     "nightwatch_mcp": false,
     "sail": false,
     "skills": [
+        "laravel-best-practices",
         "pennant-development",
         "pest-testing",
         "echo-vue-development",

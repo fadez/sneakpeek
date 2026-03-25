@@ -2,26 +2,16 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
+#[Signature('pennant:prune')]
+#[Description('Prune stale Pennant features')]
 class PruneStaleFeaturesCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'pennant:prune';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Prune stale Pennant features';
-
     /**
      * Execute the console command.
      */

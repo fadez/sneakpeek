@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Resources\SecretResource;
 use App\Models\Secret;
 use Illuminate\Support\Carbon;
 
@@ -23,6 +24,12 @@ test('toArray', function () {
         'access_token',
         'passphrase',
     ]);
+});
+
+test('toResource', function () {
+    $model = Secret::factory()->createFresh();
+
+    expect($model->toResource())->toBeInstanceOf(SecretResource::class);
 });
 
 test('content', function () {

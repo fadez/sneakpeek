@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use Database\Factories\SecretFactory;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,44 +27,15 @@ use Illuminate\Support\Carbon;
  * @property-read bool $is_revealed
  * @property-read bool $is_available
  */
+#[Table(key: 'id', keyType: 'string', incrementing: false)]
+#[Appends(['is_passphrase_protected', 'is_expired', 'is_revealed', 'is_available'])]
+#[Hidden(['access_token', 'content', 'passphrase'])]
 class Secret extends Model
 {
     /** @use HasFactory<SecretFactory> */
     use HasFactory;
 
     use Prunable;
-
-    /**
-     * Indicates if the model's ID is auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
-     * The data type of the primary key ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'access_token', 'content', 'passphrase',
-    ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var list<string>
-     */
-    protected $appends = [
-        'is_passphrase_protected', 'is_expired', 'is_revealed', 'is_available',
-    ];
 
     /**
      * Get the attributes that should be cast.
