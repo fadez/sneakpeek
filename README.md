@@ -6,7 +6,7 @@
     </p>
 </p>
 
----
+## Introduction
 
 > Secure, one-time secret sharing made simple.
 
@@ -14,22 +14,22 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 
 **SneakPeek** showcases my full-stack development skills and workflow, combining modern frameworks and best practices to deliver a secure, scalable, and production-quality web application.
 
-# Live demo
+## Live demo
 
 **[sneakpeek.alexfadez.com](https://sneakpeek.alexfadez.com)**
 
-# Features
+## Features
 
 ### Backend
 
-- **Laravel framework v12**
+- **Laravel framework v13**
     - RESTful API using Laravel API Resources with clean controllers and rate-limited routes
     - Eloquent ORM with custom scopes, accessors, and API Resources
     - Database migrations with proper indexing for performance and integrity
     - A scheduled command to permanently wipe expired secrets from the database
     - Custom error response handling
     - A/B testing and feature flags, powered by **[Laravel Pennant](https://laravel.com/docs/pennant)**
-    - Real-time event broadcasting and statistics dashboard, powered by **[Laravel Echo](https://laravel.com/docs/broadcasting)**
+    - Real-time event broadcasting and statistics dashboard, powered by **[Laravel Echo](https://laravel.com/docs/broadcasting)** and **[Pusher Channels](https://pusher.com/channels)**
 - **Maximum privacy & security**
     - End-to-end privacy — no authentication, no logs
     - **[Custom privacy-first session handler](app/Extensions/Session/DatabaseSessionHandler.php)** that doesn't store any user information
@@ -84,44 +84,49 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
         - Region-based **[Cloudflare security rules](https://developers.cloudflare.com/security/rules)** to restrict network access from undesired geographic areas
         - Both **[restoring original visitor IPs](https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips)** and all web server logging are deliberately disabled to maximize visitor privacy by ensuring IP addresses are never retained or logged, eliminating associated risks
 - **Developer Experience (DX)**
-    - Automated onboarding via a single command that handles environment setup, SQLite database creation, and dependency installation
+    - Custom `composer.json` scripts streamline application setup, linting, and testing for a smooth developer workflow
+    - Easy onboarding with a single command that handles environment setup, SQLite database creation, and dependency installation
     - **[Laravel Boost](https://laravel.com/ai/boost)** integration for **[Cursor](https://cursor.com)** via **[MCP (Model Context Protocol)](https://modelcontextprotocol.io)** server accelerates AI-assisted development by providing the essential context and structure that AI needs
     - Automated linting and formatting using Prettier to ensure a standardized code style across all Vue and CSS files
     - **[Laravel Debugbar](https://github.com/fruitcake/laravel-debugbar)** is included for local debugging and profiling
 
-# Installation
+## Installation
 
 ### Prerequisites
 
 Before beginning installation, make sure that your local machine has:
 
-- **[PHP](https://php.net)** v8.4+
+- **[PHP](https://php.net)** 8.4 or higher
 - **[Composer](https://getcomposer.org)**
-- **[Node.js](https://nodejs.org)** v20.19+
+- **[Node.js](https://nodejs.org)** 20.19 or higher
 - **[npm](https://www.npmjs.com)**
 - **[Git](https://git-scm.com)**
 
 I highly recommend using **[Laravel Herd](https://herd.laravel.com)** as your local development environment.
 
-### Setting up the project
+### Application setup
 
 Go to your **[Laravel Herd](https://herd.laravel.com)** sites folder and run:
 
-```sh
+```shell
 git clone https://github.com/fadez/sneakpeek.git && cd sneakpeek && composer setup
 ```
 
 Make sure to secure the site with TLS:
 
-```sh
+```shell
 herd secure sneakpeek
 ```
 
-### Broadcasting
+### Broadcasting setup
 
-If you want to enable broadcasting, you need to create a **[Pusher Channels](https://dashboard.pusher.com/channels)** application.
+SneakPeek offers real-time broadcasting support through either the **[Laravel Reverb](https://reverb.laravel.com)** or **[Pusher Channels](https://pusher.com/channels)**.
 
-Then update your `.env` file with your Pusher credentials and set `BROADCAST_CONNECTION` to `pusher`:
+#### Pusher Channels
+
+First, you need to create a **[Pusher Channels](https://dashboard.pusher.com/channels)** application.
+
+Next, you need to update the `.env` file with Pusher credentials and set `BROADCAST_CONNECTION` to `pusher`:
 
 ```env
 BROADCAST_CONNECTION=pusher
@@ -131,20 +136,42 @@ PUSHER_APP_SECRET=your-app-secret
 PUSHER_APP_CLUSTER=your-cluster
 ```
 
-After saving these changes run:
+Finally, run this to enable broadcasting:
 
 ```sh
 npm run build
+```
+
+#### Laravel Reverb
+
+First, you need to install and enable Laravel Reverb:
+
+```shell
+composer setup:reverb
+```
+
+Laravel Reverb will automatically update the `.env` file.
+
+Next, you need to run this to apply changes:
+
+```shell
+npm run build
+```
+
+Finally, start the Laravel Reverb server to enable broadcasting:
+
+```shell
+php artisan reverb:start
 ```
 
 ### Visiting the site
 
 If you're using **[Laravel Herd](https://herd.laravel.com)**, you can now access the app at **[sneakpeek.test](http://sneakpeek.test)**.
 
-# Testing
+## Testing
 
 You can run the full test suite, PHPStan and Laravel Pint with a single command:
 
-```sh
+```shell
 composer test
 ```

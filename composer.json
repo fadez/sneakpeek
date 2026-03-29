@@ -9,6 +9,7 @@
         "php": "^8.4",
         "laravel/framework": "^13.0",
         "laravel/pennant": "^1.20",
+        "laravel/reverb": "^1.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "pusher/pusher-php-server": "^7.2"
@@ -48,6 +49,9 @@
             "npm ci --no-audit",
             "npx playwright install",
             "npm run build"
+        ],
+        "setup:reverb": [
+            "@php artisan reverb:install"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
