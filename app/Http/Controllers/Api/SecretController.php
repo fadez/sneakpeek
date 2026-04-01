@@ -15,13 +15,6 @@ use Illuminate\Support\Str;
 class SecretController extends Controller
 {
     /**
-     * Create a new controller instance.
-     */
-    public function __construct(
-        protected SecretService $secretService
-    ) {}
-
-    /**
      * Store a new secret.
      *
      * The access token is sent to user only once — here.
@@ -31,11 +24,11 @@ class SecretController extends Controller
      * - Prevents token logging in server, proxy, and analytics logs.
      * - Prevents accidental leakage via HTTP Referer headers.
      */
-    public function store(StoreSecretRequest $request): SecretResource
+    public function store(StoreSecretRequest $request, SecretService $secretService): SecretResource
     {
         $accessToken = Str::random(64);
 
-        $secret = $this->secretService->createFromRequest(
+        $secret = $secretService->createFromRequest(
             request: $request,
             accessToken: $accessToken
         );
@@ -46,16 +39,16 @@ class SecretController extends Controller
     /**
      * Get information about a secret.
      */
-    public function show(Request $request, Secret $secret): SecretResource
+    public function show(Request $request, Secret $secret, SecretService $secretService): SecretResource
     {
         // If access_token param is included in URL we'll also want to check that secret is available before revealing it
         if ($request->has('access_token')) {
-            $this->secretService->validateAccessToken(
+            $secretService->validateAccessToken(
                 secret: $secret,
                 accessToken: $request->string('access_token'),
             );
 
-            $this->secretService->validateAvailability(secret: $secret);
+            $secretService->validateAvailability(secret: $secret);
         }
 
         return new SecretResource($secret);
@@ -65,15 +58,15 @@ class SecretController extends Controller
      * Reveal a secret and wipe its content.
      * If the secret is passphrase-protected, the passphrase must be provided.
      */
-    public function reveal(Request $request, Secret $secret): JsonResponse
+    public function reveal(Request $request, Secret $secret, SecretService $secretService): JsonResponse
     {
-        $this->secretService->validateAccessToAvailableSecret(
+        $secretService->validateAccessToAvailableSecret(
             secret: $secret,
             accessToken: $request->string('access_token'),
             passphrase: $request->string('passphrase')
         );
 
-        $content = $this->secretService->revealSecret($secret);
+        $content = $secretService->revealSecret($secret);
 
         return response()->json(['content' => $content]);
     }
@@ -82,15 +75,15 @@ class SecretController extends Controller
      * Delete a secret from the database permanently.
      * Only available secrets can be deleted.
      */
-    public function destroy(Request $request, Secret $secret): Response
+    public function destroy(Request $request, Secret $secret, SecretService $secretService): Response
     {
-        $this->secretService->validateAccessToAvailableSecret(
+        $secretService->validateAccessToAvailableSecret(
             secret: $secret,
             accessToken: $request->string('access_token'),
             passphrase: $request->string('passphrase')
         );
 
-        $this->secretService->burnSecret($secret);
+        $secretService->burnSecret($secret);
 
         return response()->noContent();
     }
