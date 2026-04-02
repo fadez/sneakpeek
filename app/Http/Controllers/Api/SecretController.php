@@ -33,7 +33,7 @@ class SecretController extends Controller
             accessToken: $accessToken
         );
 
-        return (new SecretResource($secret))->additional(['secret' => ['access_token' => $accessToken]]);
+        return new SecretResource($secret)->additional(['secret' => ['access_token' => $accessToken]]);
     }
 
     /**

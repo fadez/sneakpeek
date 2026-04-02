@@ -3,10 +3,12 @@
 use App\Models\Secret;
 use App\Services\SecretService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Sleep;
 
 /** @var SecretService $this->secretService */
 beforeEach(function () {
-    $this->secretService = app(SecretService::class);
+    $this->secretService = resolve(SecretService::class);
 });
 
 it('passes passphrase check with an empty passphrase when secret is not passphrase-protected', function () {
@@ -72,15 +74,15 @@ it('reveals secret content and wipes it atomically under race conditions', funct
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
     // We'll simulate two concurrent reveals using transactions with artificial delay
-    $serviceA = app(SecretService::class);
-    $serviceB = app(SecretService::class);
+    $serviceA = resolve(SecretService::class);
+    $serviceB = resolve(SecretService::class);
 
     // Simulate a slow transaction, where reveal locks the row and succeeds
     $revealedContent = DB::transaction(function () use ($serviceA, $secret) {
         $content = $serviceA->revealSecret($secret);
 
         // Artificial delay to keep the transaction open and mimic a race condition
-        sleep(1);
+        Sleep::sleep(1);
 
         return $content;
     });

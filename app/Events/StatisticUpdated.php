@@ -34,6 +34,6 @@ class StatisticUpdated extends Event
      */
     public function broadcastWith(): array
     {
-        return app(StatisticService::class)->getSnapshot();
+        return resolve(StatisticService::class)->getSnapshot();
     }
 }

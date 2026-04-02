@@ -15,6 +15,7 @@
         "pusher/pusher-php-server": "^7.2"
     },
     "require-dev": {
+        "driftingly/rector-laravel": "^2.2",
         "fakerphp/faker": "^1.23",
         "fruitcake/laravel-debugbar": "^4.1",
         "larastan/larastan": "^3.0",
@@ -58,11 +59,17 @@
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
         ],
         "sqlite:init": "@php -r \"!file_exists('database/database.sqlite') && touch('database/database.sqlite');\"",
-        "lint": "pint --parallel",
-        "test:lint": "pint --parallel --test",
-        "test:pest": "./vendor/bin/pest --parallel",
-        "test:pest-ci": "./vendor/bin/pest --parallel --ci",
-        "test:types": "./vendor/bin/phpstan analyse --ansi",
+        "lint": [
+            "pint --parallel",
+            "rector"
+        ],
+        "test:lint": [
+            "pint --parallel --test",
+            "rector --dry-run"
+        ],
+        "test:pest": "pest --parallel",
+        "test:pest-ci": "pest --parallel --ci",
+        "test:types": "phpstan analyse --ansi",
         "test": [
             "@test:lint",
             "@test:types",

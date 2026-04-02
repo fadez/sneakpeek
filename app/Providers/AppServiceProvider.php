@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Extensions\Session\DatabaseSessionHandler;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Lottery;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature;
+use UnitEnum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,12 +43,12 @@ class AppServiceProvider extends ServiceProvider
         // Exclude fields from automatic trimming
         TrimStrings::except(['passphrase']);
 
-        Session::extend('database', function (Application $app) {
-            /** @var \UnitEnum|string|null $connection */
+        Session::extend('database', function (Application $app): DatabaseSessionHandler {
+            /** @var UnitEnum|string|null $connection */
             $connection = Config::get('session.connection');
 
             return new DatabaseSessionHandler(
-                connection: $app->make('db')->connection($connection),
+                connection: $app->make(ConnectionResolverInterface::class)->connection($connection),
                 table: Config::string('session.table'),
                 minutes: Config::integer('session.lifetime'),
                 container: $app

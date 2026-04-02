@@ -113,9 +113,7 @@ class SecretService
      */
     public function validateAvailability(Secret $secret): void
     {
-        if (! $secret->is_available) {
-            throw new ModelNotFoundException;
-        }
+        throw_unless($secret->is_available, ModelNotFoundException::class);
     }
 
     /**
@@ -125,9 +123,7 @@ class SecretService
      */
     public function validateAccessToken(Secret $secret, string $accessToken): void
     {
-        if (! $this->checkAccessToken(secret: $secret, accessToken: $accessToken)) {
-            throw new ModelNotFoundException;
-        }
+        throw_unless($this->checkAccessToken(secret: $secret, accessToken: $accessToken), ModelNotFoundException::class);
     }
 
     /**

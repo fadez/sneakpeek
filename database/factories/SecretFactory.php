@@ -34,7 +34,7 @@ class SecretFactory extends Factory
      */
     public function passphraseProtected(string $passphrase = 'secret'): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'passphrase' => Hash::make($passphrase),
         ]);
     }
@@ -44,7 +44,7 @@ class SecretFactory extends Factory
      */
     public function revealed(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'content' => null,
             'revealed_at' => now(),
         ]);
@@ -55,7 +55,7 @@ class SecretFactory extends Factory
      */
     public function wiped(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'content' => null,
         ]);
     }
@@ -65,7 +65,7 @@ class SecretFactory extends Factory
      */
     public function expiresIn(int $seconds): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'expires_at' => now()->addSeconds($seconds),
         ]);
     }
@@ -75,7 +75,7 @@ class SecretFactory extends Factory
      */
     public function expiresNow(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'expires_at' => now(),
         ]);
     }
@@ -85,7 +85,7 @@ class SecretFactory extends Factory
      */
     public function expired(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'expires_at' => now()->minus(seconds: 1),
         ]);
     }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Event;
 
 /** @var StatisticService $this->statisticService */
 beforeEach(function () {
-    $this->statisticService = app(StatisticService::class);
+    $this->statisticService = resolve(StatisticService::class);
 });
 
 it('returns zero for a key that does not exist', function () {

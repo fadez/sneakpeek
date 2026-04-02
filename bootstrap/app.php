@@ -8,8 +8,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        api: __DIR__ . '/../routes/api.php',
         web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
         commands: __DIR__ . '/../routes/console.php',
         // Disable default broadcasting routes to prevent framework identification
         // channels: __DIR__ . '/../routes/channels.php',
@@ -38,7 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 // List of HTTP error codes that have custom JSON message responses
                 $messages = [
                     403 => 'Forbidden.',
-                    404 => 'Whoops! We couldn\'t find that page.',
+                    404 => "Whoops! We couldn't find that page.",
                     418 => 'I am a teapot.',
                     429 => 'Too many requests.',
                     500 => 'Internal server error.',
@@ -61,7 +61,7 @@ return Application::configure(basePath: dirname(__DIR__))
                     return response()->json(['message' => $message], $code);
                 }
 
-                return response()->view('errors.' . $code, compact('exception'), $code);
+                return response()->view('errors.' . $code, ['exception' => $exception], $code);
             });
         }
     })->create();

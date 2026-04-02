@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\StatisticFactory;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 #[Table(key: 'key', keyType: 'string', incrementing: false)]
 class Statistic extends Model

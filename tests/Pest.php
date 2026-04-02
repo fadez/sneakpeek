@@ -31,9 +31,7 @@ pest()->extend(TestCase::class)->use(LazilyRefreshDatabase::class)->group('brows
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+expect()->extend('toBeOne', fn () => $this->toBe(1));
 
 /*
 |--------------------------------------------------------------------------
@@ -47,13 +45,13 @@ expect()->extend('toBeOne', function () {
 */
 
 // Returns a clean version of the current test's name
-function test_name()
+function test_name(): string
 {
     return str_replace('__pest_evaluable_', '', test()->name());
 }
 
 // Returns a screenshot filename prefixed with the clean test name
-function screenshot_name($name)
+function screenshot_name($name): string
 {
     return test_name() . '_' . str($name)->replace('.', '_')->slug('_');
 }

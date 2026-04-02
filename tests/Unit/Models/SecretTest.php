@@ -3,6 +3,8 @@
 use App\Http\Resources\SecretResource;
 use App\Models\Secret;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 test('toArray', function () {
     $model = Secret::factory()->createFresh();

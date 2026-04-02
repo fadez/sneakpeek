@@ -16,9 +16,7 @@ class RequireHttps
     public function handle(Request $request, Closure $next): Response
     {
         // We must enforce HTTPS on production environment to ensure privacy and security
-        if (app()->environment('production') && ! $request->isSecure()) {
-            abort(403, 'HTTPS is required to access this application.');
-        }
+        abort_if(app()->environment('production') && ! $request->isSecure(), 403, 'HTTPS is required to access this application.');
 
         return $next($request);
     }

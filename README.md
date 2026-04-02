@@ -48,6 +48,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
     - A comprehensive suite of unit, feature, and browser tests using **[Pest](https://pestphp.com)**, utilizing its native **[Playwright](https://playwright.dev)** integration for E2E browser testing
     - Strict code consistency and PSR-12 compliance, enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
     - Strict static analysis with maximum type safety across the entire codebase with max **[PHPStan](https://phpstan.org)** level, enforced by **[Larastan](https://github.com/larastan/larastan)**
+    - Automated code upgrades and modernisation enforced by **[Rector](https://getrector.com)**, with **[Laravel-specific rules](https://github.com/driftingly/rector-laravel)** for idiomatic refactoring
 
 ### Frontend
 

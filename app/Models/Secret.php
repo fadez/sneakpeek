@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Support\Carbon;
 
@@ -143,7 +144,7 @@ class Secret extends Model
     protected function isPassphraseProtected(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->passphrase !== null,
+            get: fn (): bool => $this->passphrase !== null,
         );
     }
 
@@ -155,7 +156,7 @@ class Secret extends Model
     protected function isAvailable(): Attribute
     {
         return Attribute::make(
-            get: fn () => ! $this->is_expired && ! $this->is_revealed && $this->content !== null,
+            get: fn (): bool => ! $this->is_expired && ! $this->is_revealed && $this->content !== null,
         );
     }
 
@@ -167,7 +168,7 @@ class Secret extends Model
     protected function isRevealed(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->revealed_at !== null,
+            get: fn (): bool => $this->revealed_at !== null,
         );
     }
 

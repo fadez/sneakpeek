@@ -22,6 +22,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pint (PINT) - v1
 - pestphp/pest (PEST) - v4
 - phpunit/phpunit (PHPUNIT) - v12
+- rector/rector (RECTOR) - v2
 - vue (VUE) - v3
 - @laravel/echo-vue (ECHO_VUE) - v2
 - laravel-echo (ECHO) - v2
