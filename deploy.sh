@@ -1,9 +1,8 @@
 #!/bin/bash
 
-set -e
+# WARNING: Ensure user has NOPASSWD sudo rights
 
-# Put app into maintenance mode
-php artisan down
+set -e
 
 # Pull the latest updates
 git fetch origin main
@@ -16,18 +15,17 @@ composer install --no-progress --no-interaction --no-dev --prefer-dist --optimiz
 npm ci
 npm run build
 
-# Clear all cached data
-php artisan view:clear
-php artisan cache:clear
-
-# Cache configuration
-php artisan config:cache
+# Put app into maintenance mode
+php artisan down
 
 # Run Laravel migrations
 php artisan migrate --force
 
-# Note: Ensure user has NOPASSWD sudo rights for these
-for version in 8.3 8.4 8.5; do
+# Cache configuration, routes, events, and views
+php artisan optimize
+
+# Reload PHP-FPM versions if running
+for version in 8.4 8.5; do
     if systemctl is-active --quiet "php${version}-fpm"; then
         sudo systemctl reload "php${version}-fpm"
     fi
