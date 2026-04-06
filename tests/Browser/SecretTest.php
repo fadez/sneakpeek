@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 it('can create and reveal a secret without passphrase', function () {
     $content = 'Secret content.';
 

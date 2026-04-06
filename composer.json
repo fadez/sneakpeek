@@ -6,7 +6,7 @@
     "keywords": [],
     "license": "MIT",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "laravel/framework": "^13.0",
         "laravel/pennant": "^1.20",
         "laravel/reverb": "^1.0",
@@ -48,8 +48,11 @@
             "@php artisan key:generate",
             "@php artisan migrate --force",
             "npm ci --no-audit",
-            "npx playwright install",
+            "@setup:playwright",
             "npm run build"
+        ],
+        "setup:playwright": [
+            "npx playwright install"
         ],
         "setup:reverb": [
             "@php artisan reverb:install"

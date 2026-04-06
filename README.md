@@ -97,7 +97,7 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 
 Before beginning installation, make sure that your local machine has:
 
-- **[PHP](https://php.net)** 8.4 or higher
+- **[PHP](https://php.net)** 8.5 or higher
 - **[Composer](https://getcomposer.org)**
 - **[Node.js](https://nodejs.org)** 20.19 or higher
 - **[npm](https://www.npmjs.com)**

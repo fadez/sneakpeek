@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\WhoAmIController;
 use Illuminate\Support\Facades\Route;

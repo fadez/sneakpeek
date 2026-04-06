@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Extensions\Session;
 
 use Illuminate\Session\DatabaseSessionHandler as IlluminateDatabaseSessionHandler;

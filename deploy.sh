@@ -25,7 +25,7 @@ php artisan migrate --force
 php artisan optimize
 
 # Reload PHP-FPM versions if running
-for version in 8.4 8.5; do
+for version in 8.5; do
     if systemctl is-active --quiet "php${version}-fpm"; then
         sudo systemctl reload "php${version}-fpm"
     fi
