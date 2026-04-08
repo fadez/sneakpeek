@@ -1,8 +1,15 @@
 <p align="center">
     <img src="public/logo.svg" width="100" alt="SneakPeek">
     <p align="center">
-        <a href="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml/badge.svg"></a>
-        <a href="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml"><img alt="CD status" src="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml/badge.svg"></a>
+        <a href="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml"><img alt="CI status" src="https://img.shields.io/github/actions/workflow/status/fadez/sneakpeek/ci.yml?style=flat&logo=github&logoColor=959DA5&label=CI&labelColor=24292E"></a>
+        <a href="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml"><img alt="CD status" src="https://img.shields.io/github/actions/workflow/status/fadez/sneakpeek/cd.yml?style=flat&logo=github&logoColor=959DA5&label=CD&labelColor=24292E"></a>
+        <a href="phpstan.neon"><img alt="PHPStan level" src="https://img.shields.io/badge/PHPStan-Level_10-success?style=flat&logo=php&logoColor=777bb3&labelColor=24292E"></a>
+    </p>
+    <p align="center">
+        <a href="https://www.php.net"><img alt="PHP version" src="https://img.shields.io/badge/PHP-v8.5-777bb3?style=flat&logo=php&logoColor=777bb3&labelColor=24292E"></a>
+        <a href="https://laravel.com"><img alt="Laravel version" src="https://img.shields.io/badge/Laravel-v13-ff2d20?style=flat&logo=laravel&logoColor=ff2d20&labelColor=24292E"></a>
+        <a href="https://vuejs.org"><img alt="Vue.js version" src="https://img.shields.io/badge/Vue.js-v3.5-42b883?style=flat&logo=vuedotjs&logoColor=42b883&labelColor=24292E"></a>
+        <a href="https://tailwindcss.com"><img alt="Tailwind CSS version" src="https://img.shields.io/badge/Tailwind_CSS-v4.2-38bdf8?style=flat&logo=tailwindcss&logoColor=38bdf8&labelColor=24292E"></a>
     </p>
 </p>
 
@@ -97,13 +104,12 @@ Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com
 
 Before beginning installation, make sure that your local machine has:
 
-- **[PHP](https://php.net)** 8.5 or higher
+- **[PHP](https://php.net)** v8.5 or higher
 - **[Composer](https://getcomposer.org)**
-- **[Node.js](https://nodejs.org)** 20.19 or higher
-- **[npm](https://www.npmjs.com)**
+- **[Node.js](https://nodejs.org)** v24 or higher, along with **[npm](https://www.npmjs.com)**
 - **[Git](https://git-scm.com)**
 
-I highly recommend using **[Laravel Herd](https://herd.laravel.com)** as your local development environment.
+Using **[Laravel Herd](https://herd.laravel.com)** as your local development environment is highly recommended.
 
 ### Application setup
 
