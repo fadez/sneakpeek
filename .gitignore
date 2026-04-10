@@ -1,4 +1,4 @@
-# Laravel .gitignore (Source: https://github.com/laravel/laravel/blob/HEAD/.gitignore)
+# Laravel .gitignore (Source: https://github.com/laravel/laravel/blob/v13.1.2/.gitignore)
 *.log
 .DS_Store
 .env
@@ -6,7 +6,7 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
-/.fleet
+/.cursor/
 /.idea
 /.nova
 /.phpunit.cache
@@ -20,9 +20,7 @@
 /storage/*.key
 /storage/pail
 /vendor
+_ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
-
-# Custom rules
-/tests/Browser/Screenshots
