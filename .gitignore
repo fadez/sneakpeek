@@ -1,4 +1,4 @@
-# Laravel .gitignore (Source: https://github.com/laravel/laravel/blob/v13.1.2/.gitignore)
+# Laravel .gitignore (Source: https://github.com/laravel/laravel/blob/v13.2.0/.gitignore)
 *.log
 .DS_Store
 .env

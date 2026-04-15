@@ -34,13 +34,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Disable mass assignment protection globally as we handle validation via Request classes
+        // Disable mass assignment protection since validation is handled via form requests
         Model::unguard();
 
-        // Enforce strict behavior to catch lazy loading and missing attributes
+        // Enforce strict behavior to prevent lazy loading and accessing missing attributes
         Model::shouldBeStrict();
 
-        // Exclude fields from automatic trimming
+        // Exclude specific fields from automatic trimming
         TrimStrings::except(['passphrase']);
 
         Session::extend('database', function (Application $app): DatabaseSessionHandler {
