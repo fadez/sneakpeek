@@ -8,6 +8,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -39,6 +40,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Enforce strict behavior to prevent lazy loading and accessing missing attributes
         Model::shouldBeStrict();
+
+        // Reject any request fields not specified in form request validation rules
+        FormRequest::failOnUnknownFields();
 
         // Exclude specific fields from automatic trimming
         TrimStrings::except(['passphrase']);
