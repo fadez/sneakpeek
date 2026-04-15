@@ -37,7 +37,7 @@
 }
 
 .Vue-Toastification__toast {
-    @apply mb-4 flex min-h-[56px] max-w-[392px] min-w-[392px] items-center rounded-md border-2 p-3 font-[inherit] shadow-none;
+    @apply mb-4 flex min-h-14 max-w-98 min-w-98 items-center rounded-md border-2 p-3 font-[inherit] shadow-none;
 }
 
 .Vue-Toastification__toast-body {

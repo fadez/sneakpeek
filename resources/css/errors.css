@@ -16,7 +16,7 @@
 }
 
 .http-error-image {
-    @apply pointer-events-none w-full max-w-[400px] select-none;
+    @apply pointer-events-none w-full max-w-100 select-none;
 }
 
 /* Error page: 418 */

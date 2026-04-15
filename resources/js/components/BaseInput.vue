@@ -28,7 +28,7 @@ const showPasswordButtonClasses = computed(() => ('disabled' in attrs ? '' : 'ho
 </script>
 
 <template>
-    <div class="group relative">
+    <div class="group relative grow">
         <input
             ref="input"
             v-bind="attrs"

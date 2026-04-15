@@ -14,8 +14,8 @@
     --color-zinc-325: color-mix(in srgb, var(--color-zinc-300), var(--color-zinc-350));
     --color-zinc-350: color-mix(in srgb, var(--color-zinc-300), var(--color-zinc-400));
 
-    --height-receipt-card-skeleton: 244px;
-    --height-secret-card-skeleton: 244px;
+    --height-receipt-card-skeleton: 248px;
+    --height-secret-card-skeleton: 248px;
 }
 
 @layer base {
@@ -28,8 +28,7 @@
     }
 
     input::placeholder,
-    textarea::placeholder,
-    select:invalid {
+    textarea::placeholder {
         @apply text-zinc-400 dark:text-zinc-500;
     }
 
