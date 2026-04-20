@@ -4,7 +4,7 @@
     "type": "project",
     "description": "Secure, one-time secret sharing made simple.",
     "keywords": [],
-    "license": "MIT",
+    "license": "proprietary",
     "require": {
         "php": "^8.5",
         "laravel/framework": "^13.0",
@@ -60,19 +60,18 @@
         "install:sqlite": "@php -r \"!file_exists('database/database.sqlite') && touch('database/database.sqlite');\"",
         "lint": [
             "pint --parallel",
-            "rector"
+            "rector --clear-cache"
         ],
         "test:lint": [
             "pint --parallel --test",
-            "rector --dry-run"
+            "rector --dry-run --clear-cache"
         ],
-        "test:pest": "pest --parallel",
+        "test:unit": "pest --parallel",
         "test:types": "phpstan analyse --ansi",
         "test": [
             "@test:lint",
             "@test:types",
-            "@php artisan config:clear --ansi",
-            "@test:pest"
+            "@test:unit"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
