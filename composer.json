@@ -51,12 +51,8 @@
             "@install:playwright",
             "npm run build"
         ],
-        "install:playwright": [
-            "npx playwright install --with-deps"
-        ],
-        "install:reverb": [
-            "@php artisan reverb:install"
-        ],
+        "install:playwright": "npx playwright install --with-deps",
+        "install:reverb": "@php artisan reverb:install",
         "install:sqlite": "@php -r \"!file_exists('database/database.sqlite') && touch('database/database.sqlite');\"",
         "lint": [
             "pint --parallel",
