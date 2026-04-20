@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useNotificationStore } from '@/stores/notifications';
-import Dashboard from '@/pages/Dashboard.vue';
-import Home from '@/pages/Home.vue';
-import Receipt from '@/pages/Receipt.vue';
-import Secret from '@/pages/Secret.vue';
-import UI from '@/pages/UI.vue';
+
+const Dashboard = () => import('@/pages/Dashboard.vue');
+const Home = () => import('@/pages/Home.vue');
+const Receipt = () => import('@/pages/Receipt.vue');
+const Secret = () => import('@/pages/Secret.vue');
+const UI = () => import('@/pages/UI.vue');
 
 const routes = [
     {
