@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -46,20 +46,8 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader
-
-      - name: Generate app key
-        run: php artisan key:generate
-
-      - name: Install Node.js dependencies
-        run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      - name: Compile assets
-        run: npm run build
+      - name: Install application
+        run: composer setup
 
       - name: Run tests
-        run: composer test-ci
+        run: composer test

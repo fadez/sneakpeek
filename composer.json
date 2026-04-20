@@ -43,25 +43,21 @@
     "scripts": {
         "setup": [
             "composer install --no-interaction --no-progress",
-            "@sqlite:init",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
+            "@install:sqlite",
             "@php artisan migrate --force",
             "npm ci --no-audit --ignore-scripts",
-            "@setup:playwright",
+            "@install:playwright",
             "npm run build"
         ],
-        "setup:playwright": [
-            "npx playwright install"
+        "install:playwright": [
+            "npx playwright install --with-deps"
         ],
-        "setup:reverb": [
+        "install:reverb": [
             "@php artisan reverb:install"
         ],
-        "dev": [
-            "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
-        ],
-        "sqlite:init": "@php -r \"!file_exists('database/database.sqlite') && touch('database/database.sqlite');\"",
+        "install:sqlite": "@php -r \"!file_exists('database/database.sqlite') && touch('database/database.sqlite');\"",
         "lint": [
             "pint --parallel",
             "rector"
@@ -71,7 +67,6 @@
             "rector --dry-run"
         ],
         "test:pest": "pest --parallel",
-        "test:pest-ci": "pest --parallel --ci",
         "test:types": "phpstan analyse --ansi",
         "test": [
             "@test:lint",
@@ -79,11 +74,9 @@
             "@php artisan config:clear --ansi",
             "@test:pest"
         ],
-        "test-ci": [
-            "@test:lint",
-            "@test:types",
-            "@php artisan config:clear --ansi",
-            "@test:pest-ci"
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

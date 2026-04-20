@@ -154,7 +154,7 @@ npm run build
 First, you need to install and enable Laravel Reverb:
 
 ```shell
-composer setup:reverb
+composer install:reverb
 ```
 
 Laravel Reverb will automatically update the `.env` file.
