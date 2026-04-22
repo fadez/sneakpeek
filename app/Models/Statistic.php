@@ -15,14 +15,6 @@ class Statistic extends Model
     /** @use HasFactory<StatisticFactory> */
     use HasFactory;
 
-    public const KEY_SECRETS_CREATED = 'secrets_created';
-
-    public const KEY_SECRETS_REVEALED = 'secrets_revealed';
-
-    public const KEY_SECRETS_EXPIRED = 'secrets_expired';
-
-    public const KEY_SECRETS_BURNED = 'secrets_burned';
-
     /**
      * Get the attributes that should be cast.
      *

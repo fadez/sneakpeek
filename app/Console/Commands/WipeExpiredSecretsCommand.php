@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\StatisticKey;
 use App\Models\Secret;
-use App\Models\Statistic;
 use App\Services\SecretService;
 use App\Services\StatisticService;
 use Illuminate\Console\Attributes\Description;
@@ -27,7 +27,7 @@ class WipeExpiredSecretsCommand extends Command
             $wipedCount++;
         });
 
-        $statisticService->incrementValue(Statistic::KEY_SECRETS_EXPIRED, $wipedCount);
+        $statisticService->incrementValue(StatisticKey::SecretsExpired, $wipedCount);
 
         $this->components->info('Wiped ' . $wipedCount . ' expired ' . str('secret')->plural($wipedCount) . '.');
     }

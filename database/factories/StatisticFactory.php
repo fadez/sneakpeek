@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\StatisticKey;
 use App\Models\Statistic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,10 +20,10 @@ class StatisticFactory extends Factory
     {
         return [
             'key' => $this->faker->randomElement([
-                Statistic::KEY_SECRETS_CREATED,
-                Statistic::KEY_SECRETS_REVEALED,
-                Statistic::KEY_SECRETS_EXPIRED,
-                Statistic::KEY_SECRETS_BURNED,
+                StatisticKey::SecretsCreated,
+                StatisticKey::SecretsRevealed,
+                StatisticKey::SecretsExpired,
+                StatisticKey::SecretsBurned,
             ]),
             'value' => $this->faker->numberBetween(0, 1000000),
         ];
@@ -34,7 +35,7 @@ class StatisticFactory extends Factory
     public function secretsCreated(int $value = 0): static
     {
         return $this->state([
-            'key' => Statistic::KEY_SECRETS_CREATED,
+            'key' => StatisticKey::SecretsCreated,
             'value' => $value,
         ]);
     }
@@ -45,7 +46,7 @@ class StatisticFactory extends Factory
     public function secretsRevealed(int $value = 0): static
     {
         return $this->state([
-            'key' => Statistic::KEY_SECRETS_REVEALED,
+            'key' => StatisticKey::SecretsRevealed,
             'value' => $value,
         ]);
     }
@@ -56,7 +57,7 @@ class StatisticFactory extends Factory
     public function secretsExpired(int $value = 0): static
     {
         return $this->state([
-            'key' => Statistic::KEY_SECRETS_EXPIRED,
+            'key' => StatisticKey::SecretsExpired,
             'value' => $value,
         ]);
     }
@@ -67,7 +68,7 @@ class StatisticFactory extends Factory
     public function secretsBurned(int $value = 0): static
     {
         return $this->state([
-            'key' => Statistic::KEY_SECRETS_BURNED,
+            'key' => StatisticKey::SecretsBurned,
             'value' => $value,
         ]);
     }

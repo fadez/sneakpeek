@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\StatisticKey;
 use App\Events\SecretBurned;
 use App\Events\SecretRevealed;
 use App\Http\Requests\StoreSecretRequest;
 use App\Models\Secret;
-use App\Models\Statistic;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +35,7 @@ class SecretService
             'expires_at' => now()->addSeconds($request->integer('ttl')),
         ]);
 
-        $this->statisticService->incrementValue(key: Statistic::KEY_SECRETS_CREATED);
+        $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
 
         return $secret;
     }
@@ -59,7 +59,7 @@ class SecretService
                 'revealed_at' => now(),
             ]);
 
-            $this->statisticService->incrementValue(key: Statistic::KEY_SECRETS_REVEALED);
+            $this->statisticService->incrementValue(StatisticKey::SecretsRevealed);
 
             event(new SecretRevealed($secret));
 
@@ -164,7 +164,7 @@ class SecretService
         DB::transaction(function () use ($secret) {
             $secret->delete();
 
-            $this->statisticService->incrementValue(key: Statistic::KEY_SECRETS_BURNED);
+            $this->statisticService->incrementValue(StatisticKey::SecretsBurned);
 
             event(new SecretBurned($secret->id));
         });
