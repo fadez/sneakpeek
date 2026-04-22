@@ -1,11 +1,17 @@
 {
     "agents": [
-        "cursor"
+        "cursor",
+        "claude_code",
+        "gemini",
+        "copilot",
+        "codex"
     ],
     "guidelines": true,
-    "herd_mcp": false,
     "mcp": true,
     "nightwatch_mcp": false,
+    "packages": [
+        "fruitcake/laravel-debugbar"
+    ],
     "sail": false,
     "skills": [
         "laravel-best-practices",
@@ -13,6 +19,7 @@
         "pest-testing",
         "echo-vue-development",
         "echo-development",
-        "tailwindcss-development"
+        "tailwindcss-development",
+        "debug-using-debugbar"
     ]
 }

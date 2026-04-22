@@ -24,7 +24,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - phpunit/phpunit (PHPUNIT) - v12
 - rector/rector (RECTOR) - v2
 - vue (VUE) - v3
-- @laravel/echo-vue (ECHO_VUE) - v2
+- \@laravel/echo-vue (ECHO_VUE) - v2
 - laravel-echo (ECHO) - v2
 - prettier (PRETTIER) - v3
 - tailwindcss (TAILWINDCSS) - v4

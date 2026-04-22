@@ -6,12 +6,12 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
-/.codex
-/.cursor/
+# /.codex
+# /.cursor/
 /.idea
 /.nova
 /.phpunit.cache
-/.vscode
+# /.vscode
 /.zed
 /auth.json
 /node_modules
@@ -25,3 +25,13 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Custom rules
+.vscode/*
+!.vscode/mcp.json
+.codex/*
+!.codex/config.toml
+.cursor/*
+!.cursor/mcp.json
+!.cursor/skills
+!.cursor/skills/**
