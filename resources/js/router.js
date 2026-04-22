@@ -1,10 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useNotificationStore } from '@/stores/notifications';
 
+// Eager-loaded: users arrive at these pages directly via external links
+import Home from '@/pages/Home.vue';
+import Receipt from '@/pages/Receipt.vue';
+import Secret from '@/pages/Secret.vue';
+
+// Lazy-loaded: non-essential routes, aggressively prefetched by Vite
+// after the initial load so there's no perceived delay on navigation
 const Dashboard = () => import('@/pages/Dashboard.vue');
-const Home = () => import('@/pages/Home.vue');
-const Receipt = () => import('@/pages/Receipt.vue');
-const Secret = () => import('@/pages/Secret.vue');
 const UI = () => import('@/pages/UI.vue');
 
 const routes = [
@@ -51,10 +55,10 @@ const router = createRouter({
     routes,
     scrollBehavior(to, from, savedPosition) {
         if (from.name === to.name) {
-            // If navigating to the same page, scroll smoothly to the top
+            // When navigating to the same route, scroll smoothly to the top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            // Always scroll to top by default
+            // When navigating to a different route, scroll instantly to the top
             return { top: 0 };
         }
     },

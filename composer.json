@@ -47,7 +47,7 @@
             "@php artisan key:generate",
             "@install:sqlite",
             "@php artisan migrate --force",
-            "npm ci --no-audit --ignore-scripts",
+            "npm ci",
             "@install:playwright",
             "npm run build"
         ],
