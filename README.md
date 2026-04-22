@@ -17,7 +17,7 @@
 
 > Secure, one-time secret sharing made simple.
 
-Built by **[@fadez](https://github.com/fadez)** in **[Cursor](https://cursor.com)** using **[Laravel](https://laravel.com)**, **[Vue.js](https://vuejs.org)** and **[Tailwind CSS](https://tailwindcss.com)**.
+Designed, developed and maintained by **[Alex Fadez](https://github.com/fadez)**.
 
 **SneakPeek** showcases my full-stack development skills and workflow, combining modern frameworks and best practices to deliver a secure, scalable, and production-quality web application.
 

@@ -17,7 +17,7 @@ it('shows built with love in Ukraine message', function () {
 it('shows author attribution', function () {
     $page = visit('/');
 
-    $page->assertSeeIn('@footer', '@fadez');
+    $page->assertSeeIn('@footer', 'Alex Fadez');
 });
 
 it('shows link to GitHub repository', function () {

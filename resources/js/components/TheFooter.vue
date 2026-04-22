@@ -28,7 +28,7 @@ const abGroupLabel = computed(() => {
     <footer data-test="footer" class="my-4">
         <div class="page-container">
             <div class="flex flex-col justify-between text-secondary md:flex-row">
-                <div>© {{ currentYear }} {{ appName }}. All rights reserved.</div>
+                <div>© {{ currentYear }} {{ appName }}</div>
 
                 <div class="bullet-divider">
                     <div class="inline-flex">
@@ -49,7 +49,7 @@ const abGroupLabel = computed(() => {
                     &nbsp;in&nbsp;
                     <img src="../../images/flag-ua.svg" alt="Ukraine" class="pointer-events-none h-6 w-5" />
                     &nbsp;by&nbsp;
-                    <BaseLink :href="authorUrl" target="_blank">@fadez</BaseLink>
+                    <BaseLink :href="authorUrl" target="_blank">Alex Fadez</BaseLink>
                 </div>
                 <div class="bullet-divider">
                     <div v-if="abGroupLabel" class="inline-flex">{{ abGroupLabel }}</div>
