@@ -44,7 +44,8 @@ arch('DTOs')
     ->toBeClasses()
     ->toBeFinal()
     ->toBeReadonly()
-    ->toExtendNothing();
+    ->toExtendNothing()
+    ->not->toHaveSuffix('DTO');
 
 arch('event base classes')
     ->expect([Event::class, BroadcastableEvent::class])
@@ -64,5 +65,6 @@ arch('services')
     ->toBeClasses()
     ->toBeFinal()
     ->not->toBeAbstract()
+    ->toHaveSuffix('Service')
     ->toHaveMethodsDocumented()
     ->toHavePropertiesDocumented();
