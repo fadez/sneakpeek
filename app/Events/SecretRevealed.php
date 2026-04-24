@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace App\Events;
 
-use App\Http\Resources\SecretResource;
 use App\Models\Secret;
 use Illuminate\Broadcasting\Channel;
 
-class SecretRevealed extends Event
+final class SecretRevealed extends BroadcastableEvent
 {
     /**
      * Create a new event instance.
      */
     public function __construct(
         public Secret $secret
-    ) {}
+    ) {
+        $this->dontBroadcastToCurrentUser();
+    }
 
     /**
      * Get the channels the event should broadcast on.
@@ -35,17 +36,5 @@ class SecretRevealed extends Event
     public function broadcastAs(): string
     {
         return 'secret.revealed';
-    }
-
-    /**
-     * Get the data to broadcast.
-     *
-     * @return array<string, mixed>
-     */
-    public function broadcastWith(): array
-    {
-        return [
-            'secret' => (new SecretResource($this->secret)),
-        ];
     }
 }

@@ -47,6 +47,12 @@ const expiresInDiffForHumans = computed(() => {
     return DateTime.fromISO(secret.value.expires_at).toRelative({ unit: ['days', 'hours', 'minutes', 'seconds'] });
 });
 
+/*
+The access token is placed after the "#" fragment in the URL for these security reasons:
+- The hash fragment is never sent to the server.
+- Prevents token logging in server, proxy, and analytics logs.
+- Prevents accidental leakage via HTTP Referer headers.
+*/
 const secretUrl = computed(() => {
     if (!hasAccessToken.value) return '';
 
@@ -102,9 +108,7 @@ const deleteSecret = async () => {
             access_token: secretAccessToken.value,
         });
 
-        notify.secretBurned();
-
-        router.replace({ name: 'home' });
+        handleSecretBurned();
     } catch (error) {
         clearPassphraseInput();
         focusPassphraseInput();
@@ -150,6 +154,12 @@ const handlePassphraseInputVisibilityChange = (inputVisible) => {
     }
 };
 
+const handleSecretBurned = () => {
+    notify.secretBurned();
+
+    router.replace({ name: 'home' });
+};
+
 const handleSecretIdChange = (newId, oldId) => {
     resetPage();
     fetchSecret();
@@ -162,6 +172,9 @@ const handleSecretIdChange = (newId, oldId) => {
         .channel(`secrets.${newId}`)
         .listen('.secret.revealed', (e) => {
             secret.value = e.secret;
+        })
+        .listen('.secret.burned', (e) => {
+            handleSecretBurned();
         });
 };
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\SecretFactory;
@@ -31,7 +33,7 @@ use Illuminate\Support\Carbon;
 #[Table(key: 'id', keyType: 'string', incrementing: false)]
 #[Appends(['is_passphrase_protected', 'is_expired', 'is_revealed', 'is_available'])]
 #[Hidden(['access_token', 'content', 'passphrase'])]
-class Secret extends Model
+final class Secret extends Model
 {
     /** @use HasFactory<SecretFactory> */
     use HasFactory;
@@ -133,7 +135,7 @@ class Secret extends Model
      */
     public function prunable(): Builder
     {
-        return static::query()->where('expires_at', '<', now()->minus(days: 90));
+        return self::query()->where('expires_at', '<', now()->minus(days: 90));
     }
 
     /**

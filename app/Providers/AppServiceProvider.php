@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Extensions\Session\DatabaseSessionHandler;
@@ -23,7 +25,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature;
 use UnitEnum;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -58,8 +60,8 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         // Add ->createFresh() method to all model factories to avoid calling ->fresh() on every created instance
-        Factory::macro('createFresh', function ($attributes = [], ?Model $parent = null) {
-            /** @var (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed> $attributes */
+        Factory::macro('createFresh', function (array $attributes = [], ?Model $parent = null) {
+            /** @var array<string, mixed> $attributes */
             return $this->create($attributes, $parent)->fresh();
         });
     }
@@ -80,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
         // Exclude specific fields from automatic trimming
         TrimStrings::except(['passphrase']);
 
-        // Custom privacy-first session handler that doesn't store any user information
+        // Use custom privacy-first session handler that doesn't store any user information
         Session::extend('database', function (Application $app): DatabaseSessionHandler {
             /** @var UnitEnum|string|null $connection */
             $connection = Config::get('session.connection');
@@ -99,7 +101,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureRateLimits(): void
     {
-        // Limit requests for API routes based on the client's IP address
+        // Set global rate limit for all API requests per client IP
         RateLimiter::for('api', function (Request $request) {
             $limit = $this->app->environment('production') ? 60 : 600;
 
@@ -115,10 +117,10 @@ class AppServiceProvider extends ServiceProvider
         // Use the session ID as the feature flag scope, as the application has no authenticated users
         Feature::resolveScopeUsing(fn () => Session::getId());
 
-        // 1-in-100 chance to show a lucky message to the user
+        // Show a lucky message to the user with a 1-in-100 chance
         Feature::define('lucky-message', Lottery::odds(1, 100));
 
-        // Randomly assign users to a control or variant group for A/B testing
+        // Assign users randomly to either the control or variant group for A/B testing
         Feature::define('ab-group', fn () => Arr::random(['control', 'variant']));
     }
 

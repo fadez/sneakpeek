@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Events;
 
 use App\Services\StatisticService;
 use Illuminate\Broadcasting\Channel;
 
-class StatisticUpdated extends Event
+final class StatisticUpdated extends BroadcastableEvent
 {
     /**
      * Get the channels the event should broadcast on.

@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
+use App\DTOs\CreatedSecret;
+use App\DTOs\CreateSecretData;
 use App\Enums\StatisticKey;
 use App\Events\SecretBurned;
 use App\Events\SecretRevealed;
-use App\Http\Requests\StoreSecretRequest;
 use App\Models\Secret;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -16,28 +19,37 @@ use Illuminate\Validation\ValidationException;
 /**
  * This SecretService doesn't protect the president, but it does handle the business logic for secrets.
  */
-class SecretService
+final readonly class SecretService
 {
+    /**
+     * Create a new service instance.
+     */
     public function __construct(
-        private readonly StatisticService $statisticService
-    ) {}
+        private StatisticService $statisticService
+    ) {
+        //
+    }
 
     /**
-     * Create a new secret from a request.
+     * Create a new secret and return it along with its access token.
      */
-    public function createFromRequest(StoreSecretRequest $request, string $accessToken): Secret
+    public function createSecret(CreateSecretData $data): CreatedSecret
     {
-        $secret = Secret::create([
-            'id' => Str::random(64),
-            'access_token' => $accessToken,
-            'content' => $request->input('content'),
-            'passphrase' => $request->input('passphrase'),
-            'expires_at' => now()->addSeconds($request->integer('ttl')),
-        ]);
+        return DB::transaction(function () use ($data): CreatedSecret {
+            $accessToken = Str::random(64);
 
-        $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
+            $secret = Secret::create([
+                'id' => Str::random(64),
+                'access_token' => $accessToken,
+                'content' => $data->content,
+                'passphrase' => $data->passphrase,
+                'expires_at' => now()->addSeconds($data->ttl),
+            ]);
 
-        return $secret;
+            $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
+
+            return new CreatedSecret($secret, $accessToken);
+        });
     }
 
     /**

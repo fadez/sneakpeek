@@ -7,7 +7,7 @@ namespace App\Http\Middleware;
 use Illuminate\Routing\Middleware\ThrottleRequests as BaseThrottleRequests;
 use Symfony\Component\HttpFoundation\Response;
 
-class ThrottleRequests extends BaseThrottleRequests
+final class ThrottleRequests extends BaseThrottleRequests
 {
     /**
      * Get the limit headers information.
@@ -15,13 +15,14 @@ class ThrottleRequests extends BaseThrottleRequests
      * @param  int  $maxAttempts
      * @param  int  $remainingAttempts
      * @param  int|null  $retryAfter
-     * @return array<string, int>
+     * @return array<never, never>
      */
-    protected function getHeaders($maxAttempts,
-        $remainingAttempts,
-        $retryAfter = null,
-        ?Response $response = null)
-    {
+    protected function getHeaders(
+        $maxAttempts, // @pest-ignore-type
+        $remainingAttempts, // @pest-ignore-type
+        $retryAfter = null, // @pest-ignore-type
+        ?Response $response = null
+    ): array {
         // Remove X-RateLimit-* and Retry-After headers to ensure security through obscurity
         return [];
     }

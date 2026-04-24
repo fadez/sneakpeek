@@ -6,14 +6,16 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 
-class SecretBurned extends Event
+final class SecretBurned extends BroadcastableEvent
 {
     /**
      * Create a new event instance.
      */
     public function __construct(
         public string $secretId
-    ) {}
+    ) {
+        $this->dontBroadcastToCurrentUser();
+    }
 
     /**
      * Get the channels the event should broadcast on.

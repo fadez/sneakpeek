@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[Table(key: 'key', keyType: 'string', incrementing: false)]
-class Statistic extends Model
+final class Statistic extends Model
 {
     /** @use HasFactory<StatisticFactory> */
     use HasFactory;

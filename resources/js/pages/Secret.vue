@@ -102,9 +102,8 @@ const handleSecretIdChange = (newId, oldId) => {
     echo()
         .channel(`secrets.${newId}`)
         .listen('.secret.revealed', (e) => {
-            if (!isRevealingSecret.value) {
-                secret.value = e.secret;
-            }
+            secret.value.is_available = false;
+            secret.value.is_revealed = true;
         })
         .listen('.secret.burned', (e) => {
             secret.value.is_available = false;

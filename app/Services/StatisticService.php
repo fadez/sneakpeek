@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Enums\StatisticKey;
 use App\Events\StatisticUpdated;
 use App\Models\Statistic;
 
-class StatisticService
+final readonly class StatisticService
 {
     /**
+     * Aggregate all application statistics into a single snapshot.
+     *
      * @return array<string, mixed>
      */
     public function getSnapshot(): array
@@ -21,6 +25,9 @@ class StatisticService
         ];
     }
 
+    /**
+     * Get the current value for a given statistic key.
+     */
     public function getValue(StatisticKey $key): int
     {
         $statistic = Statistic::where('key', $key)->first();
@@ -28,6 +35,9 @@ class StatisticService
         return $statistic->value ?? 0;
     }
 
+    /**
+     * Increment a statistic key by the given amount.
+     */
     public function incrementValue(StatisticKey $key, int $amount = 1): void
     {
         if ($amount <= 0) {

@@ -20,6 +20,8 @@ pest()->extend(TestCase::class)->use(LazilyRefreshDatabase::class)->group('featu
 
 pest()->extend(TestCase::class)->use(LazilyRefreshDatabase::class)->group('browser')->in('Browser');
 
+pest()->extend(TestCase::class)->group('arch')->in('Architecture');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations

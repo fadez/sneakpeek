@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Enums\StatisticKey;
@@ -12,7 +14,7 @@ use Illuminate\Console\Command;
 
 #[Signature('secrets:wipe-expired')]
 #[Description('Wipe the content of expired secrets')]
-class WipeExpiredSecretsCommand extends Command
+final class WipeExpiredSecretsCommand extends Command
 {
     /**
      * Execute the console command.

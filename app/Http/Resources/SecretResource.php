@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin Secret
  */
-class SecretResource extends JsonResource
+final class SecretResource extends JsonResource
 {
     /**
      * The "data" wrapper that should be applied.

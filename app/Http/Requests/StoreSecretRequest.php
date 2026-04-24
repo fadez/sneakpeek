@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\DTOs\CreateSecretData;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSecretRequest extends FormRequest
+final class StoreSecretRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,5 +30,17 @@ class StoreSecretRequest extends FormRequest
             'passphrase' => ['nullable', 'string', 'min:1', 'max:255'],
             'ttl' => ['required', 'integer', 'min:60', 'max:7776000'], // In seconds, from 1 minute up to 90 days
         ];
+    }
+
+    /**
+     * Map the validated request data to a DTO.
+     */
+    public function validatedToDTO(): CreateSecretData
+    {
+        return new CreateSecretData(
+            content: $this->string('content')->value(),
+            passphrase: $this->filled('passphrase') ? $this->string('passphrase')->value() : null,
+            ttl: $this->integer('ttl'),
+        );
     }
 }

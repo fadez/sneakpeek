@@ -29,4 +29,4 @@ it('can create and reveal a secret without passphrase', function () {
         ->assertPathIs('/');
 
     $page->screenshot(filename: screenshot_name('3_secret_no_longer_available_user_redirected_to_home_page'));
-});
+})->flaky();

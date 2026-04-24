@@ -17,7 +17,15 @@ export const storeSecret = (data) => {
 };
 
 export const getSecret = (id, accessToken = undefined) => {
-    return axios.get(`/api/secrets/${id}`, { params: { access_token: accessToken } }).then((response) => response.data.secret);
+    return axios
+        .get(`/api/secrets/${id}`, {
+            // Access token is passed via header instead of query string to prevent
+            // it from appearing in server logs, browser history, and referrer headers
+            headers: {
+                ...(accessToken && { 'X-Access-Token': accessToken }),
+            },
+        })
+        .then((response) => response.data.secret);
 };
 
 export const revealSecret = (id, data) => {

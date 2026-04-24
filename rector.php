@@ -9,6 +9,7 @@ use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector;
 use Rector\TypeDeclaration\Rector\Closure\AddClosureVoidReturnTypeWhereNoReturnRector;
+use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
 
@@ -41,6 +42,9 @@ return RectorConfig::configure()
         __DIR__ . '/public',
         __DIR__ . '/routes',
         __DIR__ . '/tests',
+    ])
+    ->withRules([
+        DeclareStrictTypesRector::class,
     ])
     ->withSkip([
         AddClosureVoidReturnTypeWhereNoReturnRector::class,

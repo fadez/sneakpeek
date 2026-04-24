@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Attributes\Description;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 #[Signature('pennant:prune')]
 #[Description('Prune stale Pennant features')]
-class PruneStaleFeaturesCommand extends Command
+final class PruneStaleFeaturesCommand extends Command
 {
     /**
      * Execute the console command.

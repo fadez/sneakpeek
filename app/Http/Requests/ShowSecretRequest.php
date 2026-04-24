@@ -6,9 +6,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-final class DeactivateFeatureRequest extends FormRequest
+final class ShowSecretRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +22,11 @@ final class DeactivateFeatureRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $this->merge([
-            'feature' => $this->route('feature'),
-        ]);
+        if ($this->hasHeader('X-Access-Token')) {
+            $this->merge([
+                'access_token' => $this->header('X-Access-Token'),
+            ]);
+        }
     }
 
     /**
@@ -36,7 +37,8 @@ final class DeactivateFeatureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'feature' => ['required', 'string', Rule::in(['lucky-message'])],
+            'access_token' => ['sometimes', 'required', 'string'],
+            'passphrase' => ['nullable', 'string'],
         ];
     }
 }
