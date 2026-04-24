@@ -4,6 +4,7 @@ use App\Events\BroadcastableEvent;
 use App\Events\Event;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 
 arch()->preset()->php();
@@ -42,21 +43,28 @@ arch('commands')
 arch('DTOs')
     ->expect('App\DTOs')
     ->toBeClasses()
+    ->toExtendNothing()
     ->toBeFinal()
     ->toBeReadonly()
-    ->toExtendNothing()
     ->not->toHaveSuffix('DTO');
 
-arch('event base classes')
-    ->expect([Event::class, BroadcastableEvent::class])
-    ->toBeClasses()
+arch('event base class')
+    ->expect(Event::class)
+    ->toBeClass()
     ->toBeAbstract()
     ->toImplement(ShouldDispatchAfterCommit::class);
 
+arch('broadcastable event base class')
+    ->expect(BroadcastableEvent::class)
+    ->toBeClass()
+    ->toExtend(Event::class)
+    ->toBeAbstract()
+    ->toImplement(ShouldBroadcast::class);
+
 arch('events')
     ->expect('App\Events')
-    ->toExtend(Event::class)
     ->toBeClasses()
+    ->toExtend(Event::class)
     ->toBeFinal()
     ->ignoring([Event::class, BroadcastableEvent::class]);
 
