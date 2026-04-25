@@ -6,6 +6,7 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 
 arch()->preset()->php();
 arch()->preset()->laravel();
@@ -30,6 +31,7 @@ arch('controllers')
     ->expect('App\Http\Controllers')
     ->toExtendNothing()
     ->toHaveMethod('__invoke')
+    ->not->toHaveAttribute(Middleware::class)
     ->toHaveMethodsDocumented();
 
 arch('commands')
