@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 import { execSync } from 'child_process';
-import path from 'path';
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
@@ -18,11 +17,6 @@ const commitHash = (() => {
 })();
 
 export default defineConfig({
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'resources/js'),
-        },
-    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
