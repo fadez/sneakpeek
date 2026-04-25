@@ -26,7 +26,7 @@ const isRouterLink = computed(() => !!props.to);
     >
         <slot />
         <span
-            class="pointer-events-none absolute -bottom-[0.75] block h-0.5 w-full bg-transparent transition-all group-hover:bg-sky-500 group-focus-visible:bg-sky-500 group-active:bg-sky-600"
+            class="pointer-events-none absolute bottom-[-0.75] block h-0.5 w-full bg-transparent transition-all group-hover:bg-sky-500 group-focus-visible:bg-sky-500 group-active:bg-sky-600"
         ></span>
     </component>
 </template>

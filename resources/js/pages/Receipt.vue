@@ -42,7 +42,7 @@ const hasAccessToken = computed(() => {
 const expiresInDiffForHumans = computed(() => {
     if (!secret.value?.expires_at) return '';
 
-    now.value;
+    void now.value;
 
     return DateTime.fromISO(secret.value.expires_at).toRelative({ unit: ['days', 'hours', 'minutes', 'seconds'] });
 });

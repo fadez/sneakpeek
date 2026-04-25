@@ -43,18 +43,18 @@ const abGroupLabel = computed(() => {
                 </div>
             </div>
             <div class="flex flex-col justify-between text-muted md:flex-row">
-                <div class="inline-flex items-center">
-                    Built with&nbsp;
+                <div class="inline-flex items-center gap-1">
+                    Built with
                     <img src="../../images/heart.svg" alt="love" class="pointer-events-none h-6 w-5" />
-                    &nbsp;in&nbsp;
+                    in
                     <img src="../../images/flag-ua.svg" alt="Ukraine" class="pointer-events-none h-6 w-5" />
-                    &nbsp;by&nbsp;
+                    by
                     <BaseLink :href="authorUrl" target="_blank">Alex Fadez</BaseLink>
                 </div>
                 <div class="bullet-divider">
                     <div v-if="abGroupLabel" class="inline-flex">{{ abGroupLabel }}</div>
-                    <div v-if="currentVersionUrl" class="inline-flex">
-                        Version:&nbsp;
+                    <div v-if="currentVersionUrl" class="inline-flex items-center gap-1">
+                        Version:
                         <BaseLink :href="currentVersionUrl" target="_blank">
                             {{ commitHash }}
                         </BaseLink>

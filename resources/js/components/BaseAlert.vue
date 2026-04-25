@@ -77,7 +77,7 @@ const alertClasses = computed(() => {
     return typeClasses[props.type];
 });
 
-const iconClasses = computed(() => (!!props.icon ? props.icon : NOTIFICATION_TYPE_ICONS[props.type]));
+const iconClasses = computed(() => props.icon || NOTIFICATION_TYPE_ICONS[props.type]);
 
 const dismiss = () => {
     if (route.name !== 'ui') {

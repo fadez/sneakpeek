@@ -15,9 +15,17 @@ export function useClipboard() {
         try {
             await navigator.clipboard.writeText(text);
 
-            options.onSuccess ? options.onSuccess() : notify.copiedToClipboard();
-        } catch (error) {
-            options.onError ? options.onError() : notify.failedToCopyToClipboard();
+            if (options.onSuccess) {
+                options.onSuccess();
+            } else {
+                notify.copiedToClipboard();
+            }
+        } catch {
+            if (options.onError) {
+                options.onError();
+            } else {
+                notify.failedToCopyToClipboard();
+            }
         }
     };
 

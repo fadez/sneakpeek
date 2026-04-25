@@ -53,7 +53,7 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
-    scrollBehavior(to, from, savedPosition) {
+    scrollBehavior(to, from, _savedPosition) {
         if (from.name === to.name) {
             // When navigating to the same route, scroll smoothly to the top
             window.scrollTo({ top: 0, behavior: 'smooth' });
