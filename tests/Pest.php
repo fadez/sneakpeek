@@ -46,14 +46,14 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-// Returns a clean version of the current test's name
+// Get the current test name
 function test_name(): string
 {
     return str_replace('__pest_evaluable_', '', test()->name());
 }
 
-// Returns a screenshot filename prefixed with the clean test name
-function screenshot_name($name): string
+// Get screenshot filename prefixed with current test name
+function screenshot_name(string $name): string
 {
     return test_name() . '_' . str($name)->replace('.', '_')->slug('_');
 }

@@ -6,7 +6,6 @@ use App\Models\Statistic;
 use App\Services\StatisticService;
 use Illuminate\Support\Facades\Event;
 
-/** @var StatisticService $this->statisticService */
 beforeEach(function () {
     $this->statisticService = resolve(StatisticService::class);
 });

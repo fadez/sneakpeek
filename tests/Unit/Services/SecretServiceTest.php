@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Sleep;
 
-/** @var SecretService $this->secretService */
 beforeEach(function () {
     $this->secretService = resolve(SecretService::class);
 });
@@ -24,12 +23,12 @@ it('passes passphrase check with any passphrase when secret is not passphrase-pr
 });
 
 it('passes passphrase check for passphrase-protected secret only when the correct passphrase is provided', function () {
-    $secret = Secret::factory()->passphraseProtected(passphrase: ' tricky!passphrase ')->createFresh();
+    $secret = Secret::factory()->passphraseProtected(passphrase: ' tricky § passphrase 😏 ')->createFresh();
 
     expect($this->secretService->checkPassphrase(secret: $secret, passphrase: null))->toBeFalse();
     expect($this->secretService->checkPassphrase(secret: $secret, passphrase: ''))->toBeFalse();
     expect($this->secretService->checkPassphrase(secret: $secret, passphrase: 'incorrect passphrase'))->toBeFalse();
-    expect($this->secretService->checkPassphrase(secret: $secret, passphrase: ' tricky!passphrase '))->toBeTrue();
+    expect($this->secretService->checkPassphrase(secret: $secret, passphrase: ' tricky § passphrase 😏 '))->toBeTrue();
 });
 
 it('wipes content of the secret but preserves the model', function () {
