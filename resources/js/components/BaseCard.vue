@@ -16,7 +16,10 @@ const hasActions = computed(() => slots.actions?.());
 
 <template>
     <div class="card">
-        <section v-if="hasTitle" class="card-title">
+        <section
+            v-if="hasTitle"
+            class="card-title"
+        >
             <slot name="title"></slot>
         </section>
 

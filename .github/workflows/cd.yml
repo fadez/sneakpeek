@@ -3,7 +3,7 @@ run-name: CD - ${{ github.event.workflow_run.head_branch }} - ${{ github.event.w
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ['CI']
     types: [completed]
     branches: [main]
 

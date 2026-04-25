@@ -89,12 +89,22 @@ const dismiss = () => {
 </script>
 
 <template>
-    <div v-if="!dismissed" class="flex items-center gap-2 rounded-md border-2 px-4 py-3" :class="alertClasses">
-        <i v-if="showIcon" :class="iconClasses"></i>
+    <div
+        v-if="!dismissed"
+        class="flex items-center gap-2 rounded-md border-2 px-4 py-3"
+        :class="alertClasses"
+    >
+        <i
+            v-if="showIcon"
+            :class="iconClasses"
+        ></i>
         <div>
             <slot></slot>
         </div>
-        <div v-if="dismissible" class="ml-auto flex">
+        <div
+            v-if="dismissible"
+            class="ml-auto flex"
+        >
             <BaseIconButton
                 :type="type === 'neutral' ? 'light' : type"
                 icon="fa-solid fa-xmark"

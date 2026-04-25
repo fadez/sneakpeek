@@ -41,8 +41,18 @@ const props = defineProps({
             <i :class="icon"></i>
         </div>
         <div class="flex min-w-0 flex-1 flex-col">
-            <div v-if="title" class="truncate text-sm text-muted">{{ title }}</div>
-            <NumberFlow class="font-mono text-2xl leading-4 font-semibold lg:leading-6" :value="value" :prefix="prefix" :suffix="suffix" />
+            <div
+                v-if="title"
+                class="truncate text-sm text-muted"
+            >
+                {{ title }}
+            </div>
+            <NumberFlow
+                class="font-mono text-2xl leading-4 font-semibold lg:leading-6"
+                :value="value"
+                :prefix="prefix"
+                :suffix="suffix"
+            />
         </div>
     </div>
 </template>

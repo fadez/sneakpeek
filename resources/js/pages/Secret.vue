@@ -24,8 +24,8 @@ const { focus, focusAndSelect } = useElementFocus();
 const passphraseInput = useTemplateRef('passphrase-input');
 const secretContentTextarea = useTemplateRef('secret-content-textarea');
 
+const accessToken = ref('');
 const secret = ref(null);
-const accessToken = ref(route.hash.slice(1));
 const secretContent = ref(null);
 const passphrase = ref('');
 const isRevealingSecret = ref(false);
@@ -93,6 +93,9 @@ const copySecret = () => {
 
 const handleSecretIdChange = (newId, oldId) => {
     resetPage();
+
+    accessToken.value = route.hash.slice(1);
+
     fetchSecret();
 
     if (oldId) echo().leave(`secrets.${oldId}`);
@@ -114,12 +117,14 @@ const handleSecretIdChange = (newId, oldId) => {
 const resetPage = () => {
     secret.value = null;
     secretContent.value = null;
-    clearPassphraseInput();
+    accessToken.value = '';
     isRevealingSecret.value = false;
+    clearPassphraseInput();
 };
 
+// Detect when a page is restored from bfcache and force reload
 const handlePageShow = (event) => {
-    if (event.persisted) fetchSecret();
+    if (event.persisted) refreshSecret();
 };
 
 const secretExpirationProgress = useSecretExpirationProgress(secret, refreshSecret);
@@ -138,12 +143,18 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div v-if="!secret" class="my-4">
+    <div
+        v-if="!secret"
+        class="my-4"
+    >
         <BaseCard class="min-h-secret-card-skeleton">
             <BaseLoader />
         </BaseCard>
     </div>
-    <div v-else class="my-4">
+    <div
+        v-else
+        class="my-4"
+    >
         <BaseCard v-if="secretContent">
             <section class="form">
                 <BaseAlert type="info">
@@ -164,17 +175,42 @@ onBeforeUnmount(() => {
             </section>
 
             <template #actions>
-                <BaseButton type="primary" icon-before="fa-solid fa-copy" @click="copySecret">Copy to Clipboard</BaseButton>
+                <BaseButton
+                    type="primary"
+                    icon-before="fa-solid fa-copy"
+                    @click="copySecret"
+                >
+                    Copy to Clipboard
+                </BaseButton>
             </template>
         </BaseCard>
-        <BaseCard :show-actions="secret.is_available" v-else>
+        <BaseCard
+            :show-actions="secret.is_available"
+            v-else
+        >
             <section class="p-4">
-                <BaseAlert v-if="secret.is_burned" type="danger">Secret has been burned by its creator.</BaseAlert>
-                <BaseAlert v-else-if="secret.is_revealed" type="danger">
+                <BaseAlert
+                    v-if="secret.is_burned"
+                    type="danger"
+                >
+                    Secret has been burned by its creator.
+                </BaseAlert>
+                <BaseAlert
+                    v-else-if="secret.is_revealed"
+                    type="danger"
+                >
                     Secret has been revealed by someone else! Looks like there might be a problem...
                 </BaseAlert>
-                <BaseAlert v-else-if="secret.is_expired" type="danger">Secret has expired. You'll need to ask for a fresh one.</BaseAlert>
-                <BaseAlert v-else type="info">
+                <BaseAlert
+                    v-else-if="secret.is_expired"
+                    type="danger"
+                >
+                    Secret has expired. You'll need to ask for a fresh one.
+                </BaseAlert>
+                <BaseAlert
+                    v-else
+                    type="info"
+                >
                     Your secret message is ready. We'll show it only once — make sure you're ready to save it.
                 </BaseAlert>
             </section>

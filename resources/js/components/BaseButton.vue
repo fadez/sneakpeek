@@ -99,13 +99,19 @@ const spinnerPosition = computed(() => {
         :disabled="disabled"
     >
         <BaseSpinner v-if="spinnerPosition === 'before'" />
-        <i v-else-if="iconBefore" :class="iconBefore" />
+        <i
+            v-else-if="iconBefore"
+            :class="iconBefore"
+        />
 
         <span>
             <slot />
         </span>
 
         <BaseSpinner v-if="spinnerPosition === 'after'" />
-        <i v-else-if="iconAfter && !loading" :class="iconAfter" />
+        <i
+            v-else-if="iconAfter && !loading"
+            :class="iconAfter"
+        />
     </button>
 </template>

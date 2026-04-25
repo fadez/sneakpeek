@@ -145,6 +145,9 @@ const buttonClasses = computed(() => {
         :class="buttonClasses"
         :disabled="disabled"
     >
-        <i :class="icon" class="fa-sm"></i>
+        <i
+            :class="icon"
+            class="fa-sm"
+        ></i>
     </button>
 </template>

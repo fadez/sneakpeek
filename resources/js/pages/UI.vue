@@ -109,7 +109,11 @@ onBeforeUnmount(() => {
                 <template #title>Typography</template>
                 <div class="form">
                     <div class="form-group">
-                        <div v-for="type in ['text-logo', 'text-title', 'text-secondary', 'text-muted']" :key="type" :class="type">
+                        <div
+                            v-for="type in ['text-logo', 'text-title', 'text-secondary', 'text-muted']"
+                            :key="type"
+                            :class="type"
+                        >
                             .{{ type }}
                         </div>
                     </div>
@@ -119,12 +123,21 @@ onBeforeUnmount(() => {
             <BaseCard>
                 <template #title>Alert</template>
                 <div class="form">
-                    <BaseAlert v-for="type in alertTypes" :key="type" :type="type">
+                    <BaseAlert
+                        v-for="type in alertTypes"
+                        :key="type"
+                        :type="type"
+                    >
                         {{ type }}
                     </BaseAlert>
                 </div>
                 <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
-                    <BaseAlert v-for="type in alertTypes" :key="type" :type="type" :dismissible="true">
+                    <BaseAlert
+                        v-for="type in alertTypes"
+                        :key="type"
+                        :type="type"
+                        :dismissible="true"
+                    >
                         {{ type }}
                     </BaseAlert>
                 </div>
@@ -136,7 +149,11 @@ onBeforeUnmount(() => {
                     <div class="form-group">
                         <BaseLabel>Default buttons</BaseLabel>
                         <div class="flex flex-wrap items-start gap-2">
-                            <BaseButton v-for="type in buttonTypes" :key="type" :type="type">
+                            <BaseButton
+                                v-for="type in buttonTypes"
+                                :key="type"
+                                :type="type"
+                            >
                                 {{ type }}
                             </BaseButton>
                         </div>
@@ -146,7 +163,12 @@ onBeforeUnmount(() => {
                     <div class="form-group">
                         <BaseLabel>Disabled buttons</BaseLabel>
                         <div class="flex flex-wrap items-start gap-2">
-                            <BaseButton v-for="type in buttonTypes" :key="type" :type="type" disabled>
+                            <BaseButton
+                                v-for="type in buttonTypes"
+                                :key="type"
+                                :type="type"
+                                disabled
+                            >
                                 {{ type }}
                             </BaseButton>
                         </div>
@@ -156,7 +178,13 @@ onBeforeUnmount(() => {
                     <div class="form-group">
                         <BaseLabel>Disabled buttons with spinner</BaseLabel>
                         <div class="flex flex-wrap items-start gap-2">
-                            <BaseButton v-for="type in buttonTypes" :key="type" :type="type" :loading="true" disabled>
+                            <BaseButton
+                                v-for="type in buttonTypes"
+                                :key="type"
+                                :type="type"
+                                :loading="true"
+                                disabled
+                            >
                                 {{ type }}
                             </BaseButton>
                         </div>
@@ -283,17 +311,32 @@ onBeforeUnmount(() => {
                     <div class="form-row">
                         <div class="form-group">
                             <BaseLabel for="input-default">Default input</BaseLabel>
-                            <BaseInput id="input-default" placeholder="Placeholder" v-model="input" />
+                            <BaseInput
+                                id="input-default"
+                                placeholder="Placeholder"
+                                v-model="input"
+                            />
                         </div>
 
                         <div class="form-group">
                             <BaseLabel for="input-readonly">Read-only password input</BaseLabel>
-                            <BaseInput id="input-readonly" placeholder="Placeholder" v-model="input" type="password" readonly />
+                            <BaseInput
+                                id="input-readonly"
+                                placeholder="Placeholder"
+                                v-model="input"
+                                type="password"
+                                readonly
+                            />
                         </div>
 
                         <div class="form-group">
                             <BaseLabel for="input-disabled">Disabled input</BaseLabel>
-                            <BaseInput id="input-disabled" placeholder="Placeholder" v-model="input" disabled />
+                            <BaseInput
+                                id="input-disabled"
+                                placeholder="Placeholder"
+                                v-model="input"
+                                disabled
+                            />
                         </div>
                     </div>
                 </div>
@@ -305,17 +348,31 @@ onBeforeUnmount(() => {
                     <div class="form-row">
                         <div class="form-group">
                             <BaseLabel for="textarea-default">Default textarea</BaseLabel>
-                            <BaseTextarea id="textarea-default" placeholder="Placeholder" v-model="textarea" />
+                            <BaseTextarea
+                                id="textarea-default"
+                                placeholder="Placeholder"
+                                v-model="textarea"
+                            />
                         </div>
 
                         <div class="form-group">
                             <BaseLabel for="textarea-readonly">Read-only textarea</BaseLabel>
-                            <BaseTextarea id="textarea-readonly" placeholder="Placeholder" v-model="textarea" readonly />
+                            <BaseTextarea
+                                id="textarea-readonly"
+                                placeholder="Placeholder"
+                                v-model="textarea"
+                                readonly
+                            />
                         </div>
 
                         <div class="form-group">
                             <BaseLabel for="textarea-disabled">Disabled textarea</BaseLabel>
-                            <BaseTextarea id="textarea-disabled" placeholder="Placeholder" v-model="textarea" disabled />
+                            <BaseTextarea
+                                id="textarea-disabled"
+                                placeholder="Placeholder"
+                                v-model="textarea"
+                                disabled
+                            />
                         </div>
                     </div>
                 </div>
@@ -327,7 +384,10 @@ onBeforeUnmount(() => {
                     <div class="form-row">
                         <div class="form-group">
                             <BaseLabel for="select-default">Optional select</BaseLabel>
-                            <BaseSelect id="select-default" v-model="select">
+                            <BaseSelect
+                                id="select-default"
+                                v-model="select"
+                            >
                                 <option
                                     v-for="option in selectOptions"
                                     :key="option.value"
@@ -339,8 +399,17 @@ onBeforeUnmount(() => {
                             </BaseSelect>
                         </div>
                         <div class="form-group">
-                            <BaseLabel for="select-required" required>Required select</BaseLabel>
-                            <BaseSelect id="select-required" v-model="select" required>
+                            <BaseLabel
+                                for="select-required"
+                                required
+                            >
+                                Required select
+                            </BaseLabel>
+                            <BaseSelect
+                                id="select-required"
+                                v-model="select"
+                                required
+                            >
                                 <option
                                     v-for="option in selectOptions"
                                     :key="option.value"
@@ -353,7 +422,11 @@ onBeforeUnmount(() => {
                         </div>
                         <div class="form-group">
                             <BaseLabel for="select-disabled">Disabled select</BaseLabel>
-                            <BaseSelect id="select-disabled" v-model="select" disabled>
+                            <BaseSelect
+                                id="select-disabled"
+                                v-model="select"
+                                disabled
+                            >
                                 <option
                                     v-for="option in selectOptions"
                                     :key="option.value"
@@ -382,11 +455,26 @@ onBeforeUnmount(() => {
                 <template #title>Progress bars</template>
                 <div class="form">
                     <BaseProgressBar :value="progressValue" />
-                    <BaseProgressBar type="success" :value="progressValue" />
-                    <BaseProgressBar type="danger" :value="progressValue" />
-                    <BaseProgressBar type="info" :value="progressValue" />
-                    <BaseProgressBar type="warning" :value="progressValue" />
-                    <BaseProgressBar type="expiration" :value="progressValue" />
+                    <BaseProgressBar
+                        type="success"
+                        :value="progressValue"
+                    />
+                    <BaseProgressBar
+                        type="danger"
+                        :value="progressValue"
+                    />
+                    <BaseProgressBar
+                        type="info"
+                        :value="progressValue"
+                    />
+                    <BaseProgressBar
+                        type="warning"
+                        :value="progressValue"
+                    />
+                    <BaseProgressBar
+                        type="expiration"
+                        :value="progressValue"
+                    />
                 </div>
                 <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
                     <BaseProgressBar
@@ -402,7 +490,11 @@ onBeforeUnmount(() => {
                 <template #title>Statistics</template>
                 <div class="p-4">
                     <StatisticGrid class="sm:grid-cols-2 lg:grid-cols-4">
-                        <StatisticGridItem title="Secrets created" icon="fa-solid fa-lock" :value="progressValue * 10000" />
+                        <StatisticGridItem
+                            title="Secrets created"
+                            icon="fa-solid fa-lock"
+                            :value="progressValue * 10000"
+                        />
                         <StatisticGridItem
                             title="Secrets revealed"
                             icon="fa-solid fa-unlock"

@@ -1,0 +1,14 @@
+.agents/skills/
+.claude/skills/
+.codex/skills/
+.cursor/skills/
+.gemini/skills/
+.gemini/settings.json
+.github/skills/
+storage/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+boost.json
+.mcp.json
+**/mcp.json

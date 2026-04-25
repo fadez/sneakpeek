@@ -14,7 +14,9 @@
         "build": "vite build",
         "dev": "vite",
         "lint": "oxlint --fix",
-        "test:lint": "oxlint"
+        "test:lint": "oxlint",
+        "fmt": "prettier --write .",
+        "fmt:check": "prettier . --check"
     },
     "devDependencies": {
         "@laravel/echo-vue": "^2.3.4",

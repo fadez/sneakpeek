@@ -45,10 +45,21 @@ watch(
 </script>
 
 <template>
-    <div class="form-group" :class="[label ? 'py-1' : '']">
-        <div v-if="label" class="flex justify-between text-sm text-muted">
+    <div
+        class="form-group"
+        :class="[label ? 'py-1' : '']"
+    >
+        <div
+            v-if="label"
+            class="flex justify-between text-sm text-muted"
+        >
             <span>{{ label }}</span>
-            <span v-if="valueLabel" class="text-right">{{ valueLabel }}</span>
+            <span
+                v-if="valueLabel"
+                class="text-right"
+            >
+                {{ valueLabel }}
+            </span>
         </div>
         <div class="flex h-3 w-full overflow-hidden rounded-md bg-zinc-300 dark:bg-zinc-700">
             <div

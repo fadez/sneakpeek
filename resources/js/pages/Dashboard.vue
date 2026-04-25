@@ -35,7 +35,11 @@ onBeforeUnmount(() => {
         </div>
 
         <StatisticGrid class="sm:grid-cols-2 lg:grid-cols-4">
-            <StatisticGridItem title="Secrets created" icon="fa-solid fa-lock" :value="statistics.secrets_created" />
+            <StatisticGridItem
+                title="Secrets created"
+                icon="fa-solid fa-lock"
+                :value="statistics.secrets_created"
+            />
             <StatisticGridItem
                 title="Secrets revealed"
                 icon="fa-solid fa-unlock"
@@ -48,7 +52,12 @@ onBeforeUnmount(() => {
                 icon-bg="bg-yellow-500"
                 :value="statistics.secrets_expired"
             />
-            <StatisticGridItem title="Secrets burned" icon="fa-solid fa-fire" icon-bg="bg-rose-500" :value="statistics.secrets_burned" />
+            <StatisticGridItem
+                title="Secrets burned"
+                icon="fa-solid fa-fire"
+                icon-bg="bg-rose-500"
+                :value="statistics.secrets_burned"
+            />
         </StatisticGrid>
     </div>
 </template>

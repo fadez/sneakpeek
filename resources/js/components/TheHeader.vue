@@ -3,7 +3,10 @@ import AppLogo from '@/components/AppLogo.vue';
 </script>
 
 <template>
-    <header data-test="header" class="mb-4 border-b-2 border-zinc-200 bg-white dark:border-zinc-700 dark:bg-transparent">
+    <header
+        data-test="header"
+        class="mb-4 border-b-2 border-zinc-200 bg-white dark:border-zinc-700 dark:bg-transparent"
+    >
         <div class="page-container py-4">
             <div class="flex w-full flex-col justify-between md:flex-row md:items-center">
                 <div class="flex items-center justify-between">

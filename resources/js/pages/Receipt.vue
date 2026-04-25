@@ -29,14 +29,14 @@ const { focus, focusAndSelect } = useElementFocus();
 const secretLinkInput = useTemplateRef('secret-link-input');
 const passphraseInput = useTemplateRef('passphrase-input');
 
+const accessToken = ref('');
 const secret = ref(null);
-const secretAccessToken = ref(null);
 const passphrase = ref('');
 const showPassphraseInput = ref(false);
 const isDeletingSecret = ref(false);
 
 const hasAccessToken = computed(() => {
-    return !!secretAccessToken.value;
+    return !!accessToken.value;
 });
 
 const expiresInDiffForHumans = computed(() => {
@@ -61,7 +61,7 @@ const secretUrl = computed(() => {
         params: {
             id: secret.value.id,
         },
-        hash: `#${secretAccessToken.value}`,
+        hash: `#${accessToken.value}`,
     }).href;
 
     return `${window.location.origin}${path}`;
@@ -74,7 +74,7 @@ const fetchSecret = async () => {
     // and immediately clear it to prevent access via browser navigation
     if (state && state.secret) {
         secret.value = state.secret;
-        secretAccessToken.value = secret.value.access_token;
+        accessToken.value = secret.value.access_token;
 
         // Clear the state in the browser history
         const newState = { ...state };
@@ -105,7 +105,7 @@ const deleteSecret = async () => {
     try {
         await burnSecret(secret.value.id, {
             passphrase: passphrase.value,
-            access_token: secretAccessToken.value,
+            access_token: accessToken.value,
         });
 
         handleSecretBurned();
@@ -180,11 +180,12 @@ const handleSecretIdChange = (newId, oldId) => {
 
 const resetPage = () => {
     secret.value = null;
-    secretAccessToken.value = null;
-    clearPassphraseInput();
+    accessToken.value = '';
     isDeletingSecret.value = false;
+    clearPassphraseInput();
 };
 
+// Detect when a page is restored from bfcache and force reload
 const handlePageShow = (event) => {
     if (event.persisted) fetchSecret();
 };
@@ -217,11 +218,22 @@ onBeforeUnmount(() => {
     <div v-else>
         <BaseCard :show-actions="secret.is_available && hasAccessToken">
             <section class="form">
-                <BaseAlert v-if="secret.is_revealed" type="success">
+                <BaseAlert
+                    v-if="secret.is_revealed"
+                    type="success"
+                >
                     Secret has been revealed on {{ formatDate(secret.revealed_at) }}.
                 </BaseAlert>
-                <BaseAlert v-else-if="secret.is_expired" type="warning">Secret has expired without being revealed.</BaseAlert>
-                <BaseAlert v-else type="info">
+                <BaseAlert
+                    v-else-if="secret.is_expired"
+                    type="warning"
+                >
+                    Secret has expired without being revealed.
+                </BaseAlert>
+                <BaseAlert
+                    v-else
+                    type="info"
+                >
                     Secret is not yet revealed. It is available until {{ formatDate(secret.expires_at) }}.
                 </BaseAlert>
             </section>
@@ -233,7 +245,10 @@ onBeforeUnmount(() => {
                 <SecretPreview :passphrase-protected="secret.is_passphrase_protected" />
             </section>
 
-            <section v-if="!secret.is_revealed && !secret.is_expired" class="border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+            <section
+                v-if="!secret.is_revealed && !secret.is_expired"
+                class="border-t-2 border-zinc-200 p-4 dark:border-zinc-700"
+            >
                 <BaseProgressBar
                     type="expiration"
                     :label="`${secretExpirationProgress >= 100 ? 'Expired' : 'Expires'} ${expiresInDiffForHumans}`"
@@ -241,7 +256,10 @@ onBeforeUnmount(() => {
                 />
             </section>
 
-            <section v-if="secret.is_available && hasAccessToken" class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+            <section
+                v-if="secret.is_available && hasAccessToken"
+                class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700"
+            >
                 <div class="form-group">
                     <BaseLabel for="secret-link-input">Secret Link</BaseLabel>
                     <BaseInput
@@ -271,7 +289,13 @@ onBeforeUnmount(() => {
                     @keyup.esc="cancelSecretDeletion"
                 />
 
-                <BaseButton v-if="!showPassphraseInput" icon-before="fa-solid fa-copy" @click="copySecretUrl">Copy Secret Link</BaseButton>
+                <BaseButton
+                    v-if="!showPassphraseInput"
+                    icon-before="fa-solid fa-copy"
+                    @click="copySecretUrl"
+                >
+                    Copy Secret Link
+                </BaseButton>
 
                 <BaseButton
                     type="danger"
@@ -282,7 +306,12 @@ onBeforeUnmount(() => {
                 >
                     Burn Secret
                 </BaseButton>
-                <BaseButton v-if="showPassphraseInput" type="light" :disabled="isDeletingSecret" @click="cancelSecretDeletion">
+                <BaseButton
+                    v-if="showPassphraseInput"
+                    type="light"
+                    :disabled="isDeletingSecret"
+                    @click="cancelSecretDeletion"
+                >
                     Cancel
                 </BaseButton>
             </template>

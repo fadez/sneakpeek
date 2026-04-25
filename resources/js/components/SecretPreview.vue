@@ -18,7 +18,12 @@ defineProps({
         </div>
         <div class="flex shrink-0 flex-row items-end gap-2">
             <BaseBadge icon="fa-solid fa-lock">Encrypted</BaseBadge>
-            <BaseBadge v-if="passphraseProtected" icon="fa-solid fa-key">Passphrase-protected</BaseBadge>
+            <BaseBadge
+                v-if="passphraseProtected"
+                icon="fa-solid fa-key"
+            >
+                Passphrase-protected
+            </BaseBadge>
         </div>
     </div>
 </template>

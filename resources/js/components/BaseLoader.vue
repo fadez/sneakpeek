@@ -20,7 +20,10 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="pointer-events-none relative m-auto flex w-full items-center justify-center rounded-md select-none" :class="[padding]">
+    <div
+        class="pointer-events-none relative m-auto flex w-full items-center justify-center rounded-md select-none"
+        :class="[padding]"
+    >
         <svg
             class="animate-spin"
             :class="[size, fillColor, textColor]"

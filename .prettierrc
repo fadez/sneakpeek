@@ -3,7 +3,7 @@
     "tailwindStylesheet": "./resources/css/app.css",
     "singleQuote": true,
     "bracketSameLine": false,
-    "singleAttributePerLine": false,
+    "singleAttributePerLine": true,
     "htmlWhitespaceSensitivity": "ignore",
     "printWidth": 140
 }

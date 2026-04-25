@@ -25,7 +25,10 @@ const abGroupLabel = computed(() => {
 </script>
 
 <template>
-    <footer data-test="footer" class="my-4">
+    <footer
+        data-test="footer"
+        class="my-4"
+    >
         <div class="page-container">
             <div class="flex flex-col justify-between text-secondary md:flex-row">
                 <div>© {{ currentYear }} {{ appName }}</div>
@@ -38,24 +41,53 @@ const abGroupLabel = computed(() => {
                         <BaseLink :to="{ name: 'ui' }">UI kit</BaseLink>
                     </div>
                     <div class="inline-flex">
-                        <BaseLink :href="repositoryUrl" target="_blank">GitHub</BaseLink>
+                        <BaseLink
+                            :href="repositoryUrl"
+                            target="_blank"
+                        >
+                            GitHub
+                        </BaseLink>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col justify-between text-muted md:flex-row">
                 <div class="inline-flex items-center gap-1">
                     Built with
-                    <img src="../../images/heart.svg" alt="love" class="pointer-events-none h-6 w-5" />
+                    <img
+                        src="../../images/heart.svg"
+                        alt="love"
+                        class="pointer-events-none h-6 w-5"
+                    />
                     in
-                    <img src="../../images/flag-ua.svg" alt="Ukraine" class="pointer-events-none h-6 w-5" />
+                    <img
+                        src="../../images/flag-ua.svg"
+                        alt="Ukraine"
+                        class="pointer-events-none h-6 w-5"
+                    />
                     by
-                    <BaseLink :href="authorUrl" target="_blank">Alex Fadez</BaseLink>
+                    <BaseLink
+                        :href="authorUrl"
+                        target="_blank"
+                    >
+                        Alex Fadez
+                    </BaseLink>
                 </div>
                 <div class="bullet-divider">
-                    <div v-if="abGroupLabel" class="inline-flex">{{ abGroupLabel }}</div>
-                    <div v-if="currentVersionUrl" class="inline-flex items-center gap-1">
+                    <div
+                        v-if="abGroupLabel"
+                        class="inline-flex"
+                    >
+                        {{ abGroupLabel }}
+                    </div>
+                    <div
+                        v-if="currentVersionUrl"
+                        class="inline-flex items-center gap-1"
+                    >
                         Version:
-                        <BaseLink :href="currentVersionUrl" target="_blank">
+                        <BaseLink
+                            :href="currentVersionUrl"
+                            target="_blank"
+                        >
                             {{ commitHash }}
                         </BaseLink>
                     </div>

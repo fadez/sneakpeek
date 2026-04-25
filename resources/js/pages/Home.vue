@@ -92,7 +92,12 @@ onMounted(() => {
                 <BaseAlert type="info">Your message will self-destruct after being revealed.</BaseAlert>
 
                 <div class="form-group">
-                    <BaseLabel for="secret-content-textarea" required>Content</BaseLabel>
+                    <BaseLabel
+                        for="secret-content-textarea"
+                        required
+                    >
+                        Content
+                    </BaseLabel>
                     <BaseTextarea
                         id="secret-content-textarea"
                         ref="secret-content-textarea"
@@ -124,9 +129,23 @@ onMounted(() => {
                     </div>
 
                     <div class="form-group">
-                        <BaseLabel for="ttl-select" required>Expiration Time</BaseLabel>
-                        <BaseSelect id="ttl-select" data-test="ttl-select" v-model.number="ttl" required>
-                            <option v-for="option in ttlOptions" :key="option.value" :value="option.value">
+                        <BaseLabel
+                            for="ttl-select"
+                            required
+                        >
+                            Expiration Time
+                        </BaseLabel>
+                        <BaseSelect
+                            id="ttl-select"
+                            data-test="ttl-select"
+                            v-model.number="ttl"
+                            required
+                        >
+                            <option
+                                v-for="option in ttlOptions"
+                                :key="option.value"
+                                :value="option.value"
+                            >
                                 {{ option.label }}
                             </option>
                         </BaseSelect>
