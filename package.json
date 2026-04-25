@@ -12,7 +12,9 @@
     },
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "lint": "oxlint --fix",
+        "test:lint": "oxlint"
     },
     "devDependencies": {
         "@laravel/echo-vue": "^2.3.4",
@@ -22,6 +24,7 @@
         "concurrently": "^9.2.1",
         "laravel-echo": "^2.3.4",
         "laravel-vite-plugin": "^3.0.1",
+        "oxlint": "^1.61.0",
         "prettier": "^3.8.3",
         "prettier-plugin-tailwindcss": "^0.7.3",
         "pusher-js": "^8.5.0",

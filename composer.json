@@ -47,13 +47,13 @@
             "@php artisan key:generate",
             "@install:sqlite",
             "@php artisan migrate --force",
-            "@build:assets",
+            "@build",
             "@install:playwright"
         ],
         "install:playwright": "npx playwright install --with-deps",
         "install:reverb": "@php artisan reverb:install",
         "install:sqlite": "@php -r \"!file_exists('database/database.sqlite') && touch('database/database.sqlite');\"",
-        "build:assets": [
+        "build": [
             "node -e \"require('fs').rmSync('node_modules', { recursive: true, force: true })\"",
             "npm install",
             "npm run build"
@@ -61,13 +61,15 @@
         "update:requirements": [
             "composer bump",
             "npx npm-check-updates -u",
-            "@build:assets"
+            "@build"
         ],
         "lint": [
+            "npm run lint",
             "pint --parallel",
             "rector --clear-cache"
         ],
         "test:lint": [
+            "npm run test:lint",
             "pint --parallel --test",
             "rector --dry-run --clear-cache"
         ],
