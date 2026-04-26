@@ -62,7 +62,7 @@ const abGroupLabel = computed(() => {
                     <img
                         src="../../images/flag-ua.svg"
                         alt="Ukraine"
-                        class="pointer-events-none h-6 w-5"
+                        class="pointer-events-none mx-0.5 h-6 w-5"
                     />
                     by
                     <BaseLink
@@ -81,15 +81,17 @@ const abGroupLabel = computed(() => {
                     </div>
                     <div
                         v-if="currentVersionUrl"
-                        class="inline-flex items-center gap-1"
+                        class="inline-flex"
                     >
-                        Version:
-                        <BaseLink
-                            :href="currentVersionUrl"
-                            target="_blank"
-                        >
-                            {{ commitHash }}
-                        </BaseLink>
+                        <div class="inline-flex items-center gap-1">
+                            Version:
+                            <BaseLink
+                                :href="currentVersionUrl"
+                                target="_blank"
+                            >
+                                {{ commitHash }}
+                            </BaseLink>
+                        </div>
                     </div>
                 </div>
             </div>
