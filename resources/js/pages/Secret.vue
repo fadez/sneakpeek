@@ -124,7 +124,7 @@ const resetPage = () => {
 
 // Detect when a page is restored from bfcache and force reload
 const handlePageShow = (event) => {
-    if (event.persisted) refreshSecret();
+    if (event.persisted) fetchSecret();
 };
 
 const secretExpirationProgress = useSecretExpirationProgress(secret, refreshSecret);
