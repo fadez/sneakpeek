@@ -1,11 +1,8 @@
 <script setup>
 import BaseBadge from '@/components/BaseBadge.vue';
 
-defineProps({
-    passphraseProtected: {
-        type: Boolean,
-        default: false,
-    },
+const { passphraseProtected = false } = defineProps({
+    passphraseProtected: Boolean,
 });
 </script>
 

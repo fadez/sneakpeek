@@ -1,31 +1,23 @@
 <script setup>
 import NumberFlow from '@number-flow/vue';
 
-const props = defineProps({
-    title: {
-        type: String,
-        default: '',
-    },
-    icon: {
-        type: String,
-        default: '',
-    },
-    iconBg: {
-        type: String,
-        default: 'bg-sky-500',
-    },
+const {
+    title = '',
+    icon = '',
+    iconBg = 'bg-sky-500',
+    value,
+    prefix = '',
+    suffix = '',
+} = defineProps({
+    title: String,
+    icon: String,
+    iconBg: String,
     value: {
         type: [String, Number],
         required: true,
     },
-    prefix: {
-        type: String,
-        default: '',
-    },
-    suffix: {
-        type: String,
-        default: '',
-    },
+    prefix: String,
+    suffix: String,
 });
 </script>
 

@@ -2,17 +2,14 @@
 import { computed, useAttrs } from 'vue';
 import { RouterLink } from 'vue-router';
 
-const props = defineProps({
+const { to, fontWeight = 'font-medium' } = defineProps({
     to: [String, Object],
-    fontWeight: {
-        type: String,
-        default: 'font-medium',
-    },
+    fontWeight: String,
 });
 
 const attrs = useAttrs();
 
-const isRouterLink = computed(() => !!props.to);
+const isRouterLink = computed(() => !!to);
 </script>
 
 <template>

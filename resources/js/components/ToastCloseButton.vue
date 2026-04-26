@@ -1,14 +1,11 @@
 <script setup>
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
-const props = defineProps({
+const { type } = defineProps({
     type: {
         type: String,
         required: true,
-        validator(value) {
-            // Value must be a toast type
-            return ['neutral', 'success', 'info', 'warning', 'danger'].includes(value);
-        },
+        validator: (value) => ['neutral', 'success', 'info', 'warning', 'danger'].includes(value),
     },
 });
 </script>

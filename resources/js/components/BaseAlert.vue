@@ -4,24 +4,19 @@ import { useRoute } from 'vue-router';
 import { NOTIFICATION_TYPE_ICONS } from '@/constants/icons';
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
-const props = defineProps({
+const {
+    type = 'info',
+    showIcon = true,
+    icon = '',
+    dismissible = false,
+} = defineProps({
     type: {
         type: String,
-        default: 'info',
         validator: (value) => ['neutral', 'success', 'danger', 'info', 'warning'].includes(value),
     },
-    showIcon: {
-        type: Boolean,
-        default: true,
-    },
-    icon: {
-        type: String,
-        default: '',
-    },
-    dismissible: {
-        type: Boolean,
-        default: false,
-    },
+    showIcon: Boolean,
+    icon: String,
+    dismissible: Boolean,
 });
 
 const emit = defineEmits(['dismiss']);
@@ -74,10 +69,10 @@ const typeClasses = {
 };
 
 const alertClasses = computed(() => {
-    return typeClasses[props.type];
+    return typeClasses[type];
 });
 
-const iconClasses = computed(() => props.icon || NOTIFICATION_TYPE_ICONS[props.type]);
+const iconClasses = computed(() => icon || NOTIFICATION_TYPE_ICONS[type]);
 
 const dismiss = () => {
     if (route.name !== 'ui') {

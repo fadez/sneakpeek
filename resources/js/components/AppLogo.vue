@@ -1,9 +1,6 @@
 <script setup>
-defineProps({
-    link: {
-        type: Boolean,
-        default: false,
-    },
+const { link = false } = defineProps({
+    link: Boolean,
 });
 </script>
 

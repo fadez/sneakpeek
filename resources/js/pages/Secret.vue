@@ -122,8 +122,8 @@ const resetPage = () => {
     clearPassphraseInput();
 };
 
-// Detect when a page is restored from bfcache and force reload
 const handlePageShow = (event) => {
+    // Reload secret if page is restored from bfcache
     if (event.persisted) fetchSecret();
 };
 

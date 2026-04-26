@@ -1,9 +1,6 @@
 <script setup>
-const props = defineProps({
-    required: {
-        type: Boolean,
-        default: false,
-    },
+const { required = false } = defineProps({
+    required: Boolean,
 });
 </script>
 

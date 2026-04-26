@@ -1,9 +1,6 @@
 <script setup>
-const props = defineProps({
-    icon: {
-        type: String,
-        default: '',
-    },
+const { icon = '' } = defineProps({
+    icon: String,
 });
 </script>
 

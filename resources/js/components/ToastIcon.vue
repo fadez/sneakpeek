@@ -1,13 +1,11 @@
 <script setup>
 import { NOTIFICATION_TYPE_ICONS } from '@/constants/icons';
 
-const props = defineProps({
+const { type } = defineProps({
     type: {
         type: String,
         required: true,
-        validator(value) {
-            return ['neutral', 'success', 'info', 'warning', 'danger'].includes(value);
-        },
+        validator: (value) => ['neutral', 'success', 'info', 'warning', 'danger'].includes(value),
     },
 });
 </script>

@@ -3,11 +3,8 @@ import { computed, useSlots } from 'vue';
 
 const slots = useSlots();
 
-const props = defineProps({
-    showActions: {
-        type: Boolean,
-        default: true,
-    },
+const { showActions = true } = defineProps({
+    showActions: Boolean,
 });
 
 const hasTitle = computed(() => slots.title?.());

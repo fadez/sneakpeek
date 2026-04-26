@@ -1,21 +1,14 @@
 <script setup>
-const props = defineProps({
-    size: {
-        type: String,
-        default: 'w-16 h-16',
-    },
-    padding: {
-        type: String,
-        default: 'p-4',
-    },
-    fillColor: {
-        type: String,
-        default: 'fill-sky-500',
-    },
-    textColor: {
-        type: String,
-        default: 'text-zinc-300 dark:text-zinc-700',
-    },
+const {
+    size = 'w-16 h-16',
+    padding = 'p-4',
+    fillColor = 'fill-sky-500',
+    textColor = 'text-zinc-300 dark:text-zinc-700',
+} = defineProps({
+    size: String,
+    padding: String,
+    fillColor: String,
+    textColor: String,
 });
 </script>
 

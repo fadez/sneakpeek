@@ -1,36 +1,25 @@
 <script setup>
 import { computed } from 'vue';
 
-const props = defineProps({
+const {
+    type = 'info',
+    icon = '',
+    colored = false,
+    active = false,
+    disabled = false,
+    size = 'default',
+} = defineProps({
     type: {
         type: String,
-        default: 'info',
-        validator(value) {
-            return ['success', 'danger', 'info', 'warning', 'light'].includes(value);
-        },
+        validator: (value) => ['success', 'danger', 'info', 'warning', 'light'].includes(value),
     },
-    icon: {
-        type: String,
-        default: '',
-    },
-    colored: {
-        type: Boolean,
-        default: false,
-    },
-    active: {
-        type: Boolean,
-        default: false,
-    },
-    disabled: {
-        type: Boolean,
-        default: false,
-    },
+    icon: String,
+    colored: Boolean,
+    active: Boolean,
+    disabled: Boolean,
     size: {
         type: String,
-        default: 'default',
-        validator(value) {
-            return ['sm', 'default'].includes(value);
-        },
+        validator: (value) => ['sm', 'default'].includes(value),
     },
 });
 
@@ -51,9 +40,9 @@ const buttonClasses = computed(() => {
         light: 'border-zinc-950',
     };
 
-    if (!props.active) {
-        if (props.colored) {
-            baseBorderClass = coloredBorders[props.type];
+    if (!active) {
+        if (colored) {
+            baseBorderClass = coloredBorders[type];
         } else {
             baseBorderClass = 'border-zinc-200';
         }
@@ -67,31 +56,31 @@ const buttonClasses = computed(() => {
         light: 'text-zink-950',
     };
 
-    if (!props.active) {
-        if (props.colored) {
-            baseTextClass = coloredTextColors[props.type];
+    if (!active) {
+        if (colored) {
+            baseTextClass = coloredTextColors[type];
         } else {
             baseTextClass = 'text-zinc-950';
         }
     }
 
-    const commonNonColoredClasses = props.active ? '' : 'bg-white';
-    const commonColoredClasses = props.active ? '' : 'bg-white dark:bg-transparent';
+    const commonNonColoredClasses = active ? '' : 'bg-white';
+    const commonColoredClasses = active ? '' : 'bg-white dark:bg-transparent';
 
     const nonColoredClasses = {
-        success: props.active
+        success: active
             ? 'border-emerald-500 bg-emerald-100 text-emerald-500'
             : 'hover:border-emerald-500 hover:bg-emerald-100 hover:text-emerald-500 active:border-emerald-500 active:bg-emerald-200 active:text-emerald-500',
-        danger: props.active
+        danger: active
             ? 'border-rose-500 bg-rose-100 text-rose-500'
             : 'hover:border-rose-500 hover:bg-rose-100 hover:text-rose-500 active:border-rose-500 active:bg-rose-200 active:text-rose-500',
-        info: props.active
+        info: active
             ? 'border-sky-500 bg-sky-100 text-sky-500'
             : 'hover:border-sky-500 hover:bg-sky-100 hover:text-sky-500 active:border-sky-500 active:bg-sky-200 active:text-sky-500',
-        warning: props.active
+        warning: active
             ? 'border-yellow-500 bg-yellow-100 text-yellow-500'
             : 'hover:border-yellow-500 hover:bg-yellow-100 hover:text-yellow-500 active:border-yellow-500 active:bg-yellow-200 active:text-yellow-500',
-        light: props.active
+        light: active
             ? 'border-zinc-950 bg-zinc-200 text-zinc-950'
             : 'hover:border-zinc-950 hover:bg-zinc-200 active:border-zinc-950 active:bg-zinc-300',
     };
@@ -106,19 +95,19 @@ const buttonClasses = computed(() => {
 
     // prettier-ignore
     const coloredClasses = {
-        success: props.active
+        success: active
             ? 'border-emerald-500 bg-emerald-100 text-emerald-500 active:bg-emerald-200'
             : 'hover:bg-emerald-100 hover:border-emerald-500 dark:hover:bg-emerald-900 dark:active:bg-emerald-950',
-        danger: props.active
+        danger: active
             ? 'border-rose-500 bg-rose-100 text-rose-500 active:bg-rose-200'
             : 'hover:bg-rose-100 dark:hover:bg-rose-900 dark:active:bg-rose-950',
-        info: props.active
+        info: active
             ? 'border-sky-500 bg-sky-100 text-sky-500 dark:active:bg-sky-200'
             : 'hover:bg-sky-100 dark:hover:bg-sky-900 dark:active:bg-sky-950',
-        warning: props.active
+        warning: active
             ? 'border-yellow-500 bg-yellow-100 text-yellow-500 active:bg-yellow-200'
             : 'hover:bg-yellow-100 dark:hover:bg-yellow-900 dark:active:bg-yellow-950',
-        light: props.active
+        light: active
             ? 'border-zinc-950 dark:border-zinc-100 bg-zinc-200 dark:bg-zinc-700 text-zinc-950 dark:text-zinc-100 dark:active:bg-zinc-950'
             : 'hover:bg-zinc-200 dark:bg-zinc-900 dark:border-zinc-100 dark:hover:bg-zinc-700 dark:hover:border-zinc-100 dark:active:bg-zinc-950',
     };
@@ -126,11 +115,11 @@ const buttonClasses = computed(() => {
     const classes = [
         baseBorderClass,
         baseTextClass,
-        sizeClasses[props.size],
-        props.colored ? coloredActiveStateClasses[props.type] : '',
-        props.colored ? commonColoredClasses : commonNonColoredClasses,
-        props.colored ? coloredClasses[props.type] : nonColoredClasses[props.type],
-        props.disabled ? 'pointer-events-none opacity-50' : '',
+        sizeClasses[size],
+        colored ? coloredActiveStateClasses[type] : '',
+        colored ? commonColoredClasses : commonNonColoredClasses,
+        colored ? coloredClasses[type] : nonColoredClasses[type],
+        disabled ? 'pointer-events-none opacity-50' : '',
     ]
         .filter(Boolean)
         .join(' ');

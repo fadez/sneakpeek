@@ -1,27 +1,22 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
 
-const props = defineProps({
-    value: {
-        type: Number,
-        default: 0.0,
-    },
-    label: {
-        type: String,
-        default: '',
-    },
-    valueLabel: {
-        type: String,
-        default: '',
-    },
+const {
+    value = 0.0,
+    label = '',
+    valueLabel = '',
+    type = 'default',
+} = defineProps({
+    value: Number,
+    label: String,
+    valueLabel: String,
     type: {
         type: String,
-        default: 'default',
         validator: (value) => ['default', 'success', 'danger', 'info', 'warning', 'expiration'].includes(value),
     },
 });
 
-const prevValue = ref(props.value);
+const prevValue = ref(value);
 const isIncreasing = ref(true);
 
 const typeClasses = {
@@ -33,10 +28,10 @@ const typeClasses = {
     expiration: 'bg-gradient-to-r from-emerald-500 via-yellow-500 to-red-500',
 };
 
-const barClasses = computed(() => typeClasses[props.type]);
+const barClasses = computed(() => typeClasses[type]);
 
 watch(
-    () => props.value,
+    () => value,
     (newVal, oldVal) => {
         isIncreasing.value = newVal >= oldVal;
         prevValue.value = oldVal;

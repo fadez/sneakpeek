@@ -67,8 +67,9 @@ Designed, developed and maintained by **[Alex Fadez](https://github.com/fadez)**
 <summary><strong>Frontend</strong></summary>
 
 - **Vue.js**
-    - All Vue components use **[Composition API](https://vuejs.org/guide/extras/composition-api-faq)** with the `<script setup>` syntax
     - Modular, component-based structure with reusable **[Single File Components](https://vuejs.org/guide/scaling-up/sfc)**
+    - Vue components use **[Composition API](https://vuejs.org/guide/extras/composition-api-faq)** with the `<script setup>` syntax
+    - Vue components use cutting-edge Vue features such as `useTemplateRef` and reactive props destructuring
     - Single-page application architecture powered by **[Vue Router](https://router.vuejs.org)**
     - Consistent naming conventions and directory organization for ease of navigation and scalability
     - **[Pinia](https://pinia.vuejs.org)** for centralized state management and application-wide reactive data
