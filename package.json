@@ -22,7 +22,6 @@
         "@laravel/echo-vue": "^2.3.4",
         "@tailwindcss/vite": "^4.3.0",
         "@vitejs/plugin-vue": "^6.0.7",
-        "concurrently": "^9.2.1",
         "laravel-echo": "^2.3.4",
         "laravel-vite-plugin": "^3.1.0",
         "npm-check-updates": "^22.2.0",
