@@ -10,7 +10,8 @@
         <a href="https://www.php.net"><img alt="PHP version" src="https://img.shields.io/badge/PHP-v8.5-777bb3?style=flat&logo=php&logoColor=777bb3&labelColor=24292E" /></a>
         <a href="https://laravel.com"><img alt="Laravel version" src="https://img.shields.io/badge/Laravel-v13-ff2d20?style=flat&logo=laravel&logoColor=ff2d20&labelColor=24292E" /></a>
         <a href="https://vuejs.org"><img alt="Vue.js version" src="https://img.shields.io/badge/Vue.js-v3.5-42b883?style=flat&logo=vuedotjs&logoColor=42b883&labelColor=24292E" /></a>
-        <a href="https://tailwindcss.com"><img alt="Tailwind CSS version" src="https://img.shields.io/badge/Tailwind_CSS-v4.2-38bdf8?style=flat&logo=tailwindcss&logoColor=38bdf8&labelColor=24292E" /></a>
+        <a href="https://www.typescriptlang.org"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-v5.9-3278c5?style=flat&logo=typescript&logoColor=3278c5&labelColor=24292E" /></a>
+        <a href="https://tailwindcss.com"><img alt="Tailwind CSS version" src="https://img.shields.io/badge/Tailwind_CSS-v4.3-38bdf8?style=flat&logo=tailwindcss&logoColor=38bdf8&labelColor=24292E" /></a>
     </p>
 </p>
 
@@ -74,6 +75,7 @@ Designed, developed and maintained by **[Alex Fadez](https://github.com/fadez)**
     - Consistent naming conventions and directory organization for ease of navigation and scalability
     - **[Pinia](https://pinia.vuejs.org)** for centralized state management and application-wide reactive data
     - Centralized notification system powered by Pinia store, providing a unified API for toast notifications across the entire application
+    - Maximum type safety enforced by **[TypeScript](https://www.typescriptlang.org)**
 - **Laravel Echo**
     - Powers real-time event broadcasting support
 - **Tailwind CSS**
@@ -81,10 +83,10 @@ Designed, developed and maintained by **[Alex Fadez](https://github.com/fadez)**
     - Modern utility-first styling for mobile-first responsive design
     - Light and dark mode support with automatic switching
     - Comprehensive support for seamless keyboard-only navigation, ensuring full accessibility compliance and superior user experience for power users
-- **Vite**
-    - Lightning-fast builds and production optimization with intelligent code splitting and chunk optimization for optimal load performance
-- **Quality Assurance (QA)**
-    - JavaScript linting with **[Oxlint](.oxlintrc.json)**, enforcing correctness rules across the frontend codebase
+- **Vite+**
+    - Lightning-fast builds with **[Vite](https://viteplus.dev/guide/build)** and production optimization with intelligent code splitting and chunk optimization for optimal load performance
+    - Lightning-fast linting with **[Oxlint](https://viteplus.dev/guide/lint)**, enforcing correctness rules across the frontend codebase
+    - Lightning-fast formatting with **[Oxfmt](https://viteplus.dev/guide/fmt)**, enforcing consistent code style across the frontend codebase
 
 </details>
 
@@ -202,18 +204,27 @@ If you're using **[Laravel Herd](https://herd.laravel.com)**, you can now access
 
 ## Available commands
 
-### Code quality
+<details>
+<summary><strong>Code quality</strong></summary>
 
 - `composer lint` - Runs Rector, Laravel Pint and Oxlint
 - `composer test:lint` - Runs Rector, Laravel Pint and Oxlint in dry-run mode for CI/CD pipelines
 
-### Testing
+</details>
+
+<details>
+<summary><strong>Testing</strong></summary>
 
 - `composer test:type-coverage` - Runs Pest type coverage checks (ensures 100% type coverage)
 - `composer test:types` - Runs PHPStan at level 10 (maximum strictness)
 - `composer test:unit` - Runs all Pest tests (unit, feature, browser and architecture tests)
 - `composer test` - Runs the complete test suite (type coverage, static analysis, linting, and all Pest tests)
 
-### Maintenance
+</details>
+
+<details>
+<summary><strong>Maintenance</strong></summary>
 
 - `composer update:requirements` - Updates all Composer and npm dependencies and rebuilds frontend assets
+
+</details>

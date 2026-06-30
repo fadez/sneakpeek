@@ -1,19 +1,19 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { useFeatureStore } from '@/stores/features';
 import BaseLink from '@/components/BaseLink.vue';
 
 const features = useFeatureStore();
 
-const appName = import.meta.env.VITE_APP_NAME;
-const authorUrl = __AUTHOR_URL__;
-const repositoryUrl = __REPOSITORY_URL__;
-const commitHash = __COMMIT_HASH__;
-const currentYear = new Date().getFullYear();
+const appName: string = import.meta.env.VITE_APP_NAME;
+const authorUrl: string = __AUTHOR_URL__;
+const repositoryUrl: string = __REPOSITORY_URL__;
+const commitHash: string | null = __COMMIT_HASH__;
+const currentYear: number = new Date().getFullYear();
 
-const currentVersionUrl = computed(() => (commitHash ? `${repositoryUrl}/commit/${commitHash}` : null));
+const currentVersionUrl = computed<string | null>(() => (commitHash ? `${repositoryUrl}/commit/${commitHash}` : null));
 
-const abGroupLabel = computed(() => {
+const abGroupLabel = computed<string | null>(() => {
     const group = features.value('ab-group');
 
     if (!group) return null;

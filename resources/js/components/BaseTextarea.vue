@@ -1,9 +1,7 @@
-<script setup>
-import { computed, useAttrs, useTemplateRef } from 'vue';
+<script setup lang="ts">
+import { computed, useAttrs, useTemplateRef, type Ref } from 'vue';
 
-const model = defineModel({
-    type: String,
-});
+const model = defineModel<string>();
 
 defineExpose({
     focus: () => textarea.value?.focus(),
@@ -12,7 +10,7 @@ defineExpose({
 
 const attrs = useAttrs();
 
-const textarea = useTemplateRef('textarea');
+const textarea = useTemplateRef('textarea') as Ref<HTMLTextAreaElement | null>;
 
 const textareaClasses = computed(() => ('disabled' in attrs ? '' : 'hover:not-focus:border-zinc-325 dark:hover:not-focus:border-zinc-500'));
 </script>

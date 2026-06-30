@@ -1,5 +1,5 @@
-<script setup>
-import NumberFlow from '@number-flow/vue';
+<script setup lang="ts">
+import NumberFlow, { type Value } from '@number-flow/vue';
 
 const {
     title = '',
@@ -8,17 +8,14 @@ const {
     value,
     prefix = '',
     suffix = '',
-} = defineProps({
-    title: String,
-    icon: String,
-    iconBg: String,
-    value: {
-        type: [String, Number],
-        required: true,
-    },
-    prefix: String,
-    suffix: String,
-});
+} = defineProps<{
+    title?: string;
+    icon?: string;
+    iconBg?: string;
+    value: Value;
+    prefix?: string;
+    suffix?: string;
+}>();
 </script>
 
 <template>

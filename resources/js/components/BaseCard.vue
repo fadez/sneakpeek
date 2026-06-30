@@ -1,14 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { computed, useSlots } from 'vue';
 
 const slots = useSlots();
 
-const { showActions = true } = defineProps({
-    showActions: Boolean,
-});
+const { showActions = true } = defineProps<{
+    showActions?: boolean;
+}>();
 
-const hasTitle = computed(() => slots.title?.());
-const hasActions = computed(() => slots.actions?.());
+const hasTitle = computed(() => !!slots.title?.());
+const hasActions = computed(() => !!slots.actions?.());
 </script>
 
 <template>
@@ -17,16 +17,16 @@ const hasActions = computed(() => slots.actions?.());
             v-if="hasTitle"
             class="card-title"
         >
-            <slot name="title"></slot>
+            <slot name="title" />
         </section>
 
-        <slot></slot>
+        <slot />
 
         <section
             v-if="hasActions && showActions"
             class="card-actions"
         >
-            <slot name="actions"></slot>
+            <slot name="actions" />
         </section>
     </div>
 </template>

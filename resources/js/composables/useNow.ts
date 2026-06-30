@@ -1,6 +1,6 @@
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 
-const now = ref(Date.now());
+const now: Ref<number> = ref(Date.now());
 
 setInterval(() => {
     now.value = Date.now();

@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import BaseBadge from '@/components/BaseBadge.vue';
 
-const { passphraseProtected = false } = defineProps({
-    passphraseProtected: Boolean,
-});
+defineProps<{
+    passphraseProtected?: boolean;
+}>();
 </script>
 
 <template>
@@ -13,8 +13,10 @@ const { passphraseProtected = false } = defineProps({
                 {{ '•'.repeat(111) }}
             </span>
         </div>
+
         <div class="flex shrink-0 flex-row items-end gap-2">
             <BaseBadge icon="fa-solid fa-lock">Encrypted</BaseBadge>
+
             <BaseBadge
                 v-if="passphraseProtected"
                 icon="fa-solid fa-key"

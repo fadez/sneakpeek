@@ -1,5 +1,8 @@
-<script setup>
+<script setup lang="ts">
+import { IconButtonType } from '@/types';
 import { computed } from 'vue';
+
+type ButtonSize = 'sm' | 'default';
 
 const {
     type = 'info',
@@ -8,22 +11,16 @@ const {
     active = false,
     disabled = false,
     size = 'default',
-} = defineProps({
-    type: {
-        type: String,
-        validator: (value) => ['success', 'danger', 'info', 'warning', 'light'].includes(value),
-    },
-    icon: String,
-    colored: Boolean,
-    active: Boolean,
-    disabled: Boolean,
-    size: {
-        type: String,
-        validator: (value) => ['sm', 'default'].includes(value),
-    },
-});
+} = defineProps<{
+    type?: IconButtonType;
+    icon?: string;
+    colored?: boolean;
+    active?: boolean;
+    disabled?: boolean;
+    size?: ButtonSize;
+}>();
 
-const sizeClasses = {
+const sizeClasses: Record<ButtonSize, string> = {
     default: 'h-10 w-10 text-lg',
     sm: 'h-7 w-7',
 };
@@ -32,7 +29,7 @@ const buttonClasses = computed(() => {
     let baseBorderClass = '';
     let baseTextClass = '';
 
-    const coloredBorders = {
+    const coloredBorders: Record<IconButtonType, string> = {
         success: 'border-emerald-500',
         danger: 'border-rose-500',
         info: 'border-sky-500',
@@ -41,33 +38,25 @@ const buttonClasses = computed(() => {
     };
 
     if (!active) {
-        if (colored) {
-            baseBorderClass = coloredBorders[type];
-        } else {
-            baseBorderClass = 'border-zinc-200';
-        }
+        baseBorderClass = colored ? coloredBorders[type] : 'border-zinc-200';
     }
 
-    const coloredTextColors = {
+    const coloredTextColors: Record<IconButtonType, string> = {
         info: 'text-sky-500',
         success: 'text-emerald-500',
         danger: 'text-rose-500',
         warning: 'text-yellow-500',
-        light: 'text-zink-950',
+        light: 'text-zinc-950',
     };
 
     if (!active) {
-        if (colored) {
-            baseTextClass = coloredTextColors[type];
-        } else {
-            baseTextClass = 'text-zinc-950';
-        }
+        baseTextClass = colored ? coloredTextColors[type] : 'text-zinc-950';
     }
 
     const commonNonColoredClasses = active ? '' : 'bg-white';
     const commonColoredClasses = active ? '' : 'bg-white dark:bg-transparent';
 
-    const nonColoredClasses = {
+    const nonColoredClasses: Record<IconButtonType, string> = {
         success: active
             ? 'border-emerald-500 bg-emerald-100 text-emerald-500'
             : 'hover:border-emerald-500 hover:bg-emerald-100 hover:text-emerald-500 active:border-emerald-500 active:bg-emerald-200 active:text-emerald-500',
@@ -85,7 +74,7 @@ const buttonClasses = computed(() => {
             : 'hover:border-zinc-950 hover:bg-zinc-200 active:border-zinc-950 active:bg-zinc-300',
     };
 
-    const coloredActiveStateClasses = {
+    const coloredActiveStateClasses: Record<IconButtonType, string> = {
         success: 'active:bg-emerald-200',
         danger: 'active:bg-rose-200',
         info: 'active:bg-sky-200',
@@ -93,8 +82,7 @@ const buttonClasses = computed(() => {
         light: 'active:bg-zinc-300',
     };
 
-    // prettier-ignore
-    const coloredClasses = {
+    const coloredClasses: Record<IconButtonType, string> = {
         success: active
             ? 'border-emerald-500 bg-emerald-100 text-emerald-500 active:bg-emerald-200'
             : 'hover:bg-emerald-100 hover:border-emerald-500 dark:hover:bg-emerald-900 dark:active:bg-emerald-950',
@@ -127,7 +115,6 @@ const buttonClasses = computed(() => {
     return classes;
 });
 </script>
-
 <template>
     <button
         class="flex shrink-0 cursor-pointer items-center justify-center rounded-md border-2 transition select-none focus-visible:ring-2 focus-visible:outline-hidden dark:focus-visible:ring-white"

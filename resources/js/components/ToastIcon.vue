@@ -1,13 +1,10 @@
-<script setup>
-import { NOTIFICATION_TYPE_ICONS } from '@/constants/icons';
+<script setup lang="ts">
+import type { NotificationType } from '@/types';
+import { NOTIFICATION_TYPE_ICONS } from '@/constants';
 
-const { type } = defineProps({
-    type: {
-        type: String,
-        required: true,
-        validator: (value) => ['neutral', 'success', 'info', 'warning', 'danger'].includes(value),
-    },
-});
+defineProps<{
+    type: NotificationType;
+}>();
 </script>
 
 <template>

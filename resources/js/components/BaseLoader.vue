@@ -1,15 +1,15 @@
-<script setup>
+<script setup lang="ts">
 const {
     size = 'w-16 h-16',
     padding = 'p-4',
     fillColor = 'fill-sky-500',
     textColor = 'text-zinc-300 dark:text-zinc-700',
-} = defineProps({
-    size: String,
-    padding: String,
-    fillColor: String,
-    textColor: String,
-});
+} = defineProps<{
+    size?: string;
+    padding?: string;
+    fillColor?: string;
+    textColor?: string;
+}>();
 </script>
 
 <template>

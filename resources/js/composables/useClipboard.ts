@@ -1,17 +1,14 @@
 import { useNotificationStore } from '@/stores/notifications';
 
+interface CopyToClipboardOptions {
+    onSuccess?: () => void;
+    onError?: () => void;
+}
+
 export function useClipboard() {
     const notify = useNotificationStore();
 
-    /**
-     * Copy a string to the clipboard and show notification.
-     *
-     * @param {string} text
-     * @param {Object} [options]
-     * @param {Function} [options.onSuccess]
-     * @param {Function} [options.onError]
-     */
-    const copyToClipboard = async (text, options = {}) => {
+    const copyToClipboard = async (text: string, options: CopyToClipboardOptions = {}): Promise<void> => {
         try {
             await navigator.clipboard.writeText(text);
 

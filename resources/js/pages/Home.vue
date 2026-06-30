@@ -1,6 +1,7 @@
-<script setup>
-import { ref, computed, useTemplateRef, onMounted } from 'vue';
+<script setup lang="ts">
+import { ref, computed, useTemplateRef, onMounted, Ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { SECRET_TTL_OPTIONS } from '@/constants';
 import { storeSecret } from '@/api';
 import { useElementFocus } from '@/composables/useElementFocus';
 import { useFeatureStore } from '@/stores/features';
@@ -18,29 +19,16 @@ const router = useRouter();
 const notify = useNotificationStore();
 const { focus } = useElementFocus();
 
-const secretContentTextarea = useTemplateRef('secret-content-textarea');
+const secretContentTextarea = useTemplateRef('secret-content-textarea') as Ref<HTMLTextAreaElement | null>;
 
 const content = ref('');
-const ttl = ref(86400); // 1 day by default
+const ttl = ref(86400);
 const passphrase = ref('');
 const isCreatingSecret = ref(false);
 
-const ttlOptions = [
-    { value: 60, label: 'Expires in 1 minute' },
-    { value: 300, label: 'Expires in 5 minutes' },
-    { value: 1800, label: 'Expires in 30 minutes' },
-    { value: 3600, label: 'Expires in 1 hour' },
-    { value: 43200, label: 'Expires in 12 hours' },
-    { value: 86400, label: 'Expires in 1 day' },
-    { value: 259200, label: 'Expires in 3 days' },
-    { value: 604800, label: 'Expires in 7 days' },
-    { value: 2592000, label: 'Expires in 30 days' },
-    { value: 7776000, label: 'Expires in 90 days' },
-];
+const canCreateSecret = computed(() => content.value.trim().length > 0 && ttl.value > 0);
 
-const canCreateSecret = computed(() => !!content.value.trim() && !!ttl.value);
-
-const createSecret = async () => {
+const createSecret = async (): Promise<void> => {
     if (!canCreateSecret.value) return;
 
     isCreatingSecret.value = true;
@@ -54,13 +42,11 @@ const createSecret = async () => {
 
         notify.secretCreated();
 
-        router.push({
+        await router.push({
             name: 'receipt',
             params: { id: secret.id },
-            state: { secret: secret },
+            state: { secret: JSON.stringify(secret) },
         });
-    } catch (error) {
-        //
     } finally {
         isCreatingSecret.value = false;
     }
@@ -142,7 +128,7 @@ onMounted(() => {
                             required
                         >
                             <option
-                                v-for="option in ttlOptions"
+                                v-for="option in SECRET_TTL_OPTIONS"
                                 :key="option.value"
                                 :value="option.value"
                             >

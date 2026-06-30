@@ -1,25 +1,24 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch, computed } from 'vue';
+
+type ProgressBarType = 'default' | 'success' | 'danger' | 'info' | 'warning' | 'expiration';
 
 const {
     value = 0.0,
     label = '',
     valueLabel = '',
     type = 'default',
-} = defineProps({
-    value: Number,
-    label: String,
-    valueLabel: String,
-    type: {
-        type: String,
-        validator: (value) => ['default', 'success', 'danger', 'info', 'warning', 'expiration'].includes(value),
-    },
-});
+} = defineProps<{
+    value?: number;
+    label?: string;
+    valueLabel?: string;
+    type?: ProgressBarType;
+}>();
 
 const prevValue = ref(value);
 const isIncreasing = ref(true);
 
-const typeClasses = {
+const typeClasses: Record<ProgressBarType, string> = {
     default: 'bg-zinc-400',
     success: 'bg-emerald-500',
     danger: 'bg-red-500',

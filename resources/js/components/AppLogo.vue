@@ -1,7 +1,7 @@
-<script setup>
-const { link = false } = defineProps({
-    link: Boolean,
-});
+<script setup lang="ts">
+defineProps<{
+    link?: boolean;
+}>();
 </script>
 
 <template>
@@ -9,7 +9,9 @@ const { link = false } = defineProps({
         :is="link ? 'RouterLink' : 'div'"
         v-bind="link ? { to: '/' } : {}"
         class="flex items-center rounded-md select-none"
-        :class="{ 'focus-visible:ring-2 focus-visible:outline-hidden dark:focus-visible:ring-white': link }"
+        :class="{
+            'focus-visible:ring-2 focus-visible:outline-hidden dark:focus-visible:ring-white': link,
+        }"
     >
         <img
             src="/public/logo.svg"

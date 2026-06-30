@@ -1,4 +1,4 @@
-export default function formatDate(value) {
+export default function formatDate(value: string | Date | number | null | undefined): string {
     if (!value) return '';
 
     const date = new Date(value);

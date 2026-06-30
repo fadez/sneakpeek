@@ -1,10 +1,11 @@
-import { h } from 'vue';
+import { h, type App } from 'vue';
+import { ToastOptionsAndContent } from 'vue-toastification/dist/types/types';
 import Toast, { POSITION as TOAST_POSITION, TYPE as TOAST_TYPE } from 'vue-toastification';
 import ToastCloseButton from '@/components/ToastCloseButton.vue';
 import ToastIcon from '@/components/ToastIcon.vue';
 
 const toastNotifications = {
-    install(app) {
+    install(app: App) {
         app.use(Toast, {
             transition: 'Vue-Toastification__bounce',
             maxToasts: 10,
@@ -42,7 +43,7 @@ const toastNotifications = {
                     icon: () => h(ToastIcon, { type: 'warning' }),
                 },
             },
-            filterBeforeCreate: (toast, toasts) => {
+            filterBeforeCreate: (toast: ToastOptionsAndContent, toasts: ToastOptionsAndContent[]): ToastOptionsAndContent | false => {
                 if (toasts.filter((t) => t.content === toast.content).length !== 0) {
                     return false; // Returning false discards duplicate toast
                 }

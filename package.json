@@ -1,7 +1,6 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
     "private": true,
-    "type": "module",
     "license": "UNLICENSED",
     "author": {
         "name": "Alex Fadez",
@@ -10,35 +9,47 @@
     "repository": {
         "url": "https://github.com/fadez/sneakpeek"
     },
+    "type": "module",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite",
-        "lint": "oxlint --fix",
-        "test:lint": "oxlint",
-        "fmt": "prettier --write .",
-        "fmt:check": "prettier . --check"
-    },
-    "devDependencies": {
-        "@laravel/echo-vue": "^2.3.7",
-        "@tailwindcss/vite": "^4.3.2",
-        "@vitejs/plugin-vue": "^6.0.7",
-        "laravel-echo": "^2.3.7",
-        "laravel-vite-plugin": "^3.1.0",
-        "npm-check-updates": "^22.2.9",
-        "oxlint": "^1.72.0",
-        "prettier": "^3.9.4",
-        "prettier-plugin-tailwindcss": "^0.8.0",
-        "pusher-js": "^8.5.0",
-        "tailwindcss": "^4.3.2",
-        "vite": "^8.1.0"
+        "build": "vp build",
+        "dev": "vp dev",
+        "lint": "vp lint --fix",
+        "test:lint": "vp lint",
+        "fmt": "vp fmt .",
+        "fmt:check": "vp fmt . --check"
     },
     "dependencies": {
         "@number-flow/vue": "^0.5.1",
+        "@types/luxon": "^3.7.2",
         "luxon": "^3.7.2",
         "pinia": "^3.0.4",
         "playwright": "^1.61.1",
         "vue": "^3.5.39",
         "vue-router": "^5.1.0",
         "vue-toastification": "^2.0.0-rc.5"
+    },
+    "devDependencies": {
+        "@laravel/echo-vue": "^2.3.7",
+        "@tailwindcss/vite": "^4.3.2",
+        "@types/node": "^26.0.1",
+        "@vitejs/plugin-vue": "^6.0.7",
+        "laravel-echo": "^2.3.7",
+        "laravel-vite-plugin": "^3.1.0",
+        "npm-check-updates": "^22.2.9",
+        "pusher-js": "^8.5.0",
+        "tailwindcss": "^4.3.2",
+        "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+        "vite-plus": "latest"
+    },
+    "overrides": {
+        "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+        "vitest": "4.1.9"
+    },
+    "devEngines": {
+        "packageManager": {
+            "name": "npm",
+            "version": "^11.13.0",
+            "onFail": "download"
+        }
     }
 }

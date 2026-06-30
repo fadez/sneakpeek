@@ -1,7 +1,7 @@
-<script setup>
-const { icon = '' } = defineProps({
-    icon: String,
-});
+<script setup lang="ts">
+defineProps<{
+    icon?: string;
+}>();
 </script>
 
 <template>
@@ -10,6 +10,7 @@ const { icon = '' } = defineProps({
             v-if="icon"
             :class="icon"
         ></i>
-        <slot></slot>
+
+        <slot />
     </span>
 </template>

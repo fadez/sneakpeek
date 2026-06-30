@@ -1,14 +1,15 @@
-<script setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
+<script setup lang="ts">
+import type { Secret, SecretWithAccessToken } from '@/types';
+import { ref, computed, watch, onMounted, onBeforeUnmount, useTemplateRef, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { DateTime } from 'luxon';
-import { useNow } from '@/composables/useNow';
 import { getSecret, burnSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';
 import { useSecretExpirationProgress } from '@/composables/useSecretExpirationProgress';
+import { useNow } from '@/composables/useNow';
 import formatDate from '@/utils/formatDate';
 import BaseAlert from '@/components/BaseAlert.vue';
 import BaseButton from '@/components/BaseButton.vue';
@@ -22,29 +23,34 @@ import SecretPreview from '@/components/SecretPreview.vue';
 const route = useRoute();
 const router = useRouter();
 const notify = useNotificationStore();
+
 const { now } = useNow();
 const { copyToClipboard } = useClipboard();
 const { focus, focusAndSelect } = useElementFocus();
 
-const secretLinkInput = useTemplateRef('secret-link-input');
-const passphraseInput = useTemplateRef('passphrase-input');
+const secretLinkInput = useTemplateRef('secret-link-input') as Ref<HTMLInputElement | null>;
+const passphraseInput = useTemplateRef('passphrase-input') as Ref<HTMLInputElement | null>;
 
-const accessToken = ref('');
-const secret = ref(null);
-const passphrase = ref('');
-const showPassphraseInput = ref(false);
-const isDeletingSecret = ref(false);
+const accessToken = ref<string | undefined>();
+const secret = ref<Secret | SecretWithAccessToken | null>(null);
+const passphrase = ref<string>('');
+const showPassphraseInput = ref<boolean>(false);
+const isDeletingSecret = ref<boolean>(false);
 
-const hasAccessToken = computed(() => {
+const hasAccessToken = computed<boolean>(() => {
     return !!accessToken.value;
 });
 
-const expiresInDiffForHumans = computed(() => {
+const expiresInDiffForHumans = computed<string>(() => {
     if (!secret.value?.expires_at) return '';
 
     void now.value;
 
-    return DateTime.fromISO(secret.value.expires_at).toRelative({ unit: ['days', 'hours', 'minutes', 'seconds'] });
+    return (
+        DateTime.fromISO(secret.value.expires_at).toRelative({
+            unit: ['days', 'hours', 'minutes', 'seconds'],
+        }) ?? ''
+    );
 });
 
 /*
@@ -53,8 +59,8 @@ The access token is placed after the "#" fragment in the URL for these security 
 - Prevents token logging in server, proxy, and analytics logs.
 - Prevents accidental leakage via HTTP Referer headers.
 */
-const secretUrl = computed(() => {
-    if (!hasAccessToken.value) return '';
+const secretUrl = computed<string>(() => {
+    if (!hasAccessToken.value || !secret.value) return '';
 
     const path = router.resolve({
         name: 'secret',
@@ -67,16 +73,17 @@ const secretUrl = computed(() => {
     return `${window.location.origin}${path}`;
 });
 
-const fetchSecret = async () => {
-    const state = window.history.state;
+const fetchSecret = async (): Promise<void> => {
+    const state = window.history.state as any;
 
     // Retrieve secret from history state (passed during redirect)
     // and immediately clear it to prevent access via browser navigation
-    if (state && state.secret) {
-        secret.value = state.secret;
-        accessToken.value = secret.value.access_token;
+    if (typeof state?.secret === 'string') {
+        const secretFromState = JSON.parse(state.secret) as SecretWithAccessToken;
 
-        // Clear the state in the browser history
+        secret.value = secretFromState;
+        accessToken.value = secretFromState.access_token;
+
         const newState = { ...state };
         delete newState.secret;
         window.history.replaceState(newState, '');
@@ -85,16 +92,15 @@ const fetchSecret = async () => {
     }
 
     try {
-        secret.value = await getSecret(route.params.id);
-    } catch (error) {
-        router.replace({ name: 'home' });
+        secret.value = await getSecret(route.params.id as string);
+    } catch {
+        await router.replace({ name: 'home' });
     }
 };
 
-const deleteSecret = async () => {
-    if (isDeletingSecret.value) return;
+const deleteSecret = async (): Promise<void> => {
+    if (isDeletingSecret.value || !secret.value) return;
 
-    // If the secret is passphrase-protected we need to show the passphrase input first
     if (secret.value.is_passphrase_protected && !showPassphraseInput.value) {
         showPassphraseInput.value = true;
         return;
@@ -109,7 +115,7 @@ const deleteSecret = async () => {
         });
 
         handleSecretBurned();
-    } catch (error) {
+    } catch {
         clearPassphraseInput();
         focusPassphraseInput();
     } finally {
@@ -117,7 +123,7 @@ const deleteSecret = async () => {
     }
 };
 
-const copySecretUrl = () => {
+const copySecretUrl = (): void => {
     selectSecretLinkInput();
 
     copyToClipboard(secretUrl.value, {
@@ -126,75 +132,73 @@ const copySecretUrl = () => {
     });
 };
 
-const cancelSecretDeletion = () => {
+const cancelSecretDeletion = (): void => {
     clearPassphraseInput();
     hidePassphraseInput();
     selectSecretLinkInput();
 };
 
-const selectSecretLinkInput = () => {
+const selectSecretLinkInput = (): void => {
     focusAndSelect(secretLinkInput);
 };
 
-const focusPassphraseInput = () => {
+const focusPassphraseInput = (): void => {
     focus(passphraseInput);
 };
 
-const clearPassphraseInput = () => {
+const clearPassphraseInput = (): void => {
     passphrase.value = '';
 };
 
-const hidePassphraseInput = () => {
+const hidePassphraseInput = (): void => {
     showPassphraseInput.value = false;
 };
 
-const handlePassphraseInputVisibilityChange = (inputVisible) => {
-    if (inputVisible) {
-        focusPassphraseInput();
-    }
+const handlePassphraseInputVisibilityChange = (visible: boolean): void => {
+    if (visible) focusPassphraseInput();
 };
 
-const handleSecretBurned = () => {
+const handleSecretBurned = (): void => {
     notify.secretBurned();
 
     router.replace({ name: 'home' });
 };
 
-const handleSecretIdChange = (newId, oldId) => {
+const handleSecretIdChange = async (newId: string | undefined, oldId: string | undefined): Promise<void> => {
     resetPage();
-    fetchSecret();
+    await fetchSecret();
 
     if (oldId) echo().leave(`secrets.${oldId}`);
-
     if (!newId) return;
 
     echo()
         .channel(`secrets.${newId}`)
-        .listen('.secret.revealed', (e) => {
+        .listen('.secret.revealed', (e: { secret: SecretWithAccessToken }) => {
             secret.value = e.secret;
         })
-        .listen('.secret.burned', (e) => {
+        .listen('.secret.burned', () => {
             handleSecretBurned();
         });
 };
 
-const resetPage = () => {
+const resetPage = (): void => {
     secret.value = null;
     accessToken.value = '';
     isDeletingSecret.value = false;
     clearPassphraseInput();
 };
 
-const handlePageShow = (event) => {
-    // Reload secret if page is restored from bfcache
+const handlePageShow = (event: PageTransitionEvent): void => {
     if (event.persisted) fetchSecret();
 };
 
 const secretExpirationProgress = useSecretExpirationProgress(secret, fetchSecret);
 
-watch(showPassphraseInput, handlePassphraseInputVisibilityChange, { flush: 'post' });
+watch(showPassphraseInput, handlePassphraseInputVisibilityChange, {
+    flush: 'post',
+});
 
-watch(() => route.params.id, handleSecretIdChange, { immediate: true });
+watch(() => route.params.id as string | undefined, handleSecretIdChange, { immediate: true });
 
 watch(secretLinkInput, selectSecretLinkInput, { once: true });
 
@@ -203,7 +207,9 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-    if (secret.value?.id) echo().leave(`secrets.${secret.value.id}`);
+    if (secret.value?.id) {
+        echo().leave(`secrets.${secret.value.id}`);
+    }
 
     window.removeEventListener('pageshow', handlePageShow);
 });
@@ -234,7 +240,8 @@ onBeforeUnmount(() => {
                     v-else
                     type="info"
                 >
-                    Secret is not yet revealed. It is available until {{ formatDate(secret.expires_at) }}.
+                    Secret is not yet revealed. It is available until
+                    {{ formatDate(secret.expires_at) }}.
                 </BaseAlert>
             </section>
 

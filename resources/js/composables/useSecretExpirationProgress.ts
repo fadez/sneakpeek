@@ -1,10 +1,16 @@
-import { ref, computed, watch, onUnmounted } from 'vue';
+import { ref, computed, watch, onUnmounted, type ComputedRef, type Ref } from 'vue';
 
-export function useSecretExpirationProgress(secret, onFinish) {
+interface Secret {
+    created_at: string;
+    expires_at: string;
+    is_expired: boolean;
+}
+
+export function useSecretExpirationProgress(secret: Ref<Secret | null>, onFinish?: () => void): ComputedRef<number> {
     const now = ref(Date.now());
-    let interval = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
 
-    const start = () => {
+    const start = (): void => {
         if (interval) clearInterval(interval);
 
         interval = setInterval(() => {
@@ -12,13 +18,17 @@ export function useSecretExpirationProgress(secret, onFinish) {
         }, 100);
     };
 
-    const stop = () => {
-        clearInterval(interval);
-        interval = null;
+    const stop = (): void => {
+        if (interval) {
+            clearInterval(interval);
+            interval = null;
+        }
     };
 
     const createdAt = computed(() => (secret.value ? Date.parse(secret.value.created_at) : 0));
+
     const expiresAt = computed(() => (secret.value ? Date.parse(secret.value.expires_at) : 0));
+
     const duration = computed(() => expiresAt.value - createdAt.value);
 
     const progress = computed(() => {
@@ -34,22 +44,19 @@ export function useSecretExpirationProgress(secret, onFinish) {
 
     let finished = false;
 
-    const handleSecretChange = (value) => {
+    const handleSecretChange = (value: Secret | null): void => {
         if (!value) return;
 
         finished = false;
-
         start();
     };
 
-    const handleProgressChange = (value) => {
+    const handleProgressChange = (value: number): void => {
         if (!finished && value >= 100) {
             finished = true;
             stop();
 
-            if (typeof onFinish === 'function') {
-                onFinish();
-            }
+            onFinish?.();
         }
     };
 

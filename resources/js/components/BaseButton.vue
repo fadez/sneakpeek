@@ -1,6 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import BaseSpinner from '@/components/BaseSpinner.vue';
+import { ButtonType } from '@/types';
 
 const {
     iconBefore = '',
@@ -8,19 +9,16 @@ const {
     loading = false,
     disabled = false,
     type = 'primary',
-} = defineProps({
-    iconBefore: String,
-    iconAfter: String,
-    loading: Boolean,
-    disabled: Boolean,
-    type: {
-        type: String,
-        validator: (value) => ['primary', 'secondary', 'success', 'danger', 'light'].includes(value),
-    },
-});
+} = defineProps<{
+    iconBefore?: string;
+    iconAfter?: string;
+    loading?: boolean;
+    disabled?: boolean;
+    type?: ButtonType;
+}>();
 
 // prettier-ignore
-const typeClasses = {
+const typeClasses: Record<ButtonType, string> = {
     primary: [
         'text-white',
         'border-transparent',
@@ -78,7 +76,7 @@ const typeClasses = {
 const buttonClasses = computed(() => typeClasses[type]);
 
 // Return position if spinner should render in a specific position, or null if it should be hidden
-const spinnerPosition = computed(() => {
+const spinnerPosition = computed<'before' | 'after' | null>(() => {
     if (!loading) return null;
 
     return iconAfter && !iconBefore ? 'after' : 'before';

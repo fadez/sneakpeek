@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { useNotificationStore } from '@/stores/notifications';
 
 // Eager-loaded: users arrive at these pages directly via external links
@@ -11,7 +11,7 @@ import Secret from '@/pages/Secret.vue';
 const Dashboard = () => import('@/pages/Dashboard.vue');
 const UI = () => import('@/pages/UI.vue');
 
-const routes = [
+const routes: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'home',
@@ -40,6 +40,7 @@ const routes = [
     {
         path: '/:pathMatch(.*)*',
         name: '404',
+        component: Home,
         beforeEnter: (to, from, next) => {
             const notify = useNotificationStore();
 

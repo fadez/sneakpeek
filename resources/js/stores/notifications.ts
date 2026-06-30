@@ -1,36 +1,50 @@
 import { defineStore } from 'pinia';
 import { useToast } from 'vue-toastification';
+import { ToastID, ToastContent, ToastOptions } from 'vue-toastification/dist/types/types';
+
+type ToastIdKey =
+    | 'internetDisconnectedToastId'
+    | 'neutralTestToastId'
+    | 'successTestToastId'
+    | 'dangerTestToastId'
+    | 'infoTestToastId'
+    | 'warningTestToastId';
+
+type TestToastItem = {
+    id: ToastID | null;
+    varName: ToastIdKey;
+};
 
 const toast = useToast();
 
 export const useNotificationStore = defineStore('notifications', {
     state: () => ({
-        internetDisconnectedToastId: null,
-        neutralTestToastId: null,
-        successTestToastId: null,
-        dangerTestToastId: null,
-        infoTestToastId: null,
-        warningTestToastId: null,
+        internetDisconnectedToastId: null as ToastID | null,
+        neutralTestToastId: null as ToastID | null,
+        successTestToastId: null as ToastID | null,
+        dangerTestToastId: null as ToastID | null,
+        infoTestToastId: null as ToastID | null,
+        warningTestToastId: null as ToastID | null,
     }),
 
     actions: {
         // Proxy methods to vue-toastification
-        neutral(content, options) {
+        neutral(content: ToastContent, options?: ToastOptions) {
             return toast(content, options);
         },
-        success(content, options) {
+        success(content: ToastContent, options?: Omit<ToastOptions, 'type'>) {
             return toast.success(content, options);
         },
-        danger(content, options) {
+        danger(content: ToastContent, options?: Omit<ToastOptions, 'type'>) {
             return toast.error(content, options);
         },
-        info(content, options) {
+        info(content: ToastContent, options?: Omit<ToastOptions, 'type'>) {
             return toast.info(content, options);
         },
-        warning(content, options) {
+        warning(content: ToastContent, options?: Omit<ToastOptions, 'type'>) {
             return toast.warning(content, options);
         },
-        dismiss(toastId, toastIdVarName) {
+        dismiss(toastId: ToastID, toastIdVarName: ToastIdKey) {
             if (toastId !== undefined && toastId !== null) {
                 toast.dismiss(toastId);
             }
@@ -55,17 +69,19 @@ export const useNotificationStore = defineStore('notifications', {
             let delay = 200; // ms
 
             // Collect all test toast IDs along with their related store variable names
-            const testToasts = [
+            const testToasts: TestToastItem[] = [
                 { id: this.neutralTestToastId, varName: 'neutralTestToastId' },
                 { id: this.successTestToastId, varName: 'successTestToastId' },
                 { id: this.dangerTestToastId, varName: 'dangerTestToastId' },
                 { id: this.infoTestToastId, varName: 'infoTestToastId' },
                 { id: this.warningTestToastId, varName: 'warningTestToastId' },
-            ].filter((toast) => toast.id != null);
+            ].filter((toast): toast is TestToastItem & { id: ToastID } => toast.id != null);
 
             // Dismiss toasts one by one to have pretty animations vs just calling "this.clear()"
             testToasts.forEach((toast, i) => {
-                setTimeout(() => this.dismiss(toast.id, toast.varName), delay * i);
+                setTimeout(() => {
+                    if (toast.id != null) this.dismiss(toast.id, toast.varName);
+                }, delay * i);
             });
         },
 
@@ -109,7 +125,7 @@ export const useNotificationStore = defineStore('notifications', {
         internetReconnected() {
             this.success('You are back online!', { closeButton: false });
 
-            this.dismiss(this.internetDisconnectedToastId, 'internetDisconnectedToastId');
+            if (this.internetDisconnectedToastId) this.dismiss(this.internetDisconnectedToastId, 'internetDisconnectedToastId');
         },
     },
 });

@@ -36,7 +36,7 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     {{-- Styles / Scripts --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.ts'])
 </head>
 <body class="@yield('bodyClasses')">
     @yield('content')

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
 import { useFeatureStore } from '@/stores/features';
 import { useNotificationStore } from '@/stores/notifications';
@@ -8,16 +8,16 @@ import TheFooter from '@/components/TheFooter.vue';
 const features = useFeatureStore();
 const notify = useNotificationStore();
 
-const handleBrowserOffline = () => {
+const handleBrowserOffline = (): void => {
     notify.internetDisconnected();
 };
 
-const handleBrowserOnline = () => {
+const handleBrowserOnline = (): void => {
     notify.internetReconnected();
 };
 
 onMounted(() => {
-    features.reload();
+    features.refresh();
 
     window.addEventListener('offline', handleBrowserOffline);
     window.addEventListener('online', handleBrowserOnline);

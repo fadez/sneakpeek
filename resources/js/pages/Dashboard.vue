@@ -1,11 +1,12 @@
-<script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+<script setup lang="ts">
+import type { AppStatistics } from '@/types';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { echo } from '@laravel/echo-vue';
 import { getStatistics } from '@/api';
 import StatisticGrid from '@/components/StatisticGrid.vue';
 import StatisticGridItem from '@/components/StatisticGridItem.vue';
 
-const statistics = ref({
+const statistics = ref<AppStatistics>({
     secrets_created: 0,
     secrets_revealed: 0,
     secrets_expired: 0,
@@ -17,7 +18,7 @@ onMounted(async () => {
 
     echo()
         .channel('dashboard')
-        .listen('.statistic.updated', (e) => {
+        .listen('.statistic.updated', (e: AppStatistics) => {
             statistics.value = e;
         });
 });

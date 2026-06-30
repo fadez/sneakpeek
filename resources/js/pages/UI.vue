@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import type { ButtonType, IconButtonType, NotificationType } from '@/types';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useNotificationStore } from '@/stores/notifications';
 import sleep from '@/utils/sleep';
@@ -21,22 +22,23 @@ import StatisticGridItem from '@/components/StatisticGridItem.vue';
 
 const notify = useNotificationStore();
 
-const rating = ref(0);
-const progressValue = ref(0);
-const input = ref('Input value');
-const textarea = ref('Textarea value');
-const select = ref('');
-const iconButtonsToggled = ref(true);
-const progressIntervalId = ref(null);
-const progressTimeoutId = ref(null);
+const rating = ref<number>(0);
+const progressValue = ref<number>(0);
+const input = ref<string>('Input value');
+const textarea = ref<string>('Textarea value');
+const select = ref<string | number>('');
+const iconButtonsToggled = ref<boolean>(true);
 
-const appName = import.meta.env.VITE_APP_NAME;
+const progressIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
+const progressTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
 
-const alertTypes = ['neutral', 'success', 'danger', 'info', 'warning'];
+const appName = import.meta.env.VITE_APP_NAME as string;
 
-const buttonTypes = ['primary', 'secondary', 'success', 'danger', 'light'];
+const alertTypes: NotificationType[] = ['neutral', 'success', 'danger', 'info', 'warning'];
 
-const iconButtonVariants = [
+const buttonTypes: ButtonType[] = ['primary', 'secondary', 'success', 'danger', 'light'];
+
+const iconButtonVariants: Array<{ type: IconButtonType; icon: string }> = [
     { type: 'success', icon: 'fa-solid fa-check' },
     { type: 'danger', icon: 'fa-solid fa-fire' },
     { type: 'info', icon: 'fa-solid fa-paperclip' },
@@ -44,33 +46,36 @@ const iconButtonVariants = [
     { type: 'light', icon: 'fa-solid fa-volume-xmark' },
 ];
 
-const selectOptions = [
+const selectOptions: Array<{ value: string | number; label: string; disabled?: boolean }> = [
     { value: '', label: 'Option with empty value' },
     { value: 1, label: 'Option with value' },
     { value: 2, label: 'Disabled option with value', disabled: true },
 ];
 
-const rateMessage = () => {
+const rateMessage = (): void => {
     if (rating.value === 0) rating.value = 1;
     else if (rating.value === 1) rating.value = -1;
     else rating.value = 0;
 };
 
-const increaseProgress = () => {
-    progressValue.value += 5; // 0 to 100 in 4 seconds
+const increaseProgress = (): void => {
+    progressValue.value += 5;
 
     if (progressValue.value >= 100) {
-        clearInterval(progressIntervalId.value);
+        if (progressIntervalId.value) {
+            clearInterval(progressIntervalId.value);
+        }
+
         progressTimeoutId.value = setTimeout(startProgressLoop, 2500);
     }
 };
 
-const startProgressLoop = async () => {
+const startProgressLoop = async (): Promise<void> => {
     progressValue.value = 0;
 
     await sleep(1000);
 
-    progressIntervalId.value = setInterval(increaseProgress, 201); // Progress bar transition is 200ms by default
+    progressIntervalId.value = setInterval(increaseProgress, 201);
 };
 
 onMounted(() => {
@@ -275,7 +280,7 @@ onBeforeUnmount(() => {
                 <template #title>Links</template>
                 <div class="form">
                     <div>
-                        <BaseLink :to="{ to: '/' }">Scroll to top</BaseLink>
+                        <BaseLink :to="{ name: 'ui' }">Scroll to top</BaseLink>
                     </div>
                 </div>
             </BaseCard>

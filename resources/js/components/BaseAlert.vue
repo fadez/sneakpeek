@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { NOTIFICATION_TYPE_ICONS } from '@/constants/icons';
+import type { NotificationType } from '@/types';
+import { NOTIFICATION_TYPE_ICONS } from '@/constants';
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
 const {
@@ -9,23 +10,22 @@ const {
     showIcon = true,
     icon = '',
     dismissible = false,
-} = defineProps({
-    type: {
-        type: String,
-        validator: (value) => ['neutral', 'success', 'danger', 'info', 'warning'].includes(value),
-    },
-    showIcon: Boolean,
-    icon: String,
-    dismissible: Boolean,
-});
+} = defineProps<{
+    type?: NotificationType;
+    showIcon?: boolean;
+    icon?: string;
+    dismissible?: boolean;
+}>();
 
-const emit = defineEmits(['dismiss']);
+const emit = defineEmits<{
+    (e: 'dismiss'): void;
+}>();
 
 const dismissed = ref(false);
 const route = useRoute();
 
 // prettier-ignore
-const typeClasses = {
+const typeClasses: Record<NotificationType, string> = {
     neutral: [
         'bg-white',
         'text-zinc-950',
@@ -68,13 +68,11 @@ const typeClasses = {
     ].join(' '),
 };
 
-const alertClasses = computed(() => {
-    return typeClasses[type];
-});
+const alertClasses = computed(() => typeClasses[type]);
 
 const iconClasses = computed(() => icon || NOTIFICATION_TYPE_ICONS[type]);
 
-const dismiss = () => {
+const dismiss = (): void => {
     if (route.name !== 'ui') {
         dismissed.value = true;
     }
@@ -93,9 +91,11 @@ const dismiss = () => {
             v-if="showIcon"
             :class="iconClasses"
         ></i>
+
         <div>
-            <slot></slot>
+            <slot />
         </div>
+
         <div
             v-if="dismissible"
             class="ml-auto flex"

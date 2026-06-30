@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import type { Secret } from '@/types';
 import { ref, watch, useTemplateRef, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
@@ -8,8 +9,8 @@ import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';
 import { useSecretExpirationProgress } from '@/composables/useSecretExpirationProgress';
 import BaseAlert from '@/components/BaseAlert.vue';
-import BaseCard from '@/components/BaseCard.vue';
 import BaseButton from '@/components/BaseButton.vue';
+import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
@@ -21,52 +22,51 @@ const notify = useNotificationStore();
 const { copyToClipboard } = useClipboard();
 const { focus, focusAndSelect } = useElementFocus();
 
-const passphraseInput = useTemplateRef('passphrase-input');
-const secretContentTextarea = useTemplateRef('secret-content-textarea');
+const passphraseInput = useTemplateRef<HTMLInputElement | null>('passphrase-input');
+const secretContentTextarea = useTemplateRef<HTMLTextAreaElement | null>('secret-content-textarea');
 
-const accessToken = ref('');
-const secret = ref(null);
-const secretContent = ref(null);
-const passphrase = ref('');
-const isRevealingSecret = ref(false);
+const accessToken = ref<string>('');
+const secret = ref<Secret | null>(null);
+const secretContent = ref<string | null>(null);
+const passphrase = ref<string>('');
+const isRevealingSecret = ref<boolean>(false);
 
-const fetchSecret = async (refresh) => {
+const fetchSecret = async (refresh?: boolean): Promise<void> => {
     try {
-        secret.value = refresh === true ? await getSecret(route.params.id) : await getSecret(route.params.id, accessToken.value);
+        secret.value =
+            refresh === true ? await getSecret(route.params.id as string) : await getSecret(route.params.id as string, accessToken.value);
 
-        // Clear the access token from the URL hash to prevent accidental exposure in browser history, clipboard, or screenshots
         router.replace({
             name: 'secret',
             params: { id: route.params.id },
             hash: '',
         });
 
-        // Auto-focus the passphrase input if the secret is passphrase-protected
-        if (secret.value.is_passphrase_protected) {
+        if (secret.value?.is_passphrase_protected) {
             focusPassphraseInput();
         }
-    } catch (error) {
+    } catch {
         router.replace({ name: 'home' });
     }
 };
 
-const refreshSecret = () => {
+const refreshSecret = (): Promise<void> => {
     return fetchSecret(true);
 };
 
-const handleSecretReveal = async () => {
+const handleSecretReveal = async (): Promise<void> => {
     if (isRevealingSecret.value) return;
 
     isRevealingSecret.value = true;
 
     try {
-        secretContent.value = await revealSecret(route.params.id, {
+        secretContent.value = await revealSecret(route.params.id as string, {
             passphrase: passphrase.value,
             access_token: accessToken.value,
         });
 
         notify.secretRevealed();
-    } catch (error) {
+    } catch {
         clearPassphraseInput();
         focusPassphraseInput();
     } finally {
@@ -74,16 +74,18 @@ const handleSecretReveal = async () => {
     }
 };
 
-const focusPassphraseInput = () => {
+const focusPassphraseInput = (): void => {
     focus(passphraseInput);
 };
 
-const clearPassphraseInput = () => {
+const clearPassphraseInput = (): void => {
     passphrase.value = '';
 };
 
-const copySecret = () => {
+const copySecret = (): void => {
     focusAndSelect(secretContentTextarea);
+
+    if (secretContent.value == null) return;
 
     copyToClipboard(secretContent.value, {
         onSuccess: notify.secretMessageCopied,
@@ -91,30 +93,7 @@ const copySecret = () => {
     });
 };
 
-const handleSecretIdChange = (newId, oldId) => {
-    resetPage();
-
-    accessToken.value = route.hash.slice(1);
-
-    fetchSecret();
-
-    if (oldId) echo().leave(`secrets.${oldId}`);
-
-    if (!newId) return;
-
-    echo()
-        .channel(`secrets.${newId}`)
-        .listen('.secret.revealed', (e) => {
-            secret.value.is_available = false;
-            secret.value.is_revealed = true;
-        })
-        .listen('.secret.burned', (e) => {
-            secret.value.is_available = false;
-            secret.value.is_burned = true;
-        });
-};
-
-const resetPage = () => {
+const resetPage = (): void => {
     secret.value = null;
     secretContent.value = null;
     accessToken.value = '';
@@ -122,12 +101,38 @@ const resetPage = () => {
     clearPassphraseInput();
 };
 
-const handlePageShow = (event) => {
-    // Reload secret if page is restored from bfcache
+const handleSecretIdChange = async (newId: string | string[] | undefined, oldId: string | string[] | undefined): Promise<void> => {
+    resetPage();
+
+    accessToken.value = route.hash.slice(1);
+
+    await fetchSecret();
+
+    if (oldId) echo().leave(`secrets.${oldId}`);
+
+    if (!newId) return;
+
+    const id = Array.isArray(newId) ? newId[0] : newId;
+
+    echo()
+        .channel(`secrets.${id}`)
+        .listen('.secret.revealed', () => {
+            if (!secret.value) return;
+            secret.value.is_available = false;
+            secret.value.is_revealed = true;
+        })
+        .listen('.secret.burned', () => {
+            if (!secret.value) return;
+            secret.value.is_available = false;
+            secret.value.is_burned = true;
+        });
+};
+
+const handlePageShow = (event: PageTransitionEvent): void => {
     if (event.persisted) fetchSecret();
 };
 
-const secretExpirationProgress = useSecretExpirationProgress(secret, refreshSecret);
+useSecretExpirationProgress(secret, refreshSecret);
 
 watch(() => route.params.id, handleSecretIdChange, { immediate: true });
 
@@ -137,7 +142,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
     if (secret.value?.id) echo().leave(`secrets.${secret.value.id}`);
-
     window.removeEventListener('pageshow', handlePageShow);
 });
 </script>

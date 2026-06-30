@@ -1,13 +1,10 @@
-<script setup>
+<script setup lang="ts">
+import type { NotificationType } from '@/types';
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
-const { type } = defineProps({
-    type: {
-        type: String,
-        required: true,
-        validator: (value) => ['neutral', 'success', 'info', 'warning', 'danger'].includes(value),
-    },
-});
+defineProps<{
+    type: NotificationType;
+}>();
 </script>
 
 <template>
