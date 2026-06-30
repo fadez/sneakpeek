@@ -24,7 +24,7 @@ const hasActions = computed(() => slots.actions?.());
 
         <section
             v-if="hasActions && showActions"
-            class="flex flex-col justify-between gap-2 border-t-2 border-zinc-200 p-4 md:flex-row dark:border-zinc-700"
+            class="card-actions"
         >
             <slot name="actions"></slot>
         </section>

@@ -210,7 +210,7 @@ onBeforeUnmount(() => {
             </BaseCard>
 
             <BaseCard>
-                <template #title>Icon buttons</template>
+                <template #title>Icon Buttons</template>
                 <div class="form">
                     <div class="form-group">
                         <BaseLabel>Default buttons</BaseLabel>
@@ -442,7 +442,7 @@ onBeforeUnmount(() => {
             </BaseCard>
 
             <BaseCard>
-                <template #title>Loaders & spinners</template>
+                <template #title>Loaders & Spinners</template>
                 <div class="form">
                     <BaseLoader padding="" />
                 </div>

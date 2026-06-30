@@ -89,7 +89,7 @@ onMounted(() => {
                     Only 1 in 100 visitors see this special message. You're one of them!
                 </BaseAlert>
 
-                <BaseAlert type="info">Your message will self-destruct after being revealed.</BaseAlert>
+                <BaseAlert type="info">Your message will be removed from our database after being revealed.</BaseAlert>
 
                 <div class="form-group">
                     <BaseLabel

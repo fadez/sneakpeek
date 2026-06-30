@@ -89,7 +89,11 @@
     }
 
     .card-title {
-        @apply flex border-b-2 border-zinc-200 bg-zinc-75 p-4 font-semibold text-title dark:border-zinc-700 dark:bg-zinc-800;
+        @apply flex rounded-t-sm border-b-2 border-zinc-200 bg-zinc-75 p-4 font-semibold text-title dark:border-zinc-700 dark:bg-zinc-800;
+    }
+
+    .card-actions {
+        @apply flex flex-col justify-between gap-2 border-t-2 border-zinc-200 p-4 md:flex-row dark:border-zinc-700;
     }
 
     .bullet-divider > * + *::before {
