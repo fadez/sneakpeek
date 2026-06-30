@@ -10,7 +10,7 @@
         <a href="https://www.php.net"><img alt="PHP version" src="https://img.shields.io/badge/PHP-v8.5-777bb3?style=flat&logo=php&logoColor=777bb3&labelColor=24292E" /></a>
         <a href="https://laravel.com"><img alt="Laravel version" src="https://img.shields.io/badge/Laravel-v13-ff2d20?style=flat&logo=laravel&logoColor=ff2d20&labelColor=24292E" /></a>
         <a href="https://vuejs.org"><img alt="Vue.js version" src="https://img.shields.io/badge/Vue.js-v3.5-42b883?style=flat&logo=vuedotjs&logoColor=42b883&labelColor=24292E" /></a>
-        <a href="https://www.typescriptlang.org"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-v5.9-3278c5?style=flat&logo=typescript&logoColor=3278c5&labelColor=24292E" /></a>
+        <a href="https://www.typescriptlang.org"><img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-v6.0-3278c5?style=flat&logo=typescript&logoColor=3278c5&labelColor=24292E" /></a>
         <a href="https://tailwindcss.com"><img alt="Tailwind CSS version" src="https://img.shields.io/badge/Tailwind_CSS-v4.3-38bdf8?style=flat&logo=tailwindcss&logoColor=38bdf8&labelColor=24292E" /></a>
     </p>
 </p>

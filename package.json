@@ -38,6 +38,7 @@
         "npm-check-updates": "^22.2.9",
         "pusher-js": "^8.5.0",
         "tailwindcss": "^4.3.2",
+        "typescript": "^6.0.3",
         "vite": "npm:@voidzero-dev/vite-plus-core@latest",
         "vite-plus": "latest"
     },
