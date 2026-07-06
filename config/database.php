@@ -40,9 +40,9 @@ return [
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-            'busy_timeout' => null,
-            'journal_mode' => null,
-            'synchronous' => null,
+            'busy_timeout' => 5000, // Wait up to 5 seconds instead of failing immediately
+            'journal_mode' => 'WAL', // Allows concurrent reads/writes
+            'synchronous' => 'NORMAL', // Faster writes, syncs only at checkpoints
             'transaction_mode' => 'DEFERRED',
         ],
 
