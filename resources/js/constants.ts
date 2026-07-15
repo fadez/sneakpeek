@@ -1,4 +1,4 @@
-import type { NotificationType, SelectOption } from './types';
+import type { NotificationType, SelectOption } from '@/types';
 
 export const NOTIFICATION_TYPE_ICONS: Record<NotificationType, string> = {
     neutral: 'fa-solid fa-circle-info',

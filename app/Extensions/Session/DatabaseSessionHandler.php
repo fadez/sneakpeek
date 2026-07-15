@@ -12,7 +12,6 @@ final class DatabaseSessionHandler extends IlluminateDatabaseSessionHandler
      * Add the user information to the session payload.
      *
      * @param  array<string, mixed>  $payload
-     * @return $this
      */
     protected function addUserInformation(
         &$payload // @pest-ignore-type
@@ -25,7 +24,6 @@ final class DatabaseSessionHandler extends IlluminateDatabaseSessionHandler
      * Add the request information to the session payload.
      *
      * @param  array<string, mixed>  $payload
-     * @return $this
      */
     protected function addRequestInformation(
         &$payload // @pest-ignore-type

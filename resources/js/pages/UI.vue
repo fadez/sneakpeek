@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ButtonType, IconButtonType, NotificationType } from '@/types';
+import type { ButtonType, IconButtonType, NotificationType, ProgressBarType } from '@/types';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useNotificationStore } from '@/stores/notifications';
 import sleep from '@/utils/sleep';
@@ -37,6 +37,8 @@ const appName = import.meta.env.VITE_APP_NAME as string;
 const alertTypes: NotificationType[] = ['neutral', 'success', 'danger', 'info', 'warning'];
 
 const buttonTypes: ButtonType[] = ['primary', 'secondary', 'success', 'danger', 'light'];
+
+const progressBarTypes: ProgressBarType[] = ['default', 'success', 'danger', 'info', 'warning', 'expiration'];
 
 const iconButtonVariants: Array<{ type: IconButtonType; icon: string }> = [
     { type: 'success', icon: 'fa-solid fa-check' },
@@ -459,25 +461,10 @@ onBeforeUnmount(() => {
             <BaseCard>
                 <template #title>Progress bars</template>
                 <div class="form">
-                    <BaseProgressBar :value="progressValue" />
                     <BaseProgressBar
-                        type="success"
-                        :value="progressValue"
-                    />
-                    <BaseProgressBar
-                        type="danger"
-                        :value="progressValue"
-                    />
-                    <BaseProgressBar
-                        type="info"
-                        :value="progressValue"
-                    />
-                    <BaseProgressBar
-                        type="warning"
-                        :value="progressValue"
-                    />
-                    <BaseProgressBar
-                        type="expiration"
+                        v-for="progressBarType in progressBarTypes"
+                        :key="progressBarType"
+                        :type="progressBarType"
                         :value="progressValue"
                     />
                 </div>

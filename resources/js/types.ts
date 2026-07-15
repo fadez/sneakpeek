@@ -34,6 +34,8 @@ export type ButtonType = 'primary' | 'secondary' | 'success' | 'danger' | 'light
 
 export type IconButtonType = 'success' | 'danger' | 'info' | 'warning' | 'light';
 
+export type ProgressBarType = 'default' | 'success' | 'danger' | 'info' | 'warning' | 'expiration';
+
 export type FeaturesMap = Record<string, boolean | string>;
 
 export type GetStatisticsResponse = AppStatistics;

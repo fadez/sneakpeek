@@ -1,5 +1,5 @@
+import type { GetSecretResponse, GetStatisticsResponse, ListFeaturesResponse, RevealSecretResponse, StoreSecretResponse } from '@/types';
 import { http } from '@/http';
-import type { GetSecretResponse, GetStatisticsResponse, ListFeaturesResponse, RevealSecretResponse, StoreSecretResponse } from './types';
 
 export const getStatistics = () => http.get<GetStatisticsResponse>('/api/statistics');
 

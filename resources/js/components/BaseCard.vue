@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, useSlots } from 'vue';
 
-const slots = useSlots();
-
 const { showActions = true } = defineProps<{
     showActions?: boolean;
 }>();
+
+const slots = useSlots();
 
 const hasTitle = computed(() => !!slots.title?.());
 const hasActions = computed(() => !!slots.actions?.());

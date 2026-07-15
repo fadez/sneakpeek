@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs, useTemplateRef, type Ref, type InputTypeHTMLAttribute } from 'vue';
+import type { InputTypeHTMLAttribute, Ref } from 'vue';
+import { computed, ref, useAttrs, useTemplateRef } from 'vue';
 
 defineOptions({
     inheritAttrs: false,
 });
 
-const attrs = useAttrs();
-
 const model = defineModel<string | number>();
 
-defineExpose({
-    focus: () => input.value?.focus(),
-    select: () => input.value?.select(),
-});
+const attrs = useAttrs();
 
 const input = useTemplateRef('input') as Ref<HTMLInputElement | null>;
 
@@ -25,7 +21,12 @@ const inputClasses = computed(() => ({
     'pr-10': inputType.value === 'password',
 }));
 
-const showPasswordButtonClasses = computed(() => ('disabled' in attrs ? '' : 'hover:text-secondary'));
+const showPasswordButtonClasses = computed(() => ('disabled' in attrs ? '' : 'hover:text-disabled'));
+
+defineExpose({
+    focus: () => input.value?.focus(),
+    select: () => input.value?.select(),
+});
 </script>
 
 <template>

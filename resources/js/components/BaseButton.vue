@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { ButtonType } from '@/types';
 import { computed } from 'vue';
 import BaseSpinner from '@/components/BaseSpinner.vue';
-import { ButtonType } from '@/types';
 
 const {
     iconBefore = '',

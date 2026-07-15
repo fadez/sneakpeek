@@ -1,7 +1,6 @@
 <script setup lang="ts">
+import { ProgressBarType } from '@/types';
 import { ref, watch, computed } from 'vue';
-
-type ProgressBarType = 'default' | 'success' | 'danger' | 'info' | 'warning' | 'expiration';
 
 const {
     value = 0.0,

@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router';
 import { computed, useAttrs } from 'vue';
-import { RouterLink, type RouteLocationRaw } from 'vue-router';
+import { RouterLink } from 'vue-router';
 
 const { to, fontWeightClass = 'font-medium' } = defineProps<{
     to?: RouteLocationRaw;

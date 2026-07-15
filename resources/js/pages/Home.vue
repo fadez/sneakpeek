@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, onMounted, Ref } from 'vue';
+import type { Ref } from 'vue';
+import { ref, computed, useTemplateRef, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { SECRET_TTL_OPTIONS } from '@/constants';
 import { storeSecret } from '@/api';

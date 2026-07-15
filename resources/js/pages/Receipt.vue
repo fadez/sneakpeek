@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Secret, SecretWithAccessToken } from '@/types';
-import { ref, computed, watch, onMounted, onBeforeUnmount, useTemplateRef, type Ref } from 'vue';
+import type { Ref } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { DateTime } from 'luxon';

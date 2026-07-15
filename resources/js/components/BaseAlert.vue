@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { NotificationType } from '@/types';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import type { NotificationType } from '@/types';
 import { NOTIFICATION_TYPE_ICONS } from '@/constants';
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
@@ -18,11 +18,12 @@ const {
 }>();
 
 const emit = defineEmits<{
-    (e: 'dismiss'): void;
+    dismiss: [];
 }>();
 
-const dismissed = ref(false);
 const route = useRoute();
+
+const dismissed = ref(false);
 
 // prettier-ignore
 const typeClasses: Record<NotificationType, string> = {
