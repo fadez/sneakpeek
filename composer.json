@@ -23,7 +23,7 @@
         "laravel/pail": "^1.2.7",
         "laravel/pint": "^1.29.3",
         "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^8.9.4",
+        "nunomaduro/collision": "^8.9.5",
         "pestphp/pest": "^4.7.5",
         "pestphp/pest-plugin-browser": "^4.3.1",
         "pestphp/pest-plugin-laravel": "^4.1",
@@ -61,7 +61,7 @@
         ],
         "update:requirements": [
             "composer bump",
-            "npx npm-check-updates -u",
+            "npx npm-check-updates -u --reject typescript",
             "@build",
             "@install:playwright"
         ],

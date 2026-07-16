@@ -108,7 +108,9 @@ onBeforeUnmount(() => {
             <BaseCard>
                 <template #title>Logo</template>
                 <div class="form">
-                    <AppLogo />
+                    <div class="flex">
+                        <AppLogo />
+                    </div>
                 </div>
             </BaseCard>
 

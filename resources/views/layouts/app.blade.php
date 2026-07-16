@@ -18,21 +18,21 @@
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&family=Rubik:wght@700&family=Ubuntu+Mono:wght@400;700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
     {{-- OpenGraph --}}
     <meta property="og:site_name" content="{{ config('app.name') }}" />
     <meta property="og:title" content="{{ config('app.name') }}" />
     <meta property="og:description" content="Secure, one-time secret sharing made simple." />
-    <meta property="og:image" content="{{ asset('social.png') }}" />
+    <meta property="og:image" content="{{ asset('og.png') }}" />
     <meta property="og:url" content="{{ config('app.url') }}" />
     <meta property="og:type" content="website" />
 
     {{-- OpenGraph: X (Twitter) --}}
     <meta name="twitter:title" content="{{ config('app.name') }}" />
     <meta name="twitter:description" content="Secure, one-time secret sharing made simple." />
-    <meta name="twitter:image" content="{{ asset('social.png') }}" />
+    <meta name="twitter:image" content="{{ asset('og.png') }}" />
     <meta name="twitter:card" content="summary_large_image" />
 
     {{-- Styles / Scripts --}}

@@ -1,9 +1,9 @@
 @import 'tailwindcss';
 
 @theme {
-    --font-sans: 'Ubuntu', sans-serif;
-    --font-mono: 'Ubuntu Mono', monospace;
-    --font-brand: 'Fredoka', 'sans-serif';
+    --font-sans: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-brand: 'JetBrains Mono', monospace;
     --font-error: 'Rubik', 'sans-serif';
 
     --color-emerald-75: color-mix(in srgb, var(--color-emerald-50), var(--color-emerald-100));
@@ -21,6 +21,11 @@
 @layer base {
     body {
         @apply bg-zinc-75 text-zinc-900 dark:bg-black dark:text-zinc-100;
+    }
+
+    input,
+    textarea {
+        font-variant-ligatures: none;
     }
 
     textarea {
@@ -48,7 +53,7 @@
 }
 
 @utility text-logo {
-    @apply font-brand text-xl font-medium text-black dark:text-white;
+    @apply font-brand text-xl font-bold text-black dark:text-white;
 }
 
 @utility text-title {
