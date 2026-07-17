@@ -19,7 +19,7 @@
 
 > Secure, one-time secret sharing made simple.
 
-Designed, developed and maintained by **[Alex Fadez](https://github.com/fadez)**.
+Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)**.
 
 **SneakPeek** showcases my expertise in full-stack web development, seamlessly integrating cutting-edge frameworks and industry best practices to deliver a secure, scalable, and high-quality Laravel application.
 
