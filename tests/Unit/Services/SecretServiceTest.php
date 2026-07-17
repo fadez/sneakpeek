@@ -5,8 +5,10 @@ use App\Services\SecretService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Sleep;
+use Tests\TestCase;
 
 beforeEach(function () {
+    /** @var TestCase $this */
     $this->secretService = resolve(SecretService::class);
 });
 

@@ -6,6 +6,7 @@ import BaseLink from '@/components/BaseLink.vue';
 const features = useFeatureStore();
 
 const appName: string = import.meta.env.VITE_APP_NAME;
+const authorName: string = __AUTHOR_NAME__;
 const authorUrl: string = __AUTHOR_URL__;
 const repositoryUrl: string = __REPOSITORY_URL__;
 const commitHash: string | null = __COMMIT_HASH__;
@@ -42,6 +43,7 @@ const abGroupLabel = computed<string | null>(() => {
                     </div>
                     <div class="inline-flex">
                         <BaseLink
+                            data-test="footer-repo-link"
                             :href="repositoryUrl"
                             target="_blank"
                         >
@@ -66,10 +68,11 @@ const abGroupLabel = computed<string | null>(() => {
                     />
                     by
                     <BaseLink
+                        data-test="footer-author-link"
                         :href="authorUrl"
                         target="_blank"
                     >
-                        Alex Fadez
+                        {{ authorName }}
                     </BaseLink>
                 </div>
                 <div class="bullet-divider">
@@ -86,6 +89,7 @@ const abGroupLabel = computed<string | null>(() => {
                         <div class="inline-flex items-center gap-1">
                             Version:
                             <BaseLink
+                                data-test="footer-app-version-link"
                                 :href="currentVersionUrl"
                                 target="_blank"
                             >

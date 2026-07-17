@@ -72,6 +72,7 @@ export default defineConfig({
             ] as any,
     ),
     define: {
+        __AUTHOR_NAME__: JSON.stringify(pkg.author.name),
         __AUTHOR_URL__: JSON.stringify(pkg.author.url),
         __COMMIT_HASH__: JSON.stringify(commitHash),
         __REPOSITORY_URL__: JSON.stringify(pkg.repository.url),
