@@ -492,19 +492,19 @@ onBeforeUnmount(() => {
                         <StatisticGridItem
                             title="Secrets revealed"
                             icon="fa-solid fa-unlock"
-                            icon-bg="bg-emerald-500"
+                            icon-class="bg-emerald-500"
                             :value="progressValue * 7500"
                         />
                         <StatisticGridItem
                             title="Secrets expired"
                             icon="fa-solid fa-hourglass"
-                            icon-bg="bg-yellow-500"
+                            icon-class="bg-yellow-500"
                             :value="progressValue * 1500"
                         />
                         <StatisticGridItem
                             title="Secrets burned"
                             icon="fa-solid fa-fire"
-                            icon-bg="bg-rose-500"
+                            icon-class="bg-rose-500"
                             :value="progressValue * 1000"
                         />
                     </StatisticGrid>

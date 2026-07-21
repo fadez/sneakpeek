@@ -4,8 +4,8 @@ import { ref, watch, computed } from 'vue';
 
 const {
     value = 0.0,
-    label = '',
-    valueLabel = '',
+    label,
+    valueLabel,
     type = 'default',
 } = defineProps<{
     value?: number;

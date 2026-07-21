@@ -5,7 +5,7 @@ import { useIntervalFn } from '@vueuse/core';
 const {
     link,
     text = 'SneakPeek',
-    animationDuration = 600,
+    animationDuration = 750,
     animateOnMount = true,
 } = defineProps<{
     link?: boolean;

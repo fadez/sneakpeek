@@ -13,8 +13,8 @@ defineProps<{
             <BaseIconButton
                 :type="type === 'neutral' ? 'light' : type"
                 icon="fa-solid fa-xmark"
-                size="sm"
                 :colored="true"
+                size="sm"
             />
         </div>
     </div>

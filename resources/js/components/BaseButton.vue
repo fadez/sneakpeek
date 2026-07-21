@@ -4,8 +4,8 @@ import { computed } from 'vue';
 import BaseSpinner from '@/components/BaseSpinner.vue';
 
 const {
-    iconBefore = '',
-    iconAfter = '',
+    iconBefore,
+    iconAfter,
     loading = false,
     disabled = false,
     type = 'primary',

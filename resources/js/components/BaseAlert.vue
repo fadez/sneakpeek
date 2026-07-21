@@ -7,8 +7,8 @@ import BaseIconButton from '@/components/BaseIconButton.vue';
 
 const {
     type = 'info',
+    icon,
     showIcon = true,
-    icon = '',
     dismissible = false,
 } = defineProps<{
     type?: NotificationType;
@@ -104,8 +104,8 @@ const dismiss = (): void => {
             <BaseIconButton
                 :type="type === 'neutral' ? 'light' : type"
                 icon="fa-solid fa-xmark"
-                size="sm"
                 :colored="true"
+                size="sm"
                 @click="dismiss"
             />
         </div>

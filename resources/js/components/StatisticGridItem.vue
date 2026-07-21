@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import NumberFlow, { type Value } from '@number-flow/vue';
+import type { Value } from '@number-flow/vue';
+import NumberFlow from '@number-flow/vue';
 
 const {
-    title = '',
-    icon = '',
-    iconBg = 'bg-sky-500',
+    title,
+    icon,
+    iconClass = 'bg-sky-500',
     value,
-    prefix = '',
-    suffix = '',
+    prefix,
+    suffix,
 } = defineProps<{
     title?: string;
     icon?: string;
-    iconBg?: string;
+    iconClass?: string;
     value: Value;
     prefix?: string;
     suffix?: string;
@@ -25,7 +26,7 @@ const {
         <div
             v-if="icon"
             class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md text-xl text-white lg:h-14 lg:w-14 lg:text-2xl"
-            :class="[iconBg]"
+            :class="iconClass"
         >
             <i :class="icon"></i>
         </div>

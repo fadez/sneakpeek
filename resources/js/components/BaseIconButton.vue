@@ -6,14 +6,14 @@ type ButtonSize = 'sm' | 'default';
 
 const {
     type = 'info',
-    icon = '',
+    icon,
     colored = false,
     active = false,
     disabled = false,
     size = 'default',
 } = defineProps<{
     type?: IconButtonType;
-    icon?: string;
+    icon: string;
     colored?: boolean;
     active?: boolean;
     disabled?: boolean;
