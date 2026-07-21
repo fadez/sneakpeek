@@ -19,7 +19,7 @@
         "fmt:check": "vp fmt . --check"
     },
     "dependencies": {
-        "@number-flow/vue": "^0.5.1",
+        "@number-flow/vue": "^0.5.2",
         "@types/luxon": "^3.7.2",
         "@vueuse/core": "^14.3.0",
         "luxon": "^3.7.2",

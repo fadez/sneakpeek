@@ -225,6 +225,6 @@ If you're using **[Laravel Herd](https://herd.laravel.com)**, you can now access
 <details>
 <summary><strong>Maintenance</strong></summary>
 
-- `composer update:requirements` - Updates all Composer and npm dependencies and rebuilds frontend assets
+- `composer update:requirements` - Updates all Composer and npm dependencies and rebuilds frontend assets, runs automatically after `composer update`
 
 </details>
