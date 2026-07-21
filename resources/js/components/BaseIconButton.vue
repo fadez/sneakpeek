@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { IconButtonType } from '@/types';
+import type { LucideIcon } from '@lucide/vue';
+import type { IconButtonType } from '@/types';
 import { computed } from 'vue';
 
 type ButtonSize = 'sm' | 'default';
@@ -13,7 +14,7 @@ const {
     size = 'default',
 } = defineProps<{
     type?: IconButtonType;
-    icon: string;
+    icon: LucideIcon;
     colored?: boolean;
     active?: boolean;
     disabled?: boolean;
@@ -21,8 +22,8 @@ const {
 }>();
 
 const sizeClasses: Record<ButtonSize, string> = {
-    default: 'h-10 w-10 text-lg',
-    sm: 'h-7 w-7',
+    default: 'size-10',
+    sm: 'size-7',
 };
 
 const buttonClasses = computed(() => {
@@ -46,7 +47,7 @@ const buttonClasses = computed(() => {
         success: 'text-emerald-500',
         danger: 'text-rose-500',
         warning: 'text-yellow-500',
-        light: 'text-zinc-950',
+        light: 'text-zinc-950 dark:text-zinc-100',
     };
 
     if (!active) {
@@ -121,9 +122,9 @@ const buttonClasses = computed(() => {
         :class="buttonClasses"
         :disabled="disabled"
     >
-        <i
-            :class="icon"
-            class="fa-sm"
-        ></i>
+        <component
+            :is="icon"
+            class="size-5"
+        />
     </button>
 </template>

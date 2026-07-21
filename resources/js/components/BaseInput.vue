@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InputTypeHTMLAttribute, Ref } from 'vue';
 import { computed, ref, useAttrs, useTemplateRef } from 'vue';
+import { LucideEye, LucideEyeOff } from '@lucide/vue';
 
 defineOptions({
     inheritAttrs: false,
@@ -48,7 +49,10 @@ defineExpose({
             :class="showPasswordButtonClasses"
             @click="showPassword = !showPassword"
         >
-            <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
+            <component
+                :is="showPassword ? LucideEyeOff : LucideEye"
+                class="size-5"
+            />
         </button>
     </div>
 </template>

@@ -1,14 +1,16 @@
-import type { NotificationType, SelectOption } from '@/types';
+import type { LucideIcon } from '@lucide/vue';
+import type { NotificationType, SelectOptions } from '@/types';
+import { LucideCircleAlert, LucideCircleCheck, LucideInfo } from '@lucide/vue';
 
-export const NOTIFICATION_TYPE_ICONS: Record<NotificationType, string> = {
-    neutral: 'fa-solid fa-circle-info',
-    success: 'fa-solid fa-circle-check',
-    danger: 'fa-solid fa-circle-exclamation',
-    info: 'fa-solid fa-circle-info',
-    warning: 'fa-solid fa-circle-exclamation',
+export const NOTIFICATION_TYPE_ICONS: Record<NotificationType, LucideIcon> = {
+    neutral: LucideInfo,
+    success: LucideCircleCheck,
+    danger: LucideCircleAlert,
+    info: LucideInfo,
+    warning: LucideCircleAlert,
 } as const;
 
-export const SECRET_TTL_OPTIONS: ReadonlyArray<SelectOption<number>> = [
+export const SECRET_TTL_OPTIONS: SelectOptions = [
     { value: 60, label: 'Expires in 1 minute' },
     { value: 300, label: 'Expires in 5 minutes' },
     { value: 1800, label: 'Expires in 30 minutes' },

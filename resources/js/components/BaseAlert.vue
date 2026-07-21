@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { LucideIcon } from '@lucide/vue';
 import type { NotificationType } from '@/types';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { LucideX } from '@lucide/vue';
 import { NOTIFICATION_TYPE_ICONS } from '@/constants';
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
@@ -13,17 +15,13 @@ const {
 } = defineProps<{
     type?: NotificationType;
     showIcon?: boolean;
-    icon?: string;
+    icon?: LucideIcon;
     dismissible?: boolean;
 }>();
 
 const emit = defineEmits<{
     dismiss: [];
 }>();
-
-const route = useRoute();
-
-const dismissed = ref(false);
 
 // prettier-ignore
 const typeClasses: Record<NotificationType, string> = {
@@ -71,27 +69,22 @@ const typeClasses: Record<NotificationType, string> = {
 
 const alertClasses = computed(() => typeClasses[type]);
 
-const iconClasses = computed(() => icon || NOTIFICATION_TYPE_ICONS[type]);
+const iconComponent = computed(() => icon || NOTIFICATION_TYPE_ICONS[type]);
 
 const dismiss = (): void => {
-    if (route.name !== 'ui') {
-        dismissed.value = true;
-    }
-
     emit('dismiss');
 };
 </script>
 
 <template>
     <div
-        v-if="!dismissed"
         class="flex items-center gap-2 rounded-md border-2 px-4 py-3"
         :class="alertClasses"
     >
-        <i
+        <component
             v-if="showIcon"
-            :class="iconClasses"
-        ></i>
+            :is="iconComponent"
+        />
 
         <div>
             <slot />
@@ -103,7 +96,7 @@ const dismiss = (): void => {
         >
             <BaseIconButton
                 :type="type === 'neutral' ? 'light' : type"
-                icon="fa-solid fa-xmark"
+                :icon="LucideX"
                 :colored="true"
                 size="sm"
                 @click="dismiss"

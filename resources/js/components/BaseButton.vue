@@ -1,17 +1,18 @@
 <script setup lang="ts">
+import type { LucideIcon } from '@lucide/vue';
 import type { ButtonType } from '@/types';
 import { computed } from 'vue';
 import BaseSpinner from '@/components/BaseSpinner.vue';
 
 const {
-    iconBefore,
-    iconAfter,
+    leadingIcon,
+    trailingIcon,
     loading = false,
     disabled = false,
     type = 'primary',
 } = defineProps<{
-    iconBefore?: string;
-    iconAfter?: string;
+    leadingIcon?: LucideIcon;
+    trailingIcon?: LucideIcon;
     loading?: boolean;
     disabled?: boolean;
     type?: ButtonType;
@@ -76,33 +77,33 @@ const typeClasses: Record<ButtonType, string> = {
 const buttonClasses = computed(() => typeClasses[type]);
 
 // Return position if spinner should render in a specific position, or null if it should be hidden
-const spinnerPosition = computed<'before' | 'after' | null>(() => {
+const spinnerPosition = computed<'leading' | 'trailing' | null>(() => {
     if (!loading) return null;
 
-    return iconAfter && !iconBefore ? 'after' : 'before';
+    return trailingIcon && !leadingIcon ? 'trailing' : 'leading';
 });
 </script>
 
 <template>
     <button
-        class="flex min-w-20 cursor-pointer items-center justify-center gap-1.5 rounded-md border-2 px-4 py-3 whitespace-nowrap transition-all select-none focus-visible:border-black focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:border-white"
+        class="relative flex cursor-pointer items-center justify-center gap-1.5 rounded-md border-2 px-4 py-3 whitespace-nowrap transition-all select-none focus-visible:border-black focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:border-white"
         :class="buttonClasses"
-        :disabled="disabled"
+        :disabled="disabled || loading"
     >
-        <BaseSpinner v-if="spinnerPosition === 'before'" />
-        <i
-            v-else-if="iconBefore"
-            :class="iconBefore"
-        />
+        <BaseSpinner v-if="spinnerPosition === 'leading'" />
+        <component
+            v-else-if="leadingIcon"
+            :is="leadingIcon"
+            class="size-5"
+        ></component>
 
-        <span>
-            <slot />
-        </span>
+        <slot />
 
-        <BaseSpinner v-if="spinnerPosition === 'after'" />
-        <i
-            v-else-if="iconAfter && !loading"
-            :class="iconAfter"
-        />
+        <BaseSpinner v-if="spinnerPosition === 'trailing'" />
+        <component
+            v-else-if="trailingIcon && !loading"
+            :is="trailingIcon"
+            class="size-5"
+        ></component>
     </button>
 </template>

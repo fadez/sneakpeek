@@ -24,6 +24,7 @@ export default defineConfig({
         },
         rules: {
             'vite-plus/prefer-vite-plus-imports': 'error',
+            'typescript/consistent-type-imports': 'error',
         },
         env: {
             builtin: true,

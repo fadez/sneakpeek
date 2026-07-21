@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import BaseBadge from '@/components/BaseBadge.vue';
+import { LucideKeyRound, LucideLockKeyhole } from '@lucide/vue';
 
 defineProps<{
     passphraseProtected?: boolean;
@@ -15,11 +16,11 @@ defineProps<{
         </div>
 
         <div class="flex shrink-0 flex-row items-end gap-2">
-            <BaseBadge icon="fa-solid fa-lock">Encrypted</BaseBadge>
+            <BaseBadge :icon="LucideLockKeyhole">Encrypted</BaseBadge>
 
             <BaseBadge
                 v-if="passphraseProtected"
-                icon="fa-solid fa-key"
+                :icon="LucideKeyRound"
             >
                 Passphrase-protected
             </BaseBadge>

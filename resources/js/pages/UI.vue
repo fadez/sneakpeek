@@ -1,6 +1,24 @@
 <script setup lang="ts">
+import type { LucideIcon } from '@lucide/vue';
 import type { ButtonType, IconButtonType, NotificationType, ProgressBarType } from '@/types';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import {
+    LucideBellOff,
+    LucideBellRing,
+    LucideCheck,
+    LucideFlame,
+    LucideHourglass,
+    LucideKeyRound,
+    LucideLightbulb,
+    LucideLockKeyhole,
+    LucideLockKeyholeOpen,
+    LucidePaperclip,
+    LucideSend,
+    LucideThumbsDown,
+    LucideThumbsUp,
+    LucideVolumeX,
+    LucideX,
+} from '@lucide/vue';
 import { useNotificationStore } from '@/stores/notifications';
 import sleep from '@/utils/sleep';
 import AppLogo from '@/components/AppLogo.vue';
@@ -22,17 +40,17 @@ import StatisticGridItem from '@/components/StatisticGridItem.vue';
 
 const notify = useNotificationStore();
 
+const appName = import.meta.env.VITE_APP_NAME as string;
+
 const rating = ref<number>(0);
+const ratingLoading = ref<boolean>(false);
 const progressValue = ref<number>(0);
 const input = ref<string>('Input value');
 const textarea = ref<string>('Textarea value');
 const select = ref<string | number>('');
 const iconButtonsToggled = ref<boolean>(true);
-
 const progressIntervalId = ref<ReturnType<typeof setInterval> | null>(null);
 const progressTimeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
-
-const appName = import.meta.env.VITE_APP_NAME as string;
 
 const alertTypes: NotificationType[] = ['neutral', 'success', 'danger', 'info', 'warning'];
 
@@ -40,12 +58,12 @@ const buttonTypes: ButtonType[] = ['primary', 'secondary', 'success', 'danger', 
 
 const progressBarTypes: ProgressBarType[] = ['default', 'success', 'danger', 'info', 'warning', 'expiration'];
 
-const iconButtonVariants: Array<{ type: IconButtonType; icon: string }> = [
-    { type: 'success', icon: 'fa-solid fa-check' },
-    { type: 'danger', icon: 'fa-solid fa-fire' },
-    { type: 'info', icon: 'fa-solid fa-paperclip' },
-    { type: 'warning', icon: 'fa-solid fa-lightbulb' },
-    { type: 'light', icon: 'fa-solid fa-volume-xmark' },
+const iconButtonVariants: Array<{ type: IconButtonType; icon: LucideIcon }> = [
+    { type: 'success', icon: LucideCheck },
+    { type: 'danger', icon: LucideFlame },
+    { type: 'info', icon: LucidePaperclip },
+    { type: 'warning', icon: LucideLightbulb },
+    { type: 'light', icon: LucideVolumeX },
 ];
 
 const selectOptions: Array<{ value: string | number; label: string; disabled?: boolean }> = [
@@ -54,14 +72,18 @@ const selectOptions: Array<{ value: string | number; label: string; disabled?: b
     { value: 2, label: 'Disabled option with value', disabled: true },
 ];
 
-const rateMessage = (): void => {
-    if (rating.value === 0) rating.value = 1;
-    else if (rating.value === 1) rating.value = -1;
-    else rating.value = 0;
+const rateMessage = async (value: -1 | 0 | 1): Promise<void> => {
+    ratingLoading.value = true;
+
+    await sleep(750);
+
+    rating.value = value;
+
+    ratingLoading.value = false;
 };
 
 const increaseProgress = (): void => {
-    progressValue.value += 5;
+    progressValue.value += 1;
 
     if (progressValue.value >= 100) {
         if (progressIntervalId.value) {
@@ -77,8 +99,12 @@ const startProgressLoop = async (): Promise<void> => {
 
     await sleep(1000);
 
-    progressIntervalId.value = setInterval(increaseProgress, 201);
+    progressIntervalId.value = setInterval(increaseProgress, 75);
 };
+
+function handleAlertDismiss() {
+    window.alert('The alert has been dismissed.');
+}
 
 onMounted(() => {
     startProgressLoop();
@@ -130,6 +156,26 @@ onBeforeUnmount(() => {
             </BaseCard>
 
             <BaseCard>
+                <template #title>Toast notifications</template>
+                <div class="form">
+                    <div class="flex flex-wrap items-start gap-2">
+                        <BaseButton
+                            :leading-icon="LucideBellRing"
+                            @click="notify.test()"
+                        >
+                            Show
+                        </BaseButton>
+                        <BaseButton
+                            :leading-icon="LucideBellOff"
+                            @click="notify.clearTest()"
+                        >
+                            Hide
+                        </BaseButton>
+                    </div>
+                </div>
+            </BaseCard>
+
+            <BaseCard>
                 <template #title>Alert</template>
                 <div class="form">
                     <BaseAlert
@@ -145,7 +191,8 @@ onBeforeUnmount(() => {
                         v-for="type in alertTypes"
                         :key="type"
                         :type="type"
-                        :dismissible="true"
+                        dismissible
+                        @dismiss="handleAlertDismiss"
                     >
                         {{ type }}
                     </BaseAlert>
@@ -185,7 +232,7 @@ onBeforeUnmount(() => {
                 </div>
                 <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
                     <div class="form-group">
-                        <BaseLabel>Disabled buttons with spinner</BaseLabel>
+                        <BaseLabel>Loading buttons</BaseLabel>
                         <div class="flex flex-wrap items-start gap-2">
                             <BaseButton
                                 v-for="type in buttonTypes"
@@ -203,16 +250,27 @@ onBeforeUnmount(() => {
                     <div class="form-group">
                         <BaseLabel>Buttons with icons</BaseLabel>
                         <div class="flex flex-wrap items-start gap-2">
-                            <BaseButton icon-before="fa-solid fa-lock">Create Link</BaseButton>
-                            <BaseButton icon-after="fa-solid fa-paper-plane">Send Message</BaseButton>
+                            <BaseButton :leading-icon="LucideLockKeyhole">Create Link</BaseButton>
+                            <BaseButton :trailing-icon="LucideSend">Send Message</BaseButton>
+                        </div>
+                    </div>
+                </div>
+                <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
+                    <div class="form-group">
+                        <BaseLabel>Dynamic buttons with icons</BaseLabel>
+                        <div class="flex flex-wrap items-start gap-2">
                             <BaseButton
-                                :icon-before="rating === 1 ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"
-                                :icon-after="rating === -1 ? 'fa-solid fa-thumbs-down' : 'fa-regular fa-thumbs-down'"
-                                :type="rating === 1 ? 'success' : rating === -1 ? 'danger' : 'secondary'"
-                                @click="rateMessage"
-                            >
-                                Rate Message
-                            </BaseButton>
+                                :leading-icon="LucideThumbsUp"
+                                :type="rating === 1 ? 'success' : 'secondary'"
+                                :loading="ratingLoading"
+                                @click="rateMessage(rating === 1 ? 0 : 1)"
+                            ></BaseButton>
+                            <BaseButton
+                                :leading-icon="LucideThumbsDown"
+                                :type="rating === -1 ? 'danger' : 'secondary'"
+                                :loading="ratingLoading"
+                                @click="rateMessage(rating === -1 ? 0 : -1)"
+                            ></BaseButton>
                         </div>
                     </div>
                 </div>
@@ -255,7 +313,7 @@ onBeforeUnmount(() => {
                                 v-for="button in iconButtonVariants"
                                 :key="button.type"
                                 :type="button.type"
-                                :icon="iconButtonsToggled ? 'fa-solid fa-thumbs-up' : 'fa-regular fa-thumbs-up'"
+                                :icon="LucideThumbsUp"
                                 :colored="true"
                                 :active="iconButtonsToggled"
                                 @click="iconButtonsToggled = !iconButtonsToggled"
@@ -271,7 +329,7 @@ onBeforeUnmount(() => {
                                 v-for="button in iconButtonVariants"
                                 :key="button.type"
                                 :type="button.type"
-                                icon="fa-solid fa-xmark"
+                                :icon="LucideX"
                                 :colored="true"
                                 size="sm"
                             />
@@ -294,8 +352,8 @@ onBeforeUnmount(() => {
                 <div class="form">
                     <div class="flex flex-wrap items-start gap-2">
                         <BaseBadge>Default badge</BaseBadge>
-                        <BaseBadge icon="fa-solid fa-lock">Encrypted</BaseBadge>
-                        <BaseBadge icon="fa-solid fa-key">Passphrase-protected</BaseBadge>
+                        <BaseBadge :icon="LucideLockKeyhole">Encrypted</BaseBadge>
+                        <BaseBadge :icon="LucideKeyRound">Passphrase-protected</BaseBadge>
                     </div>
                 </div>
             </BaseCard>
@@ -451,12 +509,14 @@ onBeforeUnmount(() => {
             </BaseCard>
 
             <BaseCard>
-                <template #title>Loaders & Spinners</template>
+                <template #title>Loader & spinner</template>
                 <div class="form">
                     <BaseLoader padding="" />
                 </div>
                 <div class="form border-t-2 border-zinc-200 p-4 dark:border-zinc-700">
-                    <BaseSpinner />
+                    <div class="flex justify-center">
+                        <BaseSpinner />
+                    </div>
                 </div>
             </BaseCard>
 
@@ -486,38 +546,28 @@ onBeforeUnmount(() => {
                     <StatisticGrid class="sm:grid-cols-2 lg:grid-cols-4">
                         <StatisticGridItem
                             title="Secrets created"
-                            icon="fa-solid fa-lock"
-                            :value="progressValue * 10000"
+                            :icon="LucideLockKeyhole"
+                            :value="progressValue * 1000"
                         />
                         <StatisticGridItem
                             title="Secrets revealed"
-                            icon="fa-solid fa-unlock"
+                            :icon="LucideLockKeyholeOpen"
                             icon-class="bg-emerald-500"
-                            :value="progressValue * 7500"
+                            :value="progressValue * 750"
                         />
                         <StatisticGridItem
                             title="Secrets expired"
-                            icon="fa-solid fa-hourglass"
+                            :icon="LucideHourglass"
                             icon-class="bg-yellow-500"
-                            :value="progressValue * 1500"
+                            :value="progressValue * 150"
                         />
                         <StatisticGridItem
                             title="Secrets burned"
-                            icon="fa-solid fa-fire"
+                            :icon="LucideFlame"
                             icon-class="bg-rose-500"
-                            :value="progressValue * 1000"
+                            :value="progressValue * 100"
                         />
                     </StatisticGrid>
-                </div>
-            </BaseCard>
-
-            <BaseCard>
-                <template #title>Toast notifications</template>
-                <div class="form">
-                    <div class="flex flex-wrap items-start gap-2">
-                        <BaseButton @click="notify.test()">Show</BaseButton>
-                        <BaseButton @click="notify.clearTest()">Hide</BaseButton>
-                    </div>
                 </div>
             </BaseCard>
         </div>

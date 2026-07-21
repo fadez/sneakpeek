@@ -45,7 +45,7 @@
 }
 
 .Vue-Toastification__icon {
-    @apply my-auto mr-2;
+    @apply my-auto mr-2 w-auto;
 }
 
 /* toast: neutral  */

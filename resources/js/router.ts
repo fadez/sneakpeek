@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { useNotificationStore } from '@/stores/notifications';
 
 // Eager-loaded: users arrive at these pages directly via external links

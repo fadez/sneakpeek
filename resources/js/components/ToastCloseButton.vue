@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NotificationType } from '@/types';
+import { LucideX } from '@lucide/vue';
 import BaseIconButton from '@/components/BaseIconButton.vue';
 
 defineProps<{
@@ -12,7 +13,7 @@ defineProps<{
         <div class="ml-2">
             <BaseIconButton
                 :type="type === 'neutral' ? 'light' : type"
-                icon="fa-solid fa-xmark"
+                :icon="LucideX"
                 :colored="true"
                 size="sm"
             />

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue';
+import { LucideChevronDown } from '@lucide/vue';
 
 defineOptions({
     inheritAttrs: false,
@@ -27,8 +28,8 @@ const iconClasses = computed(() => ('disabled' in attrs ? '' : 'group-hover:text
             <slot />
         </select>
 
-        <i
-            class="fa-solid fa-chevron-down pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted transition-all"
+        <LucideChevronDown
+            class="pointer-events-none absolute top-1/2 right-3 size-6 -translate-y-1/2 text-muted transition-all"
             :class="iconClasses"
         />
     </div>

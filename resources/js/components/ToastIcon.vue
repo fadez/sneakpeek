@@ -8,7 +8,10 @@ defineProps<{
 </script>
 
 <template>
-    <div class="my-auto mr-1">
-        <i :class="NOTIFICATION_TYPE_ICONS[type]"></i>
+    <div class="Vue-Toastification__icon">
+        <component
+            :is="NOTIFICATION_TYPE_ICONS[type]"
+            class="size-6 shrink-0"
+        />
     </div>
 </template>

@@ -57,24 +57,28 @@ const abGroupLabel = computed<string | null>(() => {
                     Built with
                     <img
                         src="../../images/heart.svg"
-                        alt="love"
-                        class="pointer-events-none h-6 w-5"
+                        alt=" love "
+                        class="pointer-events-none h-6 w-5 align-middle"
                     />
                     in
                     <img
                         src="../../images/flag-ua.svg"
-                        alt="Ukraine"
-                        class="pointer-events-none mx-0.5 h-6 w-5"
+                        alt=" Ukraine "
+                        class="pointer-events-none mx-0.5 h-6 w-5 align-middle"
                     />
                     by
-                    <BaseLink
-                        data-test="footer-author-link"
-                        :href="authorUrl"
-                        target="_blank"
-                    >
-                        {{ authorName }}
-                    </BaseLink>
+                    <span class="inline-flex items-center">
+                        <BaseLink
+                            data-test="footer-author-link"
+                            :href="authorUrl"
+                            target="_blank"
+                            class="align-middle"
+                        >
+                            {{ authorName }}
+                        </BaseLink>
+                    </span>
                 </div>
+
                 <div class="bullet-divider">
                     <div
                         v-if="abGroupLabel"

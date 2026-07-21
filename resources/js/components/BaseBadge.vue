@@ -1,15 +1,18 @@
 <script setup lang="ts">
+import type { LucideIcon } from '@lucide/vue';
+
 defineProps<{
-    icon?: string;
+    icon?: LucideIcon;
 }>();
 </script>
 
 <template>
     <span class="inline-flex items-center gap-1 rounded-full bg-zinc-200 px-2 py-1 text-xs font-medium text-muted dark:bg-zinc-700">
-        <i
+        <component
             v-if="icon"
-            :class="icon"
-        ></i>
+            :is="icon"
+            class="size-4"
+        />
 
         <slot />
     </span>

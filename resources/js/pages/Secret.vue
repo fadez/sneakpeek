@@ -15,6 +15,7 @@ import BaseInput from '@/components/BaseInput.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 import SecretPreview from '@/components/SecretPreview.vue';
+import { LucideCopy, LucideLockKeyholeOpen } from '@lucide/vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -181,7 +182,7 @@ onBeforeUnmount(() => {
             <template #actions>
                 <BaseButton
                     type="primary"
-                    icon-before="fa-solid fa-copy"
+                    :leading-icon="LucideCopy"
                     @click="copySecret"
                 >
                     Copy to Clipboard
@@ -242,7 +243,7 @@ onBeforeUnmount(() => {
                 <BaseButton
                     data-test="reveal-secret-btn"
                     type="primary"
-                    icon-before="fa-solid fa-unlock"
+                    :leading-icon="LucideLockKeyholeOpen"
                     :disabled="isRevealingSecret || (secret.is_passphrase_protected && !passphrase)"
                     :loading="isRevealingSecret"
                     @click="handleSecretReveal"

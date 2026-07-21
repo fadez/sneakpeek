@@ -1,5 +1,6 @@
-import { h, type App } from 'vue';
-import { ToastOptionsAndContent } from 'vue-toastification/dist/types/types';
+import type { App } from 'vue';
+import type { ToastOptionsAndContent } from 'vue-toastification/dist/types/types';
+import { h } from 'vue';
 import Toast, { POSITION as TOAST_POSITION, TYPE as TOAST_TYPE } from 'vue-toastification';
 import ToastCloseButton from '@/components/ToastCloseButton.vue';
 import ToastIcon from '@/components/ToastIcon.vue';

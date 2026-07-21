@@ -20,6 +20,7 @@ import BaseLabel from '@/components/BaseLabel.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
 import BaseProgressBar from '@/components/BaseProgressBar.vue';
 import SecretPreview from '@/components/SecretPreview.vue';
+import { LucideCopy, LucideFlame } from '@lucide/vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -299,7 +300,7 @@ onBeforeUnmount(() => {
 
                 <BaseButton
                     v-if="!showPassphraseInput"
-                    icon-before="fa-solid fa-copy"
+                    :leading-icon="LucideCopy"
                     @click="copySecretUrl"
                 >
                     Copy Secret Link
@@ -307,7 +308,7 @@ onBeforeUnmount(() => {
 
                 <BaseButton
                     type="danger"
-                    icon-before="fa-solid fa-fire"
+                    :leading-icon="LucideFlame"
                     :disabled="isDeletingSecret || (showPassphraseInput && !passphrase)"
                     :loading="isDeletingSecret"
                     @click="deleteSecret"

@@ -1,6 +1,6 @@
+import type { ToastID, ToastContent, ToastOptions } from 'vue-toastification/dist/types/types';
 import { defineStore } from 'pinia';
 import { useToast } from 'vue-toastification';
-import { ToastID, ToastContent, ToastOptions } from 'vue-toastification/dist/types/types';
 
 type ToastIdKey =
     | 'internetDisconnectedToastId'

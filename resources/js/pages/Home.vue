@@ -2,6 +2,7 @@
 import type { Ref } from 'vue';
 import { ref, computed, useTemplateRef, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { LucideCircleStar, LucideLockKeyhole, LucideLockKeyholeOpen } from '@lucide/vue';
 import { SECRET_TTL_OPTIONS } from '@/constants';
 import { storeSecret } from '@/api';
 import { useElementFocus } from '@/composables/useElementFocus';
@@ -69,7 +70,7 @@ onMounted(() => {
                 <BaseAlert
                     v-if="features.isActive('lucky-message')"
                     type="success"
-                    icon="fa-solid fa-trophy"
+                    :icon="LucideCircleStar"
                     dismissible
                     @dismiss="features.deactivate('lucky-message')"
                 >
@@ -143,7 +144,7 @@ onMounted(() => {
             <template #actions>
                 <BaseButton
                     data-test="create-secret-btn"
-                    icon-before="fa-solid fa-lock"
+                    :leading-icon="LucideLockKeyhole"
                     :disabled="!canCreateSecret || isCreatingSecret"
                     :loading="isCreatingSecret"
                     @click="createSecret"

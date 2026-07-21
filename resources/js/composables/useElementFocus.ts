@@ -1,4 +1,5 @@
-import { nextTick, type Ref } from 'vue';
+import type { Ref } from 'vue';
+import { nextTick } from 'vue';
 
 export function useElementFocus() {
     async function focus(elementRef: Ref<HTMLElement | null>): Promise<void> {

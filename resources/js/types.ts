@@ -25,10 +25,12 @@ export interface AppStatistics {
     secrets_burned: number;
 }
 
-export interface SelectOption<T = string> {
-    value: T;
+export type SelectOptions = ReadonlyArray<SelectOption>;
+
+export type SelectOption = {
+    value: string | number;
     label: string;
-}
+};
 
 export type ButtonType = 'primary' | 'secondary' | 'success' | 'danger' | 'light';
 
@@ -40,7 +42,7 @@ export type FeaturesMap = Record<string, boolean | string>;
 
 export type GetStatisticsResponse = AppStatistics;
 
-export type ListFeaturesResponse = Record<string, boolean | string>;
+export type ListFeaturesResponse = FeaturesMap;
 
 export type GetSecretResponse = { secret: Secret };
 

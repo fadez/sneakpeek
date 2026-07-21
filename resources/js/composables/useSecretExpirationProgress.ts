@@ -1,4 +1,5 @@
-import { ref, computed, watch, onUnmounted, type ComputedRef, type Ref } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
+import { ref, computed, watch, onUnmounted } from 'vue';
 
 interface Secret {
     created_at: string;

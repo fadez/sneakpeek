@@ -2,6 +2,7 @@
 import type { AppStatistics } from '@/types';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { echo } from '@laravel/echo-vue';
+import { LucideFlame, LucideHourglass, LucideLockKeyhole, LucideLockKeyholeOpen } from '@lucide/vue';
 import { getStatistics } from '@/api';
 import StatisticGrid from '@/components/StatisticGrid.vue';
 import StatisticGridItem from '@/components/StatisticGridItem.vue';
@@ -38,24 +39,24 @@ onBeforeUnmount(() => {
         <StatisticGrid class="sm:grid-cols-2 lg:grid-cols-4">
             <StatisticGridItem
                 title="Secrets created"
-                icon="fa-solid fa-lock"
+                :icon="LucideLockKeyhole"
                 :value="statistics.secrets_created"
             />
             <StatisticGridItem
                 title="Secrets revealed"
-                icon="fa-solid fa-unlock"
+                :icon="LucideLockKeyholeOpen"
                 icon-class="bg-emerald-500"
                 :value="statistics.secrets_revealed"
             />
             <StatisticGridItem
                 title="Secrets expired"
-                icon="fa-solid fa-hourglass"
+                :icon="LucideHourglass"
                 icon-class="bg-yellow-500"
                 :value="statistics.secrets_expired"
             />
             <StatisticGridItem
                 title="Secrets burned"
-                icon="fa-solid fa-fire"
+                :icon="LucideFlame"
                 icon-class="bg-rose-500"
                 :value="statistics.secrets_burned"
             />

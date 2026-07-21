@@ -1,4 +1,5 @@
-import { ref, type Ref } from 'vue';
+import type { Ref } from 'vue';
+import { ref } from 'vue';
 
 const now: Ref<number> = ref(Date.now());
 
