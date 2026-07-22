@@ -32,7 +32,7 @@ const hasActions = computed(() => !!slots.actions?.());
 </template>
 
 <style scoped>
-@reference "../../css/app.css";
+@reference "#app.css";
 
 .card {
     @apply flex flex-col rounded-md border-2 border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900;

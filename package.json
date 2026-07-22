@@ -10,6 +10,9 @@
         "url": "https://github.com/fadez/sneakpeek"
     },
     "type": "module",
+    "imports": {
+        "#app.css": "./resources/css/app.css"
+    },
     "scripts": {
         "build": "vp build",
         "dev": "vp dev",
