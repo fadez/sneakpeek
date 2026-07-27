@@ -45,7 +45,7 @@ test('content', function () {
     expect($rawContent)->not->toBe($content);
 });
 
-test('access_token', function (string $driver) {
+test('access_token :dataset', function (string $driver) {
     config(['hashing.driver' => $driver]);
 
     $accessToken = 'secret_access_token';
@@ -61,9 +61,9 @@ test('access_token', function (string $driver) {
 
     // Ensure the access token is already hashed using the intended algorithm
     expect(Hash::needsRehash($rawAccessToken))->toBeFalse();
-})->with(['bcrypt', 'argon', 'argon2id']);
+})->with('hashing_drivers');
 
-test('passphrase', function (string $driver) {
+test('passphrase :dataset', function (string $driver) {
     config(['hashing.driver' => $driver]);
 
     $passphrase = 'secret';
@@ -79,7 +79,7 @@ test('passphrase', function (string $driver) {
 
     // Ensure the passphrase is already hashed using the intended algorithm
     expect(Hash::needsRehash($rawPassphrase))->toBeFalse();
-})->with(['bcrypt', 'argon', 'argon2id']);
+})->with('hashing_drivers');
 
 test('revealed_at', function () {
     $secret = Secret::factory()->revealed()->createFresh();

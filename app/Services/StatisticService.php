@@ -47,6 +47,7 @@ final readonly class StatisticService
             return;
         }
 
+        // Warning: this syntax is supported only by SQLite and PostgreSQL
         Statistic::upsert(
             [['key' => $key->value, 'value' => $amount]],
             uniqueBy: ['key'],

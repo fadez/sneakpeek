@@ -45,6 +45,7 @@ Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)*
     - **[Custom privacy-first session handler](app/Extensions/Session/DatabaseSessionHandler.php)** that doesn't store any user information
     - Secrets can only be accessed once, then wiped permanently
     - Secret content encrypted using Laravel's built-in encryption
+    - Argon2id is used as the hashing algorithm
     - Secret access tokens (hashed in DB) stored in the URL `#` hash fragment to prevent server-side logging, analytics tracking, or accidental leakage via `Referer` header
     - Secrets have optional passphrase (hashed in DB)
     - Mandatory expiration time for secrets
