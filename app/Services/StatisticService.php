@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Enums\StatisticKey;
 use App\Events\StatisticUpdated;
 use App\Models\Statistic;
+use Illuminate\Support\Facades\DB;
 
 final readonly class StatisticService
 {
@@ -37,6 +38,8 @@ final readonly class StatisticService
 
     /**
      * Increment a statistic key by the given amount.
+     *
+     * The operation is performed atomically using upsert to prevent race conditions.
      */
     public function incrementValue(StatisticKey $key, int $amount = 1): void
     {
@@ -44,7 +47,11 @@ final readonly class StatisticService
             return;
         }
 
-        Statistic::firstOrCreate(['key' => $key])->increment('value', $amount);
+        Statistic::upsert(
+            [['key' => $key->value, 'value' => $amount]],
+            uniqueBy: ['key'],
+            update: ['value' => DB::raw('value + excluded.value')],
+        );
 
         event(new StatisticUpdated);
     }

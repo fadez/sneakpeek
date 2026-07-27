@@ -3,8 +3,6 @@
 use App\Models\Secret;
 use App\Services\SecretService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Sleep;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -69,27 +67,14 @@ it('fails to reveal an expired secret', function () {
         ->toThrow(ModelNotFoundException::class);
 });
 
-it('reveals secret content and wipes it atomically under race conditions', function () {
+it('throws when revealing a secret that has already been revealed', function () {
     $content = 'Secret content.';
 
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
-    // We'll simulate two concurrent reveals using transactions with artificial delay
-    $serviceA = resolve(SecretService::class);
-    $serviceB = resolve(SecretService::class);
+    $revealedContent = $this->secretService->revealSecret($secret);
 
-    // Simulate a slow transaction, where reveal locks the row and succeeds
-    $revealedContent = DB::transaction(function () use ($serviceA, $secret) {
-        $content = $serviceA->revealSecret($secret);
-
-        // Artificial delay to keep the transaction open and mimic a race condition
-        Sleep::sleep(1);
-
-        return $content;
-    });
-
-    // Second reveal should fail because the secret has been atomically marked as revealed
-    expect(fn () => $serviceB->revealSecret($secret))
+    expect(fn () => $this->secretService->revealSecret($secret))
         ->toThrow(ModelNotFoundException::class);
 
     $secret->refresh();

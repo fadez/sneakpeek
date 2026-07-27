@@ -5,13 +5,37 @@ use App\Events\StatisticUpdated;
 use App\Models\Statistic;
 use App\Services\StatisticService;
 use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 beforeEach(function () {
+    /** @var TestCase $this */
     $this->statisticService = resolve(StatisticService::class);
 });
 
 it('returns zero for a key that does not exist', function () {
     expect($this->statisticService->getValue(StatisticKey::SecretsCreated))->toBe(0);
+});
+
+it('creates exactly one record when incrementing a key that does not exist', function () {
+    $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
+
+    $rowCount = Statistic::query()->where('key', StatisticKey::SecretsCreated)->count();
+    $value = $this->statisticService->getValue(StatisticKey::SecretsCreated);
+
+    expect($rowCount)->toBe(1)
+        ->and($value)->toBe(1);
+});
+
+it('does not create duplicate rows for the same key', function () {
+    $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
+    $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
+    $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
+
+    $rowCount = Statistic::query()->where('key', StatisticKey::SecretsCreated)->count();
+    $value = $this->statisticService->getValue(StatisticKey::SecretsCreated);
+
+    expect($rowCount)->toBe(1)
+        ->and($value)->toBe(3);
 });
 
 it('returns the value for an existing key', function () {
