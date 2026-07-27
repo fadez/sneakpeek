@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Secret;
 use App\Services\SecretService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

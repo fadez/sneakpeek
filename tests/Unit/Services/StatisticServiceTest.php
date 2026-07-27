@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Enums\StatisticKey;
 use App\Events\StatisticUpdated;
 use App\Models\Statistic;

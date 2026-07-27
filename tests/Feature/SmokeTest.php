@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 test(':dataset route passes the smoke test', function (array $route) {
     $this->get($route['url'])->assertOk();
 })->with('routes_web_public');

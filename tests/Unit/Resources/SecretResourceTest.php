@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Resources\SecretResource;
 use App\Models\Secret;
 

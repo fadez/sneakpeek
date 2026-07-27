@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 test(':dataset route passes the smoke test', function (array $route) {
     visit($route['url'])
         ->assertNoSmoke() // Ensure there are no thrown JavaScript errors and no console logs

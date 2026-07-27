@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Events\BroadcastableEvent;
 use App\Events\Event;
 use Illuminate\Console\Attributes\Description;
@@ -7,6 +9,8 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
+use Illuminate\Support\Collection;
+use Pest\Expectation;
 
 arch()->preset()->php();
 arch()->preset()->laravel();
@@ -78,3 +82,10 @@ arch('services')
     ->toHaveSuffix('Service')
     ->toHaveMethodsDocumented()
     ->toHavePropertiesDocumented();
+
+arch('tests use strict types')
+    ->expect(fn (): Collection => collect(glob(base_path('tests/**/*.php'))))
+    ->each(function (Expectation $expectation) {
+        expect(file_get_contents($expectation->value))
+            ->toContain('declare(strict_types=1);');
+    });
