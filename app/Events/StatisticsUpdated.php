@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace App\Events;
 
-use App\Services\StatisticService;
 use Illuminate\Broadcasting\Channel;
 
-final class StatisticUpdated extends BroadcastableEvent
+final class StatisticsUpdated extends BroadcastableEvent
 {
+    /**
+     * Create a new event instance.
+     *
+     * @param  array<string, int>  $statistics
+     */
+    public function __construct(
+        public readonly array $statistics,
+    ) {
+        //
+    }
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -26,16 +36,6 @@ final class StatisticUpdated extends BroadcastableEvent
      */
     public function broadcastAs(): string
     {
-        return 'statistic.updated';
-    }
-
-    /**
-     * Get the data to broadcast.
-     *
-     * @return array<string, mixed>
-     */
-    public function broadcastWith(): array
-    {
-        return resolve(StatisticService::class)->getSnapshot();
+        return 'statistics.updated';
     }
 }

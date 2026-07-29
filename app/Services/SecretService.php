@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\DTOs\CreatedSecret;
 use App\DTOs\CreateSecretData;
+use App\DTOs\CreateSecretResult;
 use App\Enums\StatisticKey;
 use App\Events\SecretBurned;
 use App\Events\SecretRevealed;
@@ -33,9 +33,9 @@ final readonly class SecretService
     /**
      * Create a new secret and return it along with its access token.
      */
-    public function createSecret(CreateSecretData $data): CreatedSecret
+    public function createSecret(CreateSecretData $data): CreateSecretResult
     {
-        return DB::transaction(function () use ($data): CreatedSecret {
+        return DB::transaction(function () use ($data): CreateSecretResult {
             $accessToken = Str::random(64);
 
             $secret = Secret::create([
@@ -48,7 +48,7 @@ final readonly class SecretService
 
             $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
 
-            return new CreatedSecret($secret, $accessToken);
+            return new CreateSecretResult($secret, $accessToken);
         });
     }
 

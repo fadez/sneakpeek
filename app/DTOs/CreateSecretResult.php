@@ -6,7 +6,7 @@ namespace App\DTOs;
 
 use App\Models\Secret;
 
-final readonly class CreatedSecret
+final readonly class CreateSecretResult
 {
     public function __construct(
         public Secret $secret,

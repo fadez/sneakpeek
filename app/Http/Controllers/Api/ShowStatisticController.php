@@ -14,6 +14,8 @@ final readonly class ShowStatisticController
      */
     public function __invoke(StatisticService $service): JsonResponse
     {
-        return response()->json($service->getSnapshot());
+        return response()->json([
+            'statistics' => $service->getSnapshot(),
+        ]);
     }
 }

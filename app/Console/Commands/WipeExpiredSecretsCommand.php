@@ -19,7 +19,7 @@ final class WipeExpiredSecretsCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(SecretService $secretService, StatisticService $statisticService): void
+    public function handle(SecretService $secretService, StatisticService $statisticService): int
     {
         $wipedCount = 0;
 
@@ -32,5 +32,7 @@ final class WipeExpiredSecretsCommand extends Command
         $statisticService->incrementValue(StatisticKey::SecretsExpired, $wipedCount);
 
         $this->components->info('Wiped ' . $wipedCount . ' expired ' . str('secret')->plural($wipedCount) . '.');
+
+        return self::SUCCESS;
     }
 }

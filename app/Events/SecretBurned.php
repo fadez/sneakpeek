@@ -12,7 +12,7 @@ final class SecretBurned extends BroadcastableEvent
      * Create a new event instance.
      */
     public function __construct(
-        public string $secretId
+        private readonly string $secretId
     ) {
         $this->dontBroadcastToCurrentUser();
     }

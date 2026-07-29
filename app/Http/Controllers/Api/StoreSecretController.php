@@ -16,12 +16,12 @@ final readonly class StoreSecretController
      */
     public function __invoke(StoreSecretRequest $request, SecretService $secretService): SecretResource
     {
-        $createdSecret = $secretService->createSecret($request->validatedToDTO());
+        $result = $secretService->createSecret($request->validatedToDTO());
 
-        return new SecretResource($createdSecret->secret)
+        return new SecretResource($result->secret)
             ->additional([
                 'secret' => [
-                    'access_token' => $createdSecret->accessToken,
+                    'access_token' => $result->accessToken,
                 ],
             ]);
     }

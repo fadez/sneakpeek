@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\JsonResponse;
 use Laravel\Pennant\Feature;
 
-final readonly class IndexFeatureController
+final readonly class ListFeaturesController
 {
     /**
      * List all feature flags and their current state for the active session.

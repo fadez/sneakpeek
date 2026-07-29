@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\StatisticKey;
-use App\Events\StatisticUpdated;
+use App\Events\StatisticsUpdated;
 use App\Models\Statistic;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +14,7 @@ final readonly class StatisticService
     /**
      * Aggregate all application statistics into a single snapshot.
      *
-     * @return array<string, mixed>
+     * @return array<string, int>
      */
     public function getSnapshot(): array
     {
@@ -31,7 +31,7 @@ final readonly class StatisticService
      */
     public function getValue(StatisticKey $key): int
     {
-        $statistic = Statistic::where('key', $key)->first();
+        $statistic = Statistic::where('key', $key->value)->first();
 
         return $statistic->value ?? 0;
     }
@@ -54,6 +54,6 @@ final readonly class StatisticService
             update: ['value' => DB::raw('value + excluded.value')],
         );
 
-        event(new StatisticUpdated);
+        event(new StatisticsUpdated($this->getSnapshot()));
     }
 }

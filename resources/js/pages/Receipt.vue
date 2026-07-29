@@ -175,7 +175,7 @@ const handleSecretIdChange = async (newId: string | undefined, oldId: string | u
 
     echo()
         .channel(`secrets.${newId}`)
-        .listen('.secret.revealed', (e: { secret: SecretWithAccessToken }) => {
+        .listen('.secret.revealed', (e: { secret: Secret }) => {
             secret.value = e.secret;
         })
         .listen('.secret.burned', () => {

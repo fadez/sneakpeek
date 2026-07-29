@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\StatisticKey;
-use App\Events\StatisticUpdated;
+use App\Events\StatisticsUpdated;
 use App\Models\Statistic;
 use App\Services\StatisticService;
 use Illuminate\Support\Facades\Event;
@@ -77,12 +77,12 @@ it('does nothing when amount is zero or negative', function () {
     expect($this->statisticService->getValue(StatisticKey::SecretsCreated))->toBe(10);
 });
 
-it('dispatches StatisticUpdated event when incrementing', function () {
+it('dispatches StatisticsUpdated event when incrementing', function () {
     Event::fake();
 
     $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
 
-    Event::assertDispatched(StatisticUpdated::class);
+    Event::assertDispatched(StatisticsUpdated::class);
 });
 
 it('returns a snapshot with all statistic keys', function () {

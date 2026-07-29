@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AppStatistics } from '@/types';
+import type { Statistics, StatisticsData } from '@/types';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { echo } from '@laravel/echo-vue';
 import { LucideFlame, LucideHourglass, LucideLockKeyhole, LucideLockKeyholeOpen } from '@lucide/vue';
@@ -7,7 +7,7 @@ import { getStatistics } from '@/api';
 import StatisticGrid from '@/components/StatisticGrid.vue';
 import StatisticGridItem from '@/components/StatisticGridItem.vue';
 
-const statistics = ref<AppStatistics>({
+const statistics = ref<Statistics>({
     secrets_created: 0,
     secrets_revealed: 0,
     secrets_expired: 0,
@@ -15,12 +15,14 @@ const statistics = ref<AppStatistics>({
 });
 
 onMounted(async () => {
-    statistics.value = await getStatistics();
+    const response = await getStatistics();
+
+    statistics.value = response.statistics;
 
     echo()
         .channel('dashboard')
-        .listen('.statistic.updated', (e: AppStatistics) => {
-            statistics.value = e;
+        .listen('.statistics.updated', (e: StatisticsData) => {
+            statistics.value = e.statistics;
         });
 });
 

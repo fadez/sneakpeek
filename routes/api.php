@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\DeactivateFeatureController;
 use App\Http\Controllers\Api\DestroySecretController;
-use App\Http\Controllers\Api\IndexFeatureController;
+use App\Http\Controllers\Api\ListFeaturesController;
 use App\Http\Controllers\Api\RevealSecretController;
 use App\Http\Controllers\Api\ShowSecretController;
 use App\Http\Controllers\Api\ShowStatisticController;
@@ -34,8 +34,8 @@ Route::name('api.')->middleware(['throttle:api'])->group(function () {
     });
 
     Route::name('features.')->prefix('features')->group(function () {
-        Route::get('/', IndexFeatureController::class)
-            ->name('index');
+        Route::get('/', ListFeaturesController::class)
+            ->name('list');
 
         Route::post('/{feature}/deactivate', DeactivateFeatureController::class)
             ->name('deactivate');
