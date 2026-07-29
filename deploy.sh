@@ -1,8 +1,10 @@
 #!/bin/bash
 
-# WARNING: Ensure user has NOPASSWD sudo rights
-
+# Exit immediately if any command exits with a non-zero status
 set -e
+
+# Put the application into maintenance mode
+php artisan down
 
 # Pull the latest updates
 git fetch origin main
@@ -15,26 +17,16 @@ composer install --no-progress --no-interaction --no-dev --prefer-dist --optimiz
 npm ci
 npm run build
 
-# Put app into maintenance mode
-php artisan down
-
 # Run Laravel migrations
 php artisan migrate --force
 
-# Cache configuration, routes, events, and views
+# Cache configuration, events, routes, and views
+php artisan optimize:clear
 php artisan optimize
 
-# Reload PHP-FPM versions if running
-for version in 8.5; do
-    if systemctl is-active --quiet "php${version}-fpm"; then
-        sudo systemctl reload "php${version}-fpm"
-    fi
-done
+# Reload PHP-FPM and NGINX
+./reload-php.sh
+./reload-nginx.sh
 
-# Reload nginx if running
-if systemctl is-active --quiet nginx; then
-    sudo systemctl reload nginx
-fi
-
-# Bring app out of maintenance mode
+# Bring the application out of maintenance mode
 php artisan up
