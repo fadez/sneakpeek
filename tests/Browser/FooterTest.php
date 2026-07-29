@@ -38,7 +38,7 @@ it('shows link to current version', function () {
 
     $commitHash = trim((string) shell_exec('git rev-parse --short HEAD'));
 
-    expect($commitHash)->not->toBe('');
+    expect($commitHash)->not->toBeEmpty();
 
     $versionUrl = sprintf('%s/commit/%s', $repoUrl, $commitHash);
 

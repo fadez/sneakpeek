@@ -58,10 +58,11 @@ Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)*
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
 - **Quality Assurance (QA)**
     - Strict code consistency and PSR-12 compliance, enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
-    - Strict static analysis with maximum type safety across the entire codebase with **[PHPStan](https://phpstan.org)** level 10 (maximum strictness), enforced by **[Larastan](https://github.com/larastan/larastan)**
+    - Strict static analysis with maximum type safety across the entire codebase with **[PHPStan](https://phpstan.org)** level 10 (maximum strictness), enforced by **[Larastan](https://larastan.org)**
     - Comprehensive test suite using **[Pest](https://pestphp.com)** — unit, feature, and architectural tests, as well as E2E browser testing via its native **[Playwright integration](https://pestphp.com/docs/browser-testing)**
     - 100% type coverage enforced by **[Pest's type coverage plugin](https://pestphp.com/docs/type-coverage)**
-    - Automated code upgrades and modernization by **[Rector](https://getrector.com)** with **[Laravel-specific rules](https://github.com/driftingly/rector-laravel)** for idiomatic refactoring
+    - Ability for AI agents to run their custom tests using **[Pest's agent plugin](https://pestphp.com/docs/agent)**
+    - Automated code upgrades and modernization by **[Rector](https://getrector.com)** using **[Laravel-specific rules](https://github.com/driftingly/rector-laravel)** and **[Pest's Rector plugin](https://pestphp.com/docs/rector)** for idiomatic refactoring
 
 </details>
 
