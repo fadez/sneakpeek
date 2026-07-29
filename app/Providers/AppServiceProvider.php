@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Extensions\Session\DatabaseSessionHandler;
+use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\ConnectionResolverInterface;
@@ -15,6 +16,7 @@ use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
@@ -40,12 +42,22 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureDefaults();
         $this->configureModels();
         $this->configureRequests();
         $this->configureRateLimits();
         $this->configureFeatures();
-        $this->configureCommands();
         $this->configureVite();
+    }
+
+    /**
+     * Configure default behaviors for production-ready applications.
+     */
+    private function configureDefaults(): void
+    {
+        Date::use(CarbonImmutable::class);
+
+        DB::prohibitDestructiveCommands(app()->isProduction());
     }
 
     /**
@@ -59,7 +71,7 @@ final class AppServiceProvider extends ServiceProvider
         // Enforce strict behavior to prevent lazy loading and accessing missing attributes
         Model::shouldBeStrict();
 
-        // Add ->createFresh() method to all model factories to avoid calling ->fresh() on every created instance
+        // Add "createFresh" method to all model factories to avoid calling "fresh" on every created instance
         Factory::macro('createFresh', function (array $attributes = [], ?Model $parent = null) {
             /** @var array<string, mixed> $attributes */
             return $this->create($attributes, $parent)->fresh();
@@ -72,7 +84,7 @@ final class AppServiceProvider extends ServiceProvider
     private function configureRequests(): void
     {
         // Force HTTPS scheme on all generated URLs in production
-        if ($this->app->environment('production')) {
+        if (app()->isProduction()) {
             URL::forceScheme('https');
         }
 
@@ -103,7 +115,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         // Set global rate limit for all API requests per client IP
         RateLimiter::for('api', function (Request $request) {
-            $limit = $this->app->environment('production') ? 60 : 600;
+            $limit = app()->isProduction() ? 60 : 600;
 
             return Limit::perMinute($limit)->by($request->ip());
         });
@@ -122,14 +134,6 @@ final class AppServiceProvider extends ServiceProvider
 
         // Assign users randomly to either the control or variant group for A/B testing
         Feature::define('ab-group', fn () => Arr::random(['control', 'variant']));
-    }
-
-    /**
-     * Configure the application's commands.
-     */
-    private function configureCommands(): void
-    {
-        DB::prohibitDestructiveCommands($this->app->environment('production'));
     }
 
     /**
