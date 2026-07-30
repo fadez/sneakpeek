@@ -16,6 +16,8 @@ use Tests\TestCase;
 |
 */
 
+pest()->tia()->always()->locally();
+
 pest()->extend(TestCase::class)->use(LazilyRefreshDatabase::class)->group('unit')->in('Unit');
 
 pest()->extend(TestCase::class)->use(LazilyRefreshDatabase::class)->group('feature')->in('Feature');
@@ -54,7 +56,7 @@ function test_name(): string
     return str_replace('__pest_evaluable_', '', test()->name());
 }
 
-// Get screenshot filename prefixed with current test name
+// Get the screenshot filename prefixed with the current test name
 function screenshot_name(string $name): string
 {
     return test_name() . '_' . str($name)->replace('.', '_')->slug('_');
