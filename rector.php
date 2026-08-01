@@ -7,7 +7,6 @@ use Pest\Rector\Set\PestSetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsParentRector;
 use Rector\Config\RectorConfig;
-use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector;
 use Rector\TypeDeclaration\Rector\Closure\AddClosureVoidReturnTypeWhereNoReturnRector;
@@ -55,9 +54,6 @@ return RectorConfig::configure()
         AddOverrideAttributeToOverriddenPropertiesRector::class,
         ChainExpectCallsRector::class,
         MakeInheritedMethodVisibilitySameAsParentRector::class,
-        NullToStrictStringFuncCallArgRector::class => [
-            __DIR__ . '/config',
-        ],
     ])
     ->withPreparedSets(
         deadCode: true,

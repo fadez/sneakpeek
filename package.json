@@ -24,11 +24,11 @@
     "dependencies": {
         "@lucide/vue": "^1.28.0",
         "@number-flow/vue": "^0.5.2",
-        "@types/luxon": "^3.7.2",
+        "@types/luxon": "^3.7.3",
         "@vueuse/core": "^14.4.0",
         "luxon": "^3.7.2",
         "pinia": "^4.0.2",
-        "playwright": "^1.62.0",
+        "playwright": "^1.62.1",
         "vue": "^3.5.40",
         "vue-router": "^5.2.0",
         "vue-toastification": "^2.0.0-rc.5"
