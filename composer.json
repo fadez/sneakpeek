@@ -17,19 +17,19 @@
     "require-dev": {
         "driftingly/rector-laravel": "^2.5",
         "fakerphp/faker": "^1.24.1",
-        "fruitcake/laravel-debugbar": "^4.4.0",
+        "fruitcake/laravel-debugbar": "^4.4.1",
         "larastan/larastan": "^3.10.0",
         "laravel/boost": "^2.4.13",
         "laravel/pail": "^1.2.7",
-        "laravel/pint": "^1.30.2",
+        "laravel/pint": "^1.30.3",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.9.5",
-        "pestphp/pest": "^5.0.2",
+        "pestphp/pest": "^5.0.3",
         "pestphp/pest-plugin-agent": "^5.0",
         "pestphp/pest-plugin-browser": "^5.0.0",
         "pestphp/pest-plugin-laravel": "^5.0.1",
         "pestphp/pest-plugin-phpstan": ">=5",
-        "pestphp/pest-plugin-rector": ">=5",
+        "pestphp/pest-plugin-rector": ">=5.0.1",
         "pestphp/pest-plugin-type-coverage": "^5.0.0"
     },
     "autoload": {
@@ -54,13 +54,17 @@
             "@build",
             "@install:playwright"
         ],
-        "install:sqlite": "@php -r \"!file_exists('database/database.sqlite') && touch('database/database.sqlite');\"",
+        "install:sqlite": "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
         "install:playwright": "npx playwright install --with-deps",
         "install:reverb": "@php artisan reverb:install",
         "build": [
             "node -e \"require('fs').rmSync('node_modules', { recursive: true, force: true })\"",
             "npm install",
             "npm run build"
+        ],
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan dev"
         ],
         "update:requirements": [
             "composer bump",
@@ -70,16 +74,21 @@
             "@test"
         ],
         "lint": [
+            "npm run format",
             "npm run lint",
             "pint --parallel",
             "rector --clear-cache"
         ],
         "test:lint": [
+            "npm run test:format",
             "npm run test:lint",
             "pint --parallel --test",
             "rector --dry-run --clear-cache"
         ],
-        "test:types": "phpstan",
+        "test:types": [
+            "npm run test:types",
+            "phpstan"
+        ],
         "test:type-coverage": "pest --type-coverage --min=100",
         "test:unit": "pest --parallel",
         "test": [

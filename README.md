@@ -58,10 +58,9 @@ Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)*
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
 - **Quality Assurance (QA)**
     - Strict code consistency and PSR-12 compliance, enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
-    - Strict static analysis with maximum type safety across the entire codebase with **[PHPStan](https://phpstan.org)** level 10 (maximum strictness), enforced by **[Larastan](https://larastan.org)**
-    - Comprehensive test suite using **[Pest](https://pestphp.com)** — unit, feature, and architectural tests, as well as E2E browser testing via its native **[Playwright integration](https://pestphp.com/docs/browser-testing)**
+    - Strict static analysis with maximum type safety across the entire codebase, enforced by **[PHPStan](https://phpstan.org)** level 10 (maximum strictness) via **[Larastan](https://larastan.org)**
+    - Comprehensive test suite using **[Pest](https://pestphp.com)** with unit, feature, and architectural tests
     - 100% type coverage enforced by **[Pest's type coverage plugin](https://pestphp.com/docs/type-coverage)**
-    - Ability for AI agents to run their custom tests using **[Pest's agent plugin](https://pestphp.com/docs/agent)**
     - Automated code upgrades and modernization by **[Rector](https://getrector.com)** using **[Laravel-specific rules](https://github.com/driftingly/rector-laravel)** and **[Pest's Rector plugin](https://pestphp.com/docs/rector)** for idiomatic refactoring
 
 </details>
@@ -77,7 +76,6 @@ Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)*
     - Consistent naming conventions and directory organization for ease of navigation and scalability
     - **[Pinia](https://pinia.vuejs.org)** for centralized state management and application-wide reactive data
     - Centralized notification system powered by Pinia store, providing a unified API for toast notifications across the entire application
-    - Maximum type safety enforced by **[TypeScript](https://www.typescriptlang.org)**
 - **Laravel Echo**
     - Powers real-time event broadcasting support
 - **Tailwind CSS**
@@ -89,6 +87,10 @@ Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)*
     - Lightning-fast builds with **[Vite](https://viteplus.dev/guide/build)** and production optimization with intelligent code splitting and chunk optimization for optimal load performance
     - Lightning-fast linting with **[Oxlint](https://viteplus.dev/guide/lint)**, enforcing correctness rules across the frontend codebase
     - Lightning-fast formatting with **[Oxfmt](https://viteplus.dev/guide/fmt)**, enforcing consistent code style across the frontend codebase
+- **Quality Assurance (QA)**
+    - Strict static analysis with maximum type safety across the entire codebase, enforced by **[TypeScript](https://www.typescriptlang.org)** in strict mode, with linting by **[Oxlint](https://oxc.rs/docs/guide/usage/linter)**
+    - E2E browser testing suite using **[Pest's](https://pestphp.com)** native **[Playwright integration](https://pestphp.com/docs/browser-testing)**
+    - Ability for AI agents to run their own tests on the application using **[Pest's agent plugin](https://pestphp.com/docs/agent)**
 
 </details>
 
@@ -209,18 +211,18 @@ If you're using **[Laravel Herd](https://herd.laravel.com)**, you can now access
 <details>
 <summary><strong>Code quality</strong></summary>
 
-- `composer lint` - Runs Rector, Laravel Pint and Oxlint
-- `composer test:lint` - Runs Rector, Laravel Pint and Oxlint in dry-run mode for CI/CD pipelines
+- `composer lint` - Runs Rector, Laravel Pint, Oxlint and Oxfmt
+- `composer test:lint` - Runs Rector, Laravel Pint, Oxlint and Oxfmt in dry-run mode for CI/CD pipelines
 
 </details>
 
 <details>
 <summary><strong>Testing</strong></summary>
 
-- `composer test:type-coverage` - Runs Pest type coverage checks (ensures 100% type coverage)
-- `composer test:types` - Runs PHPStan at level 10 (maximum strictness)
+- `composer test` - Runs the complete test suite (type coverage, static analysis, linting, formatting and all Pest tests)
 - `composer test:unit` - Runs all Pest tests (unit, feature, browser and architecture tests)
-- `composer test` - Runs the complete test suite (type coverage, static analysis, linting, and all Pest tests)
+- `composer test:types` - Runs PHPStan at level 10 (maximum strictness) and TypeScript compiler
+- `composer test:type-coverage` - Runs Pest type coverage checks (ensures 100% type coverage)
 
 </details>
 

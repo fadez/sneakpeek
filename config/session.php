@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
 
 return [
@@ -131,7 +133,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'sneakpeek'), '_') . '_session_cookie'
+        Str::slug((string) env('APP_NAME', 'sneakpeek'), '_') . '_session_cookie'
     ),
 
     /*

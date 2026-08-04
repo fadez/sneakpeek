@@ -27,7 +27,7 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 
-# Custom rules
+# Laravel Boost
 .mcp.json
 /.claude
 AGENTS.md

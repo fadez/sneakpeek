@@ -18,7 +18,7 @@ const commitHash = (() => {
 
 export default defineConfig({
     lint: {
-        plugins: ['typescript', 'unicorn', 'oxc'],
+        plugins: ['oxc', 'typescript', 'unicorn'],
         categories: {
             correctness: 'error',
         },
@@ -44,6 +44,7 @@ export default defineConfig({
         sortTailwindcss: {
             stylesheet: './resources/css/app.css',
         },
+        semi: true,
         singleQuote: true,
         bracketSameLine: false,
         singleAttributePerLine: true,
@@ -61,17 +62,14 @@ export default defineConfig({
             '**/mcp.json',
         ],
     },
-    plugins: lazyPlugins(
-        () =>
-            [
-                laravel({
-                    input: ['resources/css/app.css', 'resources/js/app.ts'],
-                    refresh: true,
-                }),
-                tailwindcss(),
-                vue(),
-            ] as any,
-    ),
+    plugins: lazyPlugins(() => [
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.ts'],
+            refresh: true,
+        }),
+        tailwindcss(),
+        vue(),
+    ]),
     define: {
         __AUTHOR_NAME__: JSON.stringify(pkg.author.name),
         __AUTHOR_URL__: JSON.stringify(pkg.author.url),

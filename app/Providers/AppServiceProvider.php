@@ -44,6 +44,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureModels();
+        $this->configureSession();
         $this->configureRequests();
         $this->configureRateLimits();
         $this->configureFeatures();
@@ -79,6 +80,25 @@ final class AppServiceProvider extends ServiceProvider
     }
 
     /**
+     * Configure the application's session handling.
+     */
+    private function configureSession(): void
+    {
+        // Use custom privacy-first session handler that doesn't store any user information
+        Session::extend('database', function (Application $app): DatabaseSessionHandler {
+            /** @var UnitEnum|string|null $connection */
+            $connection = Config::get('session.connection');
+
+            return new DatabaseSessionHandler(
+                connection: $app->make(ConnectionResolverInterface::class)->connection($connection),
+                table: Config::string('session.table'),
+                minutes: Config::integer('session.lifetime'),
+                container: $app
+            );
+        });
+    }
+
+    /**
      * Configure the application's request handling.
      */
     private function configureRequests(): void
@@ -93,19 +113,6 @@ final class AppServiceProvider extends ServiceProvider
 
         // Exclude specific fields from automatic trimming
         TrimStrings::except(['passphrase']);
-
-        // Use custom privacy-first session handler that doesn't store any user information
-        Session::extend('database', function (Application $app): DatabaseSessionHandler {
-            /** @var UnitEnum|string|null $connection */
-            $connection = Config::get('session.connection');
-
-            return new DatabaseSessionHandler(
-                connection: $app->make(ConnectionResolverInterface::class)->connection($connection),
-                table: Config::string('session.table'),
-                minutes: Config::integer('session.lifetime'),
-                container: $app
-            );
-        });
     }
 
     /**
