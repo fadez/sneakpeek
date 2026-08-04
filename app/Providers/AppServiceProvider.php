@@ -72,8 +72,13 @@ final class AppServiceProvider extends ServiceProvider
         // Enforce strict behavior to prevent lazy loading and accessing missing attributes
         Model::shouldBeStrict();
 
-        // Add "createFresh" method to all model factories to avoid calling "fresh" on every created instance
-        Factory::macro('createFresh', function (array $attributes = [], ?Model $parent = null) {
+        /**
+         * Add "createFresh" method to all model factories to avoid calling "fresh" on every created instance.
+         *
+         * @param  (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed>  $attributes
+         * @param  Model|null  $parent
+         */
+        Factory::macro('createFresh', function (callable|array $attributes = [], ?Model $parent = null) {
             /** @var array<string, mixed> $attributes */
             return $this->create($attributes, $parent)->fresh();
         });
