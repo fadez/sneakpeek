@@ -9,8 +9,14 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
+use Illuminate\Routing\Attributes\Controllers\WithoutMiddleware;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Pest\Expectation;
+use Symfony\Component\Finder\SplFileInfo;
+
+// Opinionated architectural tests to enforce best practices in a modern Laravel app
+// such as strict typing, single-responsibility for Actions/Controllers, and more
 
 arch()->preset()->php();
 arch()->preset()->laravel();
@@ -29,14 +35,18 @@ arch('actions')
     ->toBeReadonly()
     ->toExtendNothing()
     ->toHaveMethod('handle')
-    ->toHaveMethodsDocumented();
+    ->toHaveMethodsDocumented()
+    ->not->toHavePublicMethodsBesides(['__construct', 'handle'])
+    ->not->toHaveSuffix('Action');
 
 arch('controllers')
     ->expect('App\Http\Controllers')
     ->toExtendNothing()
     ->toHaveMethod('__invoke')
+    ->toHaveMethodsDocumented()
+    ->not->toHavePublicMethodsBesides(['__construct', '__invoke'])
     ->not->toHaveAttribute(Middleware::class)
-    ->toHaveMethodsDocumented();
+    ->not->toHaveAttribute(WithoutMiddleware::class);
 
 arch('commands')
     ->expect('App\Console\Commands')
@@ -79,13 +89,17 @@ arch('services')
     ->toBeClasses()
     ->toBeFinal()
     ->not->toBeAbstract()
-    ->toHaveSuffix('Service')
+    ->not->toUse('App\Http')
     ->toHaveMethodsDocumented()
     ->toHavePropertiesDocumented();
 
 arch('tests use strict types')
-    ->expect(fn (): Collection => collect(glob(base_path('tests/**/*.php'))))
+    ->expect(fn (): Collection => collect(File::allFiles(base_path('tests')))
+        ->filter(fn (SplFileInfo $file): bool => $file->getExtension() === 'php'))
     ->each(function (Expectation $expectation) {
-        expect(file_get_contents($expectation->value))
+        /** @var SplFileInfo $file */
+        $file = $expectation->value;
+
+        expect(File::get($file->getRealPath()))
             ->toContain('declare(strict_types=1);');
     });
