@@ -1,9 +1,10 @@
-import { readFileSync } from 'fs';
 import { execSync } from 'child_process';
-import { defineConfig, lazyPlugins } from 'vite-plus';
-import laravel from 'laravel-vite-plugin';
+import { readFileSync } from 'fs';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
+import laravel from 'laravel-vite-plugin';
+import { bunny } from 'laravel-vite-plugin/fonts';
+import { defineConfig, lazyPlugins } from 'vite-plus';
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
 
@@ -18,7 +19,7 @@ const commitHash = (() => {
 
 export default defineConfig({
     lint: {
-        plugins: ['oxc', 'typescript', 'unicorn'],
+        plugins: ['oxc', 'typescript', 'unicorn', 'import'],
         categories: {
             correctness: 'error',
         },
@@ -66,6 +67,18 @@ export default defineConfig({
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.ts'],
             refresh: true,
+            fonts: [
+                bunny('Rubik', {
+                    weights: [700],
+                }),
+                bunny('Outfit', {
+                    weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+                }),
+                bunny('JetBrains Mono', {
+                    weights: [100, 200, 300, 400, 500, 600, 700, 800],
+                    styles: ['normal', 'italic'],
+                }),
+            ],
         }),
         tailwindcss(),
         vue(),

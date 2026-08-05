@@ -15,11 +15,6 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <meta name="apple-mobile-web-app-title" content="{{ config('app.name') }}">
 
-    {{-- Fonts --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     {{-- OpenGraph --}}
     <meta property="og:site_name" content="{{ config('app.name') }}" />
     <meta property="og:title" content="{{ config('app.name') }}" />
@@ -33,6 +28,9 @@
     <meta name="twitter:description" content="Secure, one-time secret sharing made simple." />
     <meta name="twitter:image" content="{{ asset('og.png') }}" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    {{-- Fonts --}}
+    @fonts
 
     {{-- Styles / Scripts --}}
     @vite(['resources/css/app.css', 'resources/js/app.ts'])
