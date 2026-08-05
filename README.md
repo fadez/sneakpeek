@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="public/logo.svg" width="100" alt="SneakPeek" />
+    <img src="resources/images/logo.svg" width="100" alt="SneakPeek" />
     <p align="center">
         <a href="https://github.com/fadez/sneakpeek/actions/workflows/ci.yml"><img alt="CI status" src="https://img.shields.io/github/actions/workflow/status/fadez/sneakpeek/ci.yml?style=flat&logo=github&logoColor=959DA5&label=CI&labelColor=24292E" /></a>
         <a href="https://github.com/fadez/sneakpeek/actions/workflows/cd.yml"><img alt="CD status" src="https://img.shields.io/github/actions/workflow/status/fadez/sneakpeek/cd.yml?style=flat&logo=github&logoColor=959DA5&label=CD&labelColor=24292E" /></a>
@@ -78,6 +78,8 @@ Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)*
     - Centralized notification system powered by Pinia store, providing a unified API for toast notifications across the entire application
 - **Laravel Echo**
     - Powers real-time event broadcasting support
+- **Laravel Head**
+    - Streamlines configuration of document's `<head>` element for effortless management of titles, descriptions, meta tags, Open Graph tags, and favicons.
 - **Tailwind CSS**
     - Fully custom UI/UX design crafted from scratch, with no third-party UI component libraries
     - Modern utility-first styling for mobile-first responsive design
@@ -229,6 +231,6 @@ If you're using **[Laravel Herd](https://herd.laravel.com)**, you can now access
 <details>
 <summary><strong>Maintenance</strong></summary>
 
-- `composer update:requirements` - Updates all Composer and npm dependencies and rebuilds frontend assets, runs automatically after `composer update`
+- `composer update:requirements` - Updates all Composer and npm dependencies, rebuilds frontend assets and runs the complete test suite (runs automatically after `composer update`)
 
 </details>

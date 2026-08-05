@@ -65,7 +65,7 @@ onMounted(() => {
         @click="startAnimation"
     >
         <img
-            src="/public/logo.svg"
+            src="/resources/images/logo.svg"
             class="pointer-events-none size-12 select-none"
             alt="SneakPeek logo"
         />

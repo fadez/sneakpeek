@@ -39,7 +39,7 @@ const abGroupLabel = computed<string | null>(() => {
                         <BaseLink :to="{ name: 'dashboard' }">Dashboard</BaseLink>
                     </div>
                     <div class="inline-flex">
-                        <BaseLink :to="{ name: 'ui' }">UI kit</BaseLink>
+                        <BaseLink :to="{ name: 'ui' }">UI Kit</BaseLink>
                     </div>
                     <div class="inline-flex">
                         <BaseLink

@@ -1,10 +1,15 @@
 @import 'tailwindcss';
 
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
 @theme {
     --font-sans: 'Outfit', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     --font-brand: 'JetBrains Mono', monospace;
-    --font-error: 'Rubik', 'sans-serif';
+    --font-error: 'Rubik', sans-serif;
 
     --color-emerald-75: color-mix(in srgb, var(--color-emerald-50), var(--color-emerald-100));
     --color-rose-75: color-mix(in srgb, var(--color-rose-50), var(--color-rose-100));
@@ -89,11 +94,6 @@
         @apply mx-1.5 font-black text-muted content-['·'] select-none;
     }
 }
-
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
 
 @import './toasts.css';
 @import './errors.css';

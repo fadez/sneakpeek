@@ -24,6 +24,12 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Lottery;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Head\Enums\ImageType;
+use Laravel\Head\Enums\OgType;
+use Laravel\Head\Enums\TwitterCard;
+use Laravel\Head\ErrorPages;
+use Laravel\Head\Facades\Head;
+use Laravel\Head\HeadBuilder;
 use Laravel\Pennant\Feature;
 use UnitEnum;
 
@@ -49,6 +55,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureRateLimits();
         $this->configureFeatures();
         $this->configureVite();
+        $this->configureHead();
     }
 
     /**
@@ -154,5 +161,35 @@ final class AppServiceProvider extends ServiceProvider
     private function configureVite(): void
     {
         Vite::useAggressivePrefetching();
+    }
+
+    /**
+     * Configure default document head metadata.
+     */
+    private function configureHead(): void
+    {
+        Head::defaults(fn (HeadBuilder $head): HeadBuilder => $head
+            ->title(Config::string('app.name'), suffix: ' | ' . Config::string('app.name'))
+            ->description('Secure, one-time secret sharing made simple.')
+            ->canonical()
+            ->viewport('width=device-width, initial-scale=1')
+            ->searchableByRobots()
+            ->og(type: OgType::Website, image: asset('og.png'), siteName: Config::string('app.name'))
+            ->twitter(card: TwitterCard::SummaryWithLargeImage)
+            ->favicon('/favicon/favicon.ico')
+            ->icon('/favicon/favicon.svg', type: ImageType::Svg)
+            ->icon('/favicon/favicon-96x96.png', type: ImageType::Png, sizes: '96x96')
+            ->appleTouchIcon('/favicon/apple-touch-icon.png', sizes: '180x180')
+            ->manifest('/favicon/site.webmanifest')
+            ->appleWebAppTitle(Config::string('app.name'))
+        );
+
+        Head::errors(function (ErrorPages $errors) {
+            $errors->defaults(robots: 'noindex, follow');
+
+            $errors->status(418, fn (HeadBuilder $head): HeadBuilder => $head
+                ->title("I'm a teapot", exact: true)
+                ->description("Who would've known?"));
+        });
     }
 }

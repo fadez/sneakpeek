@@ -1,8 +1,12 @@
-@extends('layouts.app')
-
-@section('bodyClasses')http-error http-error-@yield('code')@endsection
-
-@section('content')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8" />
+    @head
+    @fonts(['rubik'])
+    @vite(['resources/css/app.css'])
+</head>
+<body class="http-error http-error-@yield('code')">
     <div class="http-error-container">
         <div class="http-error-card">
             <h1 class="http-error-code">@yield('code')</h1>
@@ -16,4 +20,5 @@
             <div class="http-error-message">@yield('message')</div>
         </div>
     </div>
-@endsection
+</body>
+</html>
