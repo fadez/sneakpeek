@@ -72,11 +72,10 @@ export default defineConfig({
                     weights: [700],
                 }),
                 bunny('Outfit', {
-                    weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+                    weights: [400, 500, 600, 700, 900],
                 }),
                 bunny('JetBrains Mono', {
-                    weights: [100, 200, 300, 400, 500, 600, 700, 800],
-                    styles: ['normal', 'italic'],
+                    weights: [400, 600, 700],
                 }),
             ],
         }),
