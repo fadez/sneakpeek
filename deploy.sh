@@ -4,7 +4,7 @@
 set -e
 
 # Put the application into maintenance mode
-php artisan down
+php artisan down --refresh=15
 
 # Pull the latest updates
 git fetch origin main
