@@ -4,6 +4,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { echo } from '@laravel/echo-vue';
 import { LucideFlame, LucideHourglass, LucideLockKeyhole, LucideLockKeyholeOpen } from '@lucide/vue';
 import { getStatistics } from '@/api';
+import BasePageTitle from '@/components/BasePageTitle.vue';
 import StatisticGrid from '@/components/StatisticGrid.vue';
 import StatisticGridItem from '@/components/StatisticGridItem.vue';
 
@@ -33,10 +34,10 @@ onBeforeUnmount(() => {
 
 <template>
     <div>
-        <div class="my-4">
-            <div class="mb-2 text-2xl font-semibold text-title">Welcome to the dashboard.</div>
-            <div class="text-secondary">Thought you'd be interested to know.</div>
-        </div>
+        <BasePageTitle
+            title="Welcome to the dashboard."
+            description="Thought you'd be interested to know."
+        />
 
         <StatisticGrid class="sm:grid-cols-2 lg:grid-cols-4">
             <StatisticGridItem

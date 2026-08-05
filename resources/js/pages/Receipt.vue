@@ -4,6 +4,7 @@ import type { Ref } from 'vue';
 import { ref, computed, watch, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
+import { LucideCopy, LucideFlame } from '@lucide/vue';
 import { DateTime } from 'luxon';
 import { getSecret, burnSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
@@ -20,7 +21,6 @@ import BaseLabel from '@/components/BaseLabel.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
 import BaseProgressBar from '@/components/BaseProgressBar.vue';
 import SecretPreview from '@/components/SecretPreview.vue';
-import { LucideCopy, LucideFlame } from '@lucide/vue';
 
 const route = useRoute();
 const router = useRouter();

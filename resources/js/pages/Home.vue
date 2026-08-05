@@ -13,6 +13,7 @@ import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseLabel from '@/components/BaseLabel.vue';
+import BasePageTitle from '@/components/BasePageTitle.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 
@@ -61,10 +62,11 @@ onMounted(() => {
 
 <template>
     <div>
-        <div class="my-4">
-            <div class="mb-2 text-2xl font-semibold text-title">Paste a password, secret message or private link below.</div>
-            <div class="text-secondary">Keep sensitive data out of your messages or inbox.</div>
-        </div>
+        <BasePageTitle
+            title="Paste a password, secret message or private link below."
+            description="Keep sensitive data out of your messages or inbox."
+        />
+
         <BaseCard>
             <div class="form">
                 <BaseAlert

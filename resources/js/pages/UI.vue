@@ -31,6 +31,7 @@ import BaseInput from '@/components/BaseInput.vue';
 import BaseLabel from '@/components/BaseLabel.vue';
 import BaseLink from '@/components/BaseLink.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
+import BasePageTitle from '@/components/BasePageTitle.vue';
 import BaseProgressBar from '@/components/BaseProgressBar.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseSpinner from '@/components/BaseSpinner.vue';
@@ -121,10 +122,11 @@ onBeforeUnmount(() => {
 
 <template>
     <div>
-        <div class="my-4">
-            <div class="mb-2 text-2xl font-semibold text-title">Take a peek at our UI kit.</div>
-            <div class="text-secondary">The building blocks behind {{ appName }} — every component, every state, all in one place.</div>
-        </div>
+        <BasePageTitle
+            title="Take a peek at our UI kit."
+            :description="`The building blocks behind ${appName} — every component, every state, all in one place.`"
+        />
+
         <div>
             <BaseCard>
                 <template #title>Card</template>

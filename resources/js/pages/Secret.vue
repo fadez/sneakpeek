@@ -3,6 +3,7 @@ import type { Secret } from '@/types';
 import { ref, watch, useTemplateRef, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
+import { LucideCopy, LucideLockKeyholeOpen } from '@lucide/vue';
 import { getSecret, revealSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
@@ -15,7 +16,6 @@ import BaseInput from '@/components/BaseInput.vue';
 import BaseLoader from '@/components/BaseLoader.vue';
 import BaseTextarea from '@/components/BaseTextarea.vue';
 import SecretPreview from '@/components/SecretPreview.vue';
-import { LucideCopy, LucideLockKeyholeOpen } from '@lucide/vue';
 
 const route = useRoute();
 const router = useRouter();
