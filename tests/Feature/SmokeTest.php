@@ -7,7 +7,7 @@ test(':dataset route passes the smoke test', function (array $route) {
 })->with('routes_web_public');
 
 it('loads easter egg page successfully', function () {
-    $this->get(route('who-is-alex-fadez'))->assertStatus(418);
+    $this->get(route('who-is-aleks-fadez'))->assertStatus(418);
 });
 
 test(':dataset route returns no-store cache header for API route', function (array $route) {
