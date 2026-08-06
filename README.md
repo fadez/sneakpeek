@@ -21,7 +21,9 @@
 
 Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)**.
 
-**SneakPeek** showcases my expertise in full-stack web development, seamlessly integrating cutting-edge frameworks and industry best practices to deliver a secure, scalable, and high-quality Laravel application.
+**SneakPeek** is a showcase of my full-stack development expertise.
+
+I built it entirely from scratch — from UI and architecture to CI/CD and production deployment — always on a cutting-edge stack and following industry best practices throughout.
 
 ## Live demo
 
@@ -122,7 +124,6 @@ Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)*
     - Easy onboarding with a single `composer setup` command that handles environment setup, creates the SQLite database, and installs dependencies
     - **[Laravel Boost](https://laravel.com/ai/boost)** integration that runs the **[MCP](https://modelcontextprotocol.io)** server to accelerate AI-assisted development by providing the essential context and structure that AI needs
     - **[Laravel Debugbar](https://github.com/fruitcake/laravel-debugbar)** is included for local debugging and profiling
-    - Automated formatting enforced via **[Prettier](.prettierrc)** and **[EditorConfig](.editorconfig)**
 
 </details>
 

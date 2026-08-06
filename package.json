@@ -24,7 +24,7 @@
     },
     "dependencies": {
         "@laravel/echo-vue": "^2.4.0",
-        "@lucide/vue": "^1.28.0",
+        "@lucide/vue": "^1.29.0",
         "@number-flow/vue": "^0.5.2",
         "@vueuse/core": "^14.4.0",
         "laravel-echo": "^2.4.0",
