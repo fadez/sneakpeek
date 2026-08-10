@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Extensions\Session\DatabaseSessionHandler;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * We have a privacy-first application, meaning no user_id, ip_address, or user_agent columns.
+ * This application is privacy-first: we intentionally omit storing sensitive identifiers such as user_id, ip_address, and user_agent in the sessions table.
  *
  * @see DatabaseSessionHandler
  */
