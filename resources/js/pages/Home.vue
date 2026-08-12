@@ -50,6 +50,8 @@ const createSecret = async (): Promise<void> => {
             params: { id: secret.id },
             state: { secret: JSON.stringify(secret) },
         });
+    } catch {
+        //
     } finally {
         isCreatingSecret.value = false;
     }

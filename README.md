@@ -80,6 +80,8 @@ I built it entirely from scratch — from UI and architecture to CI/CD and produ
     - Centralized notification system powered by Pinia store, providing a unified API for toast notifications across the entire application
 - **Laravel Echo**
     - Powers real-time event broadcasting support
+- **Laravel Wayfinder**
+    - Automatically generates fully-typed TypeScript functions for Laravel routes to avoid hardcoded URLs on the frontend
 - **Laravel Head**
     - Streamlines configuration of document's `<head>` element for effortless management of titles, descriptions, meta tags, Open Graph tags, and favicons.
 - **Tailwind CSS**

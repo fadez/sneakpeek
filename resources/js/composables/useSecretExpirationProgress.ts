@@ -1,11 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
+import type { Secret } from '@/types';
 import { ref, computed, watch, onUnmounted } from 'vue';
-
-interface Secret {
-    created_at: string;
-    expires_at: string;
-    is_expired: boolean;
-}
 
 export function useSecretExpirationProgress(secret: Ref<Secret | null>, onFinish?: () => void): ComputedRef<number> {
     const now = ref(Date.now());
@@ -62,6 +57,7 @@ export function useSecretExpirationProgress(secret: Ref<Secret | null>, onFinish
     };
 
     watch(secret, handleSecretChange, { immediate: true });
+
     watch(progress, handleProgressChange);
 
     onUnmounted(stop);

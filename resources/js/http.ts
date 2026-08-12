@@ -1,3 +1,4 @@
+import type { RouteDefinition } from '@/wayfinder';
 import { useNotificationStore } from '@/stores/notifications';
 import { echo } from '@laravel/echo-vue';
 
@@ -6,11 +7,15 @@ type RequestOpts = Omit<RequestInit, 'headers' | 'body'> & {
     body?: unknown;
 };
 
-interface RequestError {
+type Method = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options';
+
+type WayfinderRoute = RouteDefinition<Method>;
+
+type RequestError = {
     status: number;
     message: string;
     [key: string]: unknown;
-}
+};
 
 function getCookie(name: string): string | null {
     const match = document.cookie.match(new RegExp(`(^|;\\s*)${name}=([^;]*)`));
@@ -33,8 +38,11 @@ function throwRequestError(error: RequestError): never {
 function buildHeaders(headers: HeadersInit = {}): Headers {
     const result = new Headers(headers);
 
-    result.set('Accept', 'application/json');
     result.set('X-Requested-With', 'XMLHttpRequest');
+
+    if (!result.has('Accept')) {
+        result.set('Accept', 'application/json');
+    }
 
     const xsrf = getCookie('XSRF-TOKEN');
     if (xsrf) {
@@ -81,7 +89,7 @@ async function request<T = unknown>(url: string, { body, headers, ...opts }: Req
         return null as T;
     }
 
-    return JSON.parse(text) as Promise<T>;
+    return JSON.parse(text) as T;
 }
 
 export const http = {
@@ -97,7 +105,15 @@ export const http = {
         return request<T>(url, { method: 'PUT', body, ...opts });
     },
 
-    delete<T = unknown>(url: string, opts?: Omit<RequestOpts, 'method'>): Promise<T> {
-        return request<T>(url, { method: 'DELETE', ...opts });
+    patch<T = unknown>(url: string, body?: unknown, opts?: Omit<RequestOpts, 'method' | 'body'>): Promise<T> {
+        return request<T>(url, { method: 'PATCH', body, ...opts });
+    },
+
+    delete<T = unknown>(url: string, body?: unknown, opts?: Omit<RequestOpts, 'method' | 'body'>): Promise<T> {
+        return request<T>(url, { method: 'DELETE', body, ...opts });
+    },
+
+    wayfinderRequest<T = unknown>(route: WayfinderRoute, opts?: Omit<RequestOpts, 'method'>): Promise<T> {
+        return request<T>(route.url, { method: route.method.toUpperCase(), ...opts });
     },
 };

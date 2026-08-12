@@ -1,4 +1,4 @@
-export interface Secret {
+export type Secret = {
     id: string;
     created_at: string;
     expires_at: string;
@@ -8,26 +8,26 @@ export interface Secret {
     is_revealed: boolean;
     is_available: boolean;
     is_burned?: boolean;
-}
+};
 
-export interface SecretWithAccessToken extends Secret {
+export type SecretWithAccessToken = Secret & {
     access_token: string;
-}
+};
 
-export interface SecretContent {
+export type SecretContent = {
     readonly content: string;
-}
+};
 
-export interface Statistics {
+export type Statistics = {
     readonly secrets_created: number;
     readonly secrets_revealed: number;
     readonly secrets_expired: number;
     readonly secrets_burned: number;
-}
+};
 
-export interface StatisticsData {
+export type StatisticsData = {
     readonly statistics: Statistics;
-}
+};
 
 export type SelectOptions = ReadonlyArray<SelectOption>;
 

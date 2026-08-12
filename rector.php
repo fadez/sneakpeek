@@ -7,10 +7,10 @@ use Pest\Rector\Set\PestSetList;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsParentRector;
 use Rector\Config\RectorConfig;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector;
 use Rector\TypeDeclaration\Rector\Closure\AddClosureVoidReturnTypeWhereNoReturnRector;
 use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
+use RectorLaravel\Rector\Class_\AddHasFactoryToModelsRector;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
 
@@ -50,7 +50,7 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         AddClosureVoidReturnTypeWhereNoReturnRector::class,
-        AddOverrideAttributeToOverriddenMethodsRector::class,
+        AddHasFactoryToModelsRector::class,
         AddOverrideAttributeToOverriddenPropertiesRector::class,
         ChainExpectCallsRector::class,
         MakeInheritedMethodVisibilitySameAsParentRector::class,

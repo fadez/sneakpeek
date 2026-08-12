@@ -9,6 +9,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -43,6 +44,14 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Override default error responses to conceal framework details and reduce risk of framework fingerprinting
         $exceptions->respond(function (Response $response, Exception $exception, Request $request) {
+            if ($exception instanceof ValidationException) {
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                    // Only expose field names to minimize framework fingerprinting risks
+                    'fields' => array_keys($exception->errors()),
+                ], 422);
+            }
+
             // Remap sensitive HTTP status codes to generic ones
             $mask = [
                 401 => 403,

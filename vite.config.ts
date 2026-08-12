@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
+import { wayfinder } from '@laravel/vite-plugin-wayfinder';
 import { defineConfig, lazyPlugins } from 'vite-plus';
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
@@ -20,6 +21,12 @@ const commitHash = (() => {
 export default defineConfig({
     lint: {
         plugins: ['oxc', 'typescript', 'unicorn', 'import'],
+        jsPlugins: [
+            {
+                name: 'vite-plus',
+                specifier: 'vite-plus/oxlint-plugin',
+            },
+        ],
         categories: {
             correctness: 'error',
         },
@@ -30,15 +37,15 @@ export default defineConfig({
         env: {
             builtin: true,
         },
-        options: {
-            typeAware: true,
-            typeCheck: true,
-        },
-        jsPlugins: [
-            {
-                name: 'vite-plus',
-                specifier: 'vite-plus/oxlint-plugin',
-            },
+        ignorePatterns: [
+            'vendor',
+            'node_modules',
+            'public',
+            'tailwind.config.js',
+            'vite.config.ts',
+            'resources/js/actions/**',
+            'resources/js/routes/**',
+            'resources/js/wayfinder/**',
         ],
     },
     fmt: {
@@ -55,12 +62,12 @@ export default defineConfig({
         ignorePatterns: [
             '.claude/skills/',
             '.cursor/skills/',
-            'storage/',
+            '.mcp.json',
             'AGENTS.md',
             'CLAUDE.md',
-            'boost.json',
-            '.mcp.json',
             '**/mcp.json',
+            'boost.json',
+            'storage/',
         ],
     },
     plugins: lazyPlugins(() => [
@@ -81,6 +88,7 @@ export default defineConfig({
         }),
         tailwindcss(),
         vue(),
+        wayfinder(),
     ]),
     define: {
         __AUTHOR_NAME__: JSON.stringify(pkg.author.name),

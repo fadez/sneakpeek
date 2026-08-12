@@ -33,8 +33,8 @@ const { focus, focusAndSelect } = useElementFocus();
 const secretLinkInput = useTemplateRef('secret-link-input') as Ref<HTMLInputElement | null>;
 const passphraseInput = useTemplateRef('passphrase-input') as Ref<HTMLInputElement | null>;
 
-const accessToken = ref<string | undefined>();
-const secret = ref<Secret | SecretWithAccessToken | null>(null);
+const accessToken = ref<string>();
+const secret = ref<Secret | null>(null);
 const passphrase = ref<string>('');
 const showPassphraseInput = ref<boolean>(false);
 const isDeletingSecret = ref<boolean>(false);
