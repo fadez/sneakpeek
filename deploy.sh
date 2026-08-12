@@ -13,16 +13,16 @@ git reset --hard origin/main
 # Install composer dependencies
 composer install --no-progress --no-interaction --no-dev --prefer-dist --optimize-autoloader
 
-# Build assets
-npm ci
-npm run build
-
 # Run Laravel migrations
 php artisan migrate --force
 
 # Cache configuration, events, routes, and views
 php artisan optimize:clear
 php artisan optimize
+
+# Build assets
+npm ci
+npm run build
 
 # Reload PHP-FPM and NGINX
 ./reload-php.sh
