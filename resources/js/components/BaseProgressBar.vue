@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ProgressBarType } from '@/types';
-import { ref, watch, computed } from 'vue';
+import type { ProgressBarType } from '@/types';
+import { computed, ref, watch } from 'vue';
 
 const {
     value = 0.0,

@@ -1,4 +1,4 @@
-import type { ToastID, ToastContent, ToastOptions } from 'vue-toastification/dist/types/types';
+import type { ToastContent, ToastID, ToastOptions } from 'vue-toastification/dist/types/types';
 import { defineStore } from 'pinia';
 import { useToast } from 'vue-toastification';
 

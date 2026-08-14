@@ -20,7 +20,7 @@ const commitHash = (() => {
 
 export default defineConfig({
     lint: {
-        plugins: ['oxc', 'typescript', 'unicorn', 'import'],
+        plugins: ['oxc', 'typescript', 'unicorn', 'import', 'vue'],
         jsPlugins: [
             {
                 name: 'vite-plus',
@@ -32,7 +32,9 @@ export default defineConfig({
         },
         rules: {
             'vite-plus/prefer-vite-plus-imports': 'error',
+            'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
             'typescript/consistent-type-imports': 'error',
+            'sort-imports': ['error', { ignoreDeclarationSort: true }],
         },
         env: {
             builtin: true,

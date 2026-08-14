@@ -2,8 +2,8 @@
 import { onMounted, onUnmounted } from 'vue';
 import { useFeatureStore } from '@/stores/features';
 import { useNotificationStore } from '@/stores/notifications';
-import TheHeader from '@/components/TheHeader.vue';
 import TheFooter from '@/components/TheFooter.vue';
+import TheHeader from '@/components/TheHeader.vue';
 
 const features = useFeatureStore();
 const notify = useNotificationStore();

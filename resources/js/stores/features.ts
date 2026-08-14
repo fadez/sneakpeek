@@ -1,6 +1,6 @@
 import type { FeaturesMap } from '@/types';
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import { deactivateFeature, listFeatures } from '@/api';
 
 export const useFeatureStore = defineStore('features', () => {

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { LucideIcon } from '@lucide/vue';
 import type { NotificationType } from '@/types';
-import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 import { LucideX } from '@lucide/vue';
 import { NOTIFICATION_TYPE_ICONS } from '@/constants';
 import BaseIconButton from '@/components/BaseIconButton.vue';

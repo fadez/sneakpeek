@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LucideIcon } from '@lucide/vue';
 import type { ButtonType, IconButtonType, NotificationType, ProgressBarType } from '@/types';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import {
     LucideBellOff,
     LucideBellRing,

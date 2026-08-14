@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Secret, SecretWithAccessToken } from '@/types';
 import type { Ref } from 'vue';
-import { ref, computed, watch, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { LucideCopy, LucideFlame } from '@lucide/vue';
 import { DateTime } from 'luxon';
-import { getSecret, burnSecret } from '@/api';
+import { burnSecret, getSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';

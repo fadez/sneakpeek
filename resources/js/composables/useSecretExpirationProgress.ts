@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
 import type { Secret } from '@/types';
-import { ref, computed, watch, onUnmounted } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
 
 export function useSecretExpirationProgress(secret: Ref<Secret | null>, onFinish?: () => void): ComputedRef<number> {
     const now = ref(Date.now());

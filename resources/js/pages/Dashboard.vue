@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Statistics, StatisticsData } from '@/types';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { echo } from '@laravel/echo-vue';
 import { LucideFlame, LucideHourglass, LucideLockKeyhole, LucideLockKeyholeOpen } from '@lucide/vue';
 import { getStatistics } from '@/api';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
-import { ref, computed, useTemplateRef, onMounted } from 'vue';
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import { useRouter } from 'vue-router';
 import { LucideCircleStar, LucideLockKeyhole, LucideLockKeyholeOpen } from '@lucide/vue';
 import { SECRET_TTL_OPTIONS } from '@/constants';

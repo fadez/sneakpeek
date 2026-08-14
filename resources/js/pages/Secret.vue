@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Secret } from '@/types';
-import { ref, watch, useTemplateRef, onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { LucideCopy, LucideLockKeyholeOpen } from '@lucide/vue';
