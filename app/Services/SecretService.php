@@ -62,7 +62,11 @@ final readonly class SecretService
     public function revealSecret(Secret $secret): string
     {
         return DB::transaction(function () use ($secret) {
-            $secret = Secret::where('id', $secret->getKey())->available()->lockForUpdate()->firstOrFail();
+            $secret = Secret::query()
+                ->where('id', $secret->getKey())
+                ->available()
+                ->lockForUpdate()
+                ->firstOrFail();
 
             $content = $secret->content ?? '';
 
