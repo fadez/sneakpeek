@@ -21,13 +21,13 @@ class StatisticFactory extends Factory
     public function definition(): array
     {
         return [
-            'key' => $this->faker->randomElement([
+            'key' => fake()->randomElement([
                 StatisticKey::SecretsCreated,
                 StatisticKey::SecretsRevealed,
                 StatisticKey::SecretsExpired,
                 StatisticKey::SecretsBurned,
             ]),
-            'value' => $this->faker->numberBetween(0, 1000000),
+            'value' => fake()->numberBetween(0, 1000000),
         ];
     }
 
