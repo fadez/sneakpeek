@@ -45,7 +45,7 @@ defineExpose({
             v-if="inputType === 'password' && !('disabled' in attrs)"
             type="button"
             tabindex="-1"
-            class="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-muted transition-all"
+            class="text-muted absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition-all"
             :class="showPasswordButtonClasses"
             @click="showPassword = !showPassword"
         >

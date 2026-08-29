@@ -29,7 +29,7 @@ const iconClasses = computed(() => ('disabled' in attrs ? '' : 'group-hover:text
         </select>
 
         <LucideChevronDown
-            class="pointer-events-none absolute top-1/2 right-3 size-6 -translate-y-1/2 text-muted transition-all"
+            class="text-muted pointer-events-none absolute top-1/2 right-3 size-6 -translate-y-1/2 transition-all"
             :class="iconClasses"
         />
     </div>

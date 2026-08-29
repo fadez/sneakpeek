@@ -43,7 +43,7 @@ const hasActions = computed(() => !!slots.actions?.());
 }
 
 .card-title {
-    @apply flex rounded-t-sm border-b-2 border-zinc-200 bg-zinc-75 p-4 font-semibold text-title dark:border-zinc-700 dark:bg-black;
+    @apply bg-zinc-75 text-title flex rounded-t-sm border-b-2 border-zinc-200 p-4 font-semibold dark:border-zinc-700 dark:bg-black;
 }
 
 .card-actions {

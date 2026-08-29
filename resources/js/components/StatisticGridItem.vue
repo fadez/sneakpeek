@@ -37,7 +37,7 @@ const {
         <div class="flex min-w-0 flex-1 flex-col">
             <div
                 v-if="title"
-                class="truncate text-sm text-muted"
+                class="text-muted truncate text-sm"
             >
                 {{ title }}
             </div>

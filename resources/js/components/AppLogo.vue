@@ -69,7 +69,7 @@ onMounted(() => {
             class="pointer-events-none size-12 select-none"
             alt="SneakPeek logo"
         />
-        <div class="pointer-events-none flex overflow-hidden p-1 text-logo select-none">
+        <div class="text-logo pointer-events-none flex overflow-hidden p-1 select-none">
             <span
                 v-for="(letter, i) in displayText"
                 :key="i"

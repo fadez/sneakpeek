@@ -76,14 +76,12 @@
             "@test"
         ],
         "lint": [
-            "npm run format",
-            "npm run lint",
+            "npm run check:fix",
             "pint --parallel",
             "rector --clear-cache"
         ],
         "test:lint": [
-            "npm run test:format",
-            "npm run test:lint",
+            "npm run check",
             "pint --parallel --test",
             "rector --dry-run --clear-cache"
         ],

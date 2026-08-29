@@ -209,7 +209,7 @@ php artisan reverb:start
 
 ### Visiting the site
 
-If you're using **[Laravel Herd](https://herd.laravel.com)**, you can now access the application at **[sneakpeek.test](https://sneakpeek.test)**.
+If you're using **[Laravel Herd](https://herd.laravel.com)**, you access the application at **[sneakpeek.test](https://sneakpeek.test)**.
 
 ## Available commands
 

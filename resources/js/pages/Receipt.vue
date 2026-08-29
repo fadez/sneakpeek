@@ -248,7 +248,7 @@ onBeforeUnmount(() => {
             </section>
 
             <section
-                class="border-t-2 border-zinc-200 bg-zinc-75 p-4 dark:border-zinc-700 dark:bg-zinc-800"
+                class="bg-zinc-75 border-t-2 border-zinc-200 p-4 dark:border-zinc-700 dark:bg-zinc-800"
                 :class="{ 'rounded-b-sm': !secret.is_available || !hasAccessToken }"
             >
                 <SecretPreview :passphrase-protected="secret.is_passphrase_protected" />

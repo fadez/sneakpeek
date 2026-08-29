@@ -91,7 +91,7 @@
     }
 
     .bullet-divider > * + *::before {
-        @apply mx-1.5 font-black text-muted content-['·'] select-none;
+        @apply text-muted mx-1.5 font-black content-['·'] select-none;
     }
 }
 

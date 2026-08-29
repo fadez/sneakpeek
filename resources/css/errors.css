@@ -7,11 +7,11 @@
 }
 
 .http-error-code {
-    @apply text-center font-error text-9xl font-bold dark:text-white;
+    @apply font-error text-center text-9xl font-bold dark:text-white;
 }
 
 .http-error-message {
-    @apply text-center font-error text-6xl font-bold text-zinc-500;
+    @apply font-error text-center text-6xl font-bold text-zinc-500;
 }
 
 .http-error-image {

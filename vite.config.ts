@@ -19,58 +19,11 @@ const commitHash = (() => {
 })();
 
 export default defineConfig({
-    lint: {
-        plugins: ['oxc', 'typescript', 'unicorn', 'import', 'vue'],
-        jsPlugins: [
-            {
-                name: 'vite-plus',
-                specifier: 'vite-plus/oxlint-plugin',
-            },
-        ],
-        categories: {
-            correctness: 'error',
-        },
-        rules: {
-            'vite-plus/prefer-vite-plus-imports': 'error',
-            'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
-            'typescript/consistent-type-imports': 'error',
-            'sort-imports': ['error', { ignoreDeclarationSort: true }],
-        },
-        env: {
-            builtin: true,
-        },
-        ignorePatterns: [
-            'vendor',
-            'node_modules',
-            'public',
-            'tailwind.config.js',
-            'vite.config.ts',
-            'resources/js/actions/**',
-            'resources/js/routes/**',
-            'resources/js/wayfinder/**',
-        ],
-    },
-    fmt: {
-        sortTailwindcss: {
-            stylesheet: './resources/css/app.css',
-        },
-        semi: true,
-        singleQuote: true,
-        bracketSameLine: false,
-        singleAttributePerLine: true,
-        htmlWhitespaceSensitivity: 'ignore',
-        printWidth: 140,
-        sortPackageJson: false,
-        ignorePatterns: [
-            '.claude/skills/',
-            '.cursor/skills/',
-            '.mcp.json',
-            'AGENTS.md',
-            'CLAUDE.md',
-            '**/mcp.json',
-            'boost.json',
-            'storage/',
-        ],
+    define: {
+        __AUTHOR_NAME__: JSON.stringify(pkg.author.name),
+        __AUTHOR_URL__: JSON.stringify(pkg.author.url),
+        __COMMIT_HASH__: JSON.stringify(commitHash),
+        __REPOSITORY_URL__: JSON.stringify(pkg.repository.url),
     },
     plugins: lazyPlugins(() => [
         laravel({
@@ -89,13 +42,66 @@ export default defineConfig({
             ],
         }),
         tailwindcss(),
-        vue(),
-        wayfinder(),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
+        wayfinder({
+            formVariants: true,
+        }),
     ]),
-    define: {
-        __AUTHOR_NAME__: JSON.stringify(pkg.author.name),
-        __AUTHOR_URL__: JSON.stringify(pkg.author.url),
-        __COMMIT_HASH__: JSON.stringify(commitHash),
-        __REPOSITORY_URL__: JSON.stringify(pkg.repository.url),
+    server: {
+        watch: {
+            ignored: ['**/.agents/**', '**/.claude/**', '**/.cursor/**', '**/.junie/**', '**/vendor/**'],
+        },
+    },
+    lint: {
+        jsPlugins: [
+            {
+                name: 'vite-plus',
+                specifier: 'vite-plus/oxlint-plugin',
+            },
+        ],
+        options: {
+            denyWarnings: true,
+            typeAware: true,
+        },
+        categories: {
+            correctness: 'error',
+        },
+        rules: {
+            'vite-plus/prefer-vite-plus-imports': 'error',
+            'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+            'typescript/consistent-type-imports': 'error',
+            'sort-imports': ['error', { ignoreDeclarationSort: true }],
+        },
+        ignorePatterns: [
+            'vendor/**',
+            'node_modules/**',
+            'public/**',
+            'bootstrap/ssr/**',
+            'tailwind.config.js',
+            'resources/js/actions/**',
+            'resources/js/components/ui/*',
+            'resources/js/routes/**',
+            'resources/js/wayfinder/**',
+        ],
+    },
+    fmt: {
+        printWidth: 140,
+        tabWidth: 4,
+        singleQuote: true,
+        semi: true,
+        singleAttributePerLine: true,
+        htmlWhitespaceSensitivity: 'css',
+        sortTailwindcss: {
+            functions: ['clsx', 'cn', 'cva'],
+            entryPoint: 'resources/css/app.css',
+        },
+        ignorePatterns: ['.github/**', 'composer.json', 'resources/js/components/ui/*', 'resources/views/mail/*'],
     },
 });

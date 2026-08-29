@@ -31,7 +31,7 @@ const abGroupLabel = computed<string | null>(() => {
         class="my-4"
     >
         <div class="page-container">
-            <div class="flex flex-col justify-between text-secondary md:flex-row">
+            <div class="text-secondary flex flex-col justify-between md:flex-row">
                 <div>© {{ currentYear }} {{ appName }}</div>
 
                 <div class="bullet-divider">
@@ -52,7 +52,7 @@ const abGroupLabel = computed<string | null>(() => {
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col justify-between text-muted md:flex-row">
+            <div class="text-muted flex flex-col justify-between md:flex-row">
                 <div class="inline-flex items-center gap-1">
                     Built with
                     <img
