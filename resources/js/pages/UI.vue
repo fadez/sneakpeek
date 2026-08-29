@@ -137,7 +137,7 @@ onBeforeUnmount(() => {
                 <template #title>Logo</template>
                 <div class="form">
                     <div class="flex">
-                        <AppLogo />
+                        <AppLogo :link="false" />
                     </div>
                 </div>
             </BaseCard>

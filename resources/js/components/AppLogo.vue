@@ -3,8 +3,8 @@ import { computed, onMounted, ref } from 'vue';
 import { useIntervalFn } from '@vueuse/core';
 
 const {
-    link,
-    text = 'SneakPeek',
+    link = true,
+    text = import.meta.env.VITE_APP_NAME,
     animationDuration = 750,
     animateOnMount = true,
 } = defineProps<{
@@ -14,7 +14,7 @@ const {
     animateOnMount?: boolean;
 }>();
 
-// The set of characters used for the animated scrambling effect.
+// The set of characters used for the animated scrambling effect
 const SCRAMBLE_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const displayText = ref(text.split(''));
@@ -31,7 +31,7 @@ const animationStepDuration = computed(() => animationDuration / (text.length * 
 const { pause, resume } = useIntervalFn(
     () => {
         if (iterations.value < text.length) {
-            displayText.value = text.split('').map((letter, i) => {
+            displayText.value = text.split('').map((letter: string, i: number) => {
                 if (letter === ' ') return ' ';
 
                 if (i <= iterations.value) return text[i] ?? '';
@@ -65,7 +65,7 @@ onMounted(() => {
         @click="startAnimation"
     >
         <img
-            src="/resources/images/logo.svg"
+            src="../../images/logo.svg"
             class="pointer-events-none size-12 select-none"
             alt="SneakPeek logo"
         />

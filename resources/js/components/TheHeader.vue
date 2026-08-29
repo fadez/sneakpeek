@@ -10,7 +10,7 @@ import AppLogo from '@/components/AppLogo.vue';
         <div class="page-container py-4">
             <div class="flex w-full flex-col justify-between md:flex-row md:items-center">
                 <div class="flex items-center justify-between">
-                    <AppLogo :link="true" />
+                    <AppLogo />
                 </div>
 
                 <div class="mt-2 flex flex-col md:mt-0">
