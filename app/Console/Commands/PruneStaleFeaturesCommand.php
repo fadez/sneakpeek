@@ -9,6 +9,7 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 #[Signature('pennant:prune')]
 #[Description('Prune stale Pennant features')]
@@ -34,7 +35,7 @@ final class PruneStaleFeaturesCommand extends Command
             ->whereNotIn('scope', DB::table($sessionsTable)->select('id'))
             ->delete();
 
-        $this->components->info('Deleted ' . $deletedCount . ' stale Pennant ' . str('feature')->plural($deletedCount) . '.');
+        $this->components->info('Deleted ' . $deletedCount . ' stale Pennant ' . Str::plural('feature', $deletedCount) . '.');
 
         return self::SUCCESS;
     }

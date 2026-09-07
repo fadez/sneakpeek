@@ -52,6 +52,8 @@ export type ListFeaturesResponse = FeaturesMap;
 
 export type GetSecretResponse = { secret: Secret };
 
+export type GetSecretReceiptResponse = { secret: Secret };
+
 export type RevealSecretResponse = SecretContent;
 
 export type StoreSecretResponse = { secret: SecretWithAccessToken };

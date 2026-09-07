@@ -25,13 +25,13 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $revealed_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read bool $is_passphrase_protected
- * @property-read bool $is_expired
- * @property-read bool $is_revealed
  * @property-read bool $is_available
+ * @property-read bool $is_expired
+ * @property-read bool $is_passphrase_protected
+ * @property-read bool $is_revealed
  */
 #[Table(key: 'id', keyType: 'string', incrementing: false)]
-#[Appends(['is_passphrase_protected', 'is_expired', 'is_revealed', 'is_available'])]
+#[Appends(['is_available', 'is_expired', 'is_passphrase_protected', 'is_revealed'])]
 #[Hidden(['access_token', 'content', 'passphrase'])]
 final class Secret extends Model
 {
@@ -54,30 +54,6 @@ final class Secret extends Model
             'expires_at' => 'datetime',
             'revealed_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Scope a query to only include unrevealed secrets that haven't expired.
-     *
-     * @param  Builder<Secret>  $query
-     * @return Builder<Secret>
-     */
-    #[Scope]
-    protected function scopeAvailable(Builder $query): Builder
-    {
-        return $query->hasContent()->unrevealed()->notExpired();
-    }
-
-    /**
-     * Scope a query to only include secrets whose content has not been wiped.
-     *
-     * @param  Builder<Secret>  $query
-     * @return Builder<Secret>
-     */
-    #[Scope]
-    protected function scopeHasContent(Builder $query): Builder
-    {
-        return $query->whereNotNull('content');
     }
 
     /**
@@ -105,6 +81,18 @@ final class Secret extends Model
     }
 
     /**
+     * Scope a query to only include secrets whose content has not been wiped.
+     *
+     * @param  Builder<Secret>  $query
+     * @return Builder<Secret>
+     */
+    #[Scope]
+    protected function scopeHasContent(Builder $query): Builder
+    {
+        return $query->whereNotNull('content');
+    }
+
+    /**
      * Scope a query to only include unrevealed secrets.
      *
      * @param  Builder<Secret>  $query
@@ -114,6 +102,18 @@ final class Secret extends Model
     protected function scopeUnrevealed(Builder $query): Builder
     {
         return $query->whereNull('revealed_at');
+    }
+
+    /**
+     * Scope a query to only include unrevealed secrets that haven't expired.
+     *
+     * @param  Builder<Secret>  $query
+     * @return Builder<Secret>
+     */
+    #[Scope]
+    protected function scopeAvailable(Builder $query): Builder
+    {
+        return $query->hasContent()->unrevealed()->notExpired();
     }
 
     /**
@@ -139,18 +139,6 @@ final class Secret extends Model
     }
 
     /**
-     * Determine if the secret is protected by a passphrase.
-     *
-     * @return Attribute<bool, never>
-     */
-    protected function isPassphraseProtected(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): bool => $this->passphrase !== null,
-        );
-    }
-
-    /**
      * Determine if the secret is still available.
      *
      * @return Attribute<bool, never>
@@ -163,18 +151,6 @@ final class Secret extends Model
     }
 
     /**
-     * Determine if the secret has been revealed.
-     *
-     * @return Attribute<bool, never>
-     */
-    protected function isRevealed(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): bool => $this->revealed_at !== null,
-        );
-    }
-
-    /**
      * Determine if the secret has expired.
      *
      * @return Attribute<bool, never>
@@ -183,6 +159,30 @@ final class Secret extends Model
     {
         return Attribute::make(
             get: fn () => $this->expires_at->isPast(),
+        );
+    }
+
+    /**
+     * Determine if the secret is protected by a passphrase.
+     *
+     * @return Attribute<bool, never>
+     */
+    protected function isPassphraseProtected(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): bool => $this->passphrase !== null,
+        );
+    }
+
+    /**
+     * Determine if the secret has been revealed.
+     *
+     * @return Attribute<bool, never>
+     */
+    protected function isRevealed(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): bool => $this->revealed_at !== null,
         );
     }
 }

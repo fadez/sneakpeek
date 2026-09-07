@@ -15,9 +15,9 @@ test('resolve', function () {
         'created_at',
         'expires_at',
         'revealed_at',
-        'is_passphrase_protected',
-        'is_expired',
-        'is_revealed',
         'is_available',
+        'is_expired',
+        'is_passphrase_protected',
+        'is_revealed',
     ]);
 });

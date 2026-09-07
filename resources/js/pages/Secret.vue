@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Secret } from '@/types';
-import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { LucideCopy, LucideLockKeyholeOpen } from '@lucide/vue';
@@ -27,32 +27,31 @@ const passphraseInput = useTemplateRef<HTMLInputElement | null>('passphrase-inpu
 const secretContentTextarea = useTemplateRef<HTMLTextAreaElement | null>('secret-content-textarea');
 
 const accessToken = ref<string>('');
-const secret = ref<Secret | null>(null);
+const secret = ref<Secret | null | undefined>(undefined);
 const secretContent = ref<string | null>(null);
 const passphrase = ref<string>('');
 const isRevealingSecret = ref<boolean>(false);
 
-const fetchSecret = async (refresh?: boolean): Promise<void> => {
-    try {
-        secret.value =
-            refresh === true ? await getSecret(route.params.id as string) : await getSecret(route.params.id as string, accessToken.value);
+const hasAccessToken = computed<boolean>(() => {
+    return !!accessToken.value;
+});
 
-        router.replace({
-            name: 'secret',
-            params: { id: route.params.id },
-            hash: '',
-        });
+const fetchSecret = async (): Promise<void> => {
+    router.replace({
+        name: 'secret',
+        params: { id: route.params.id },
+        hash: '',
+    });
+
+    try {
+        secret.value = await getSecret(route.params.id as string, accessToken.value);
 
         if (secret.value?.is_passphrase_protected) {
             focusPassphraseInput();
         }
     } catch {
-        router.replace({ name: 'home' });
+        secret.value = null;
     }
-};
-
-const refreshSecret = (): Promise<void> => {
-    return fetchSecret(true);
 };
 
 const handleSecretReveal = async (): Promise<void> => {
@@ -75,6 +74,10 @@ const handleSecretReveal = async (): Promise<void> => {
     }
 };
 
+const extractAccessToken = (): void => {
+    accessToken.value = route.hash.slice(1);
+};
+
 const focusPassphraseInput = (): void => {
     focus(passphraseInput);
 };
@@ -95,28 +98,41 @@ const copySecret = (): void => {
 };
 
 const resetPage = (): void => {
-    secret.value = null;
+    secret.value = undefined;
     secretContent.value = null;
     accessToken.value = '';
     isRevealingSecret.value = false;
     clearPassphraseInput();
 };
 
+const handleAccessTokenChange = async (): Promise<void> => {
+    if (!route.hash) return;
+
+    resetPage();
+
+    extractAccessToken();
+
+    await fetchSecret();
+};
+
 const handleSecretIdChange = async (newId: string | string[] | undefined, oldId: string | string[] | undefined): Promise<void> => {
     resetPage();
 
-    accessToken.value = route.hash.slice(1);
+    extractAccessToken();
 
     await fetchSecret();
 
-    if (oldId) echo().leave(`secrets.${oldId}`);
+    const previousSecretId = Array.isArray(oldId) ? oldId[0] : oldId;
+    const currentSecretId = Array.isArray(newId) ? newId[0] : newId;
 
-    if (!newId) return;
+    if (previousSecretId) {
+        echo().leave(`secrets.${previousSecretId}`);
+    }
 
-    const id = Array.isArray(newId) ? newId[0] : newId;
+    if (!currentSecretId) return;
 
     echo()
-        .channel(`secrets.${id}`)
+        .channel(`secrets.${currentSecretId}`)
         .listen('.secret.revealed', () => {
             if (!secret.value) return;
             secret.value.is_available = false;
@@ -130,12 +146,15 @@ const handleSecretIdChange = async (newId: string | string[] | undefined, oldId:
 };
 
 const handlePageShow = (event: PageTransitionEvent): void => {
+    // event.persisted is true when the page is restored from the browser's back/forward cache (bfcache)
     if (event.persisted) fetchSecret();
 };
 
-useSecretExpirationProgress(secret, refreshSecret);
+useSecretExpirationProgress(secret, fetchSecret);
 
 watch(() => route.params.id, handleSecretIdChange, { immediate: true });
+
+watch(() => route.hash, handleAccessTokenChange);
 
 onMounted(() => {
     window.addEventListener('pageshow', handlePageShow);
@@ -143,13 +162,14 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
     if (secret.value?.id) echo().leave(`secrets.${secret.value.id}`);
+
     window.removeEventListener('pageshow', handlePageShow);
 });
 </script>
 
 <template>
     <div
-        v-if="!secret"
+        v-if="secret === undefined"
         class="my-4"
     >
         <BaseCard class="min-h-secret-card-skeleton">
@@ -190,30 +210,36 @@ onBeforeUnmount(() => {
             </template>
         </BaseCard>
         <BaseCard
-            :show-actions="secret.is_available"
+            :show-actions="secret != null && secret.is_available && hasAccessToken"
             v-else
         >
             <section class="p-4">
                 <BaseAlert
-                    v-if="secret.is_burned"
+                    v-if="secret === null"
                     type="danger"
                 >
-                    Secret has been burned by its creator.
+                    This secret is nowhere to be found. Maybe it was deleted. Maybe it never existed. We recommend asking for a new one.
+                </BaseAlert>
+                <BaseAlert
+                    v-else-if="secret.is_burned"
+                    type="danger"
+                >
+                    This secret has been burned by its creator.
                 </BaseAlert>
                 <BaseAlert
                     v-else-if="secret.is_revealed"
                     type="danger"
                 >
-                    Secret has been revealed by someone else! Looks like there might be a problem...
+                    Someone else has revealed the secret! Looks like there might be a problem...
                 </BaseAlert>
                 <BaseAlert
                     v-else-if="secret.is_expired"
                     type="danger"
                 >
-                    Secret has expired. You'll need to ask for a fresh one.
+                    Secret has expired. We recommend asking for a new one.
                 </BaseAlert>
                 <BaseAlert
-                    v-else
+                    v-else-if="hasAccessToken"
                     type="info"
                 >
                     Your secret message is ready. We'll show it only once — make sure you're ready to save it.
@@ -222,14 +248,14 @@ onBeforeUnmount(() => {
 
             <section
                 class="bg-zinc-75 border-t-2 border-zinc-200 p-4 dark:border-zinc-700 dark:bg-zinc-800"
-                :class="{ 'rounded-b-sm': !secret.is_available }"
+                :class="{ 'rounded-b-sm': secret && !secret.is_available }"
             >
-                <SecretPreview :passphrase-protected="secret.is_passphrase_protected" />
+                <SecretPreview :passphrase-protected="secret != null && secret.is_passphrase_protected" />
             </section>
 
             <template #actions>
                 <BaseInput
-                    v-if="secret.is_passphrase_protected"
+                    v-if="secret && secret.is_passphrase_protected"
                     id="passphrase-input"
                     ref="passphrase-input"
                     data-test="passphrase-input"
@@ -244,7 +270,7 @@ onBeforeUnmount(() => {
                     data-test="reveal-secret-btn"
                     type="primary"
                     :leading-icon="LucideLockKeyholeOpen"
-                    :disabled="isRevealingSecret || (secret.is_passphrase_protected && !passphrase)"
+                    :disabled="isRevealingSecret || (secret != null && secret.is_passphrase_protected && !passphrase)"
                     :loading="isRevealingSecret"
                     @click="handleSecretReveal"
                 >

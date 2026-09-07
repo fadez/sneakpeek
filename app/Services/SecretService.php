@@ -63,7 +63,7 @@ final readonly class SecretService
     {
         return DB::transaction(function () use ($secret) {
             $secret = Secret::query()
-                ->where('id', $secret->getKey())
+                ->whereKey($secret->getKey())
                 ->available()
                 ->lockForUpdate()
                 ->firstOrFail();
@@ -129,7 +129,10 @@ final readonly class SecretService
      */
     public function validateAvailability(Secret $secret): void
     {
-        throw_unless($secret->is_available, ModelNotFoundException::class);
+        throw_unless(
+            $secret->is_available,
+            ModelNotFoundException::class
+        );
     }
 
     /**
@@ -139,7 +142,13 @@ final readonly class SecretService
      */
     public function validateAccessToken(Secret $secret, string $accessToken): void
     {
-        throw_unless($this->checkAccessToken(secret: $secret, accessToken: $accessToken), ModelNotFoundException::class);
+        throw_unless(
+            $this->checkAccessToken(
+                secret: $secret,
+                accessToken: $accessToken
+            ),
+            ModelNotFoundException::class
+        );
     }
 
     /**

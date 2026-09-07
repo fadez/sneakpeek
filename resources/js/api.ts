@@ -1,8 +1,16 @@
-import type { GetSecretResponse, GetStatisticsResponse, ListFeaturesResponse, RevealSecretResponse, StoreSecretResponse } from '@/types';
+import type {
+    GetSecretReceiptResponse,
+    GetSecretResponse,
+    GetStatisticsResponse,
+    ListFeaturesResponse,
+    RevealSecretResponse,
+    StoreSecretResponse,
+} from '@/types';
 import { http } from '@/http';
 import { deactivate as featuresDeactivateRoute, list as featuresListRoute } from '@/routes/api/features';
 import {
     destroy as secretsDestroyRoute,
+    receipt as secretsReceiptRoute,
     reveal as secretsRevealRoute,
     show as secretsShowRoute,
     store as secretsStoreRoute,
@@ -18,11 +26,14 @@ export const deactivateFeature = (feature: string) => http.wayfinderRequest<void
 export const storeSecret = (data: object) =>
     http.wayfinderRequest<StoreSecretResponse>(secretsStoreRoute(), { body: data }).then((response) => response.secret);
 
-export const getSecret = (id: string, accessToken?: string) =>
+export const getSecretReceipt = (id: string) =>
+    http.wayfinderRequest<GetSecretReceiptResponse>(secretsReceiptRoute({ secret: id })).then((response) => response.secret);
+
+export const getSecret = (id: string, accessToken: string) =>
     http
         .wayfinderRequest<GetSecretResponse>(secretsShowRoute({ secret: id }), {
             headers: {
-                ...(accessToken && { 'X-Access-Token': accessToken }),
+                'X-Access-Token': accessToken,
             },
         })
         .then((response) => response.secret);

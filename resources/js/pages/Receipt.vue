@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { LucideCopy, LucideFlame } from '@lucide/vue';
 import { DateTime } from 'luxon';
-import { burnSecret, getSecret } from '@/api';
+import { burnSecret, getSecretReceipt } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
 import { useClipboard } from '@/composables/useClipboard';
 import { useElementFocus } from '@/composables/useElementFocus';
@@ -55,12 +55,12 @@ const expiresInDiffForHumans = computed<string>(() => {
     );
 });
 
-/*
-The access token is placed after the "#" fragment in the URL for these security reasons:
-- The hash fragment is never sent to the server.
-- Prevents token logging in server, proxy, and analytics logs.
-- Prevents accidental leakage via HTTP Referer headers.
-*/
+/**
+ * The access token is placed after the "#" fragment in the URL for security reasons:
+ * - The hash fragment is never sent to the server
+ * - Prevents token logging in server, proxy, and analytics logs
+ * - Prevents accidental leakage via HTTP Referer headers
+ */
 const secretUrl = computed<string>(() => {
     if (!hasAccessToken.value || !secret.value) return '';
 
@@ -94,7 +94,7 @@ const fetchSecret = async (): Promise<void> => {
     }
 
     try {
-        secret.value = await getSecret(route.params.id as string);
+        secret.value = await getSecretReceipt(route.params.id as string);
     } catch {
         await router.replace({ name: 'home' });
     }
@@ -168,13 +168,18 @@ const handleSecretBurned = (): void => {
 
 const handleSecretIdChange = async (newId: string | undefined, oldId: string | undefined): Promise<void> => {
     resetPage();
+
     await fetchSecret();
 
-    if (oldId) echo().leave(`secrets.${oldId}`);
-    if (!newId) return;
+    const previousSecretId = Array.isArray(oldId) ? oldId[0] : oldId;
+    const currentSecretId = Array.isArray(newId) ? newId[0] : newId;
+
+    if (previousSecretId) echo().leave(`secrets.${oldId}`);
+
+    if (!currentSecretId) return;
 
     echo()
-        .channel(`secrets.${newId}`)
+        .channel(`secrets.${currentSecretId}`)
         .listen('.secret.revealed', (e: { secret: Secret }) => {
             secret.value = e.secret;
         })
@@ -191,6 +196,7 @@ const resetPage = (): void => {
 };
 
 const handlePageShow = (event: PageTransitionEvent): void => {
+    // event.persisted is true when the page is restored from the browser's back/forward cache (bfcache)
     if (event.persisted) fetchSecret();
 };
 
@@ -281,7 +287,9 @@ onBeforeUnmount(() => {
                     />
                 </div>
 
-                <BaseAlert type="warning">You will only see this link once.</BaseAlert>
+                <BaseAlert type="warning">
+                    This link is shown only once. Make sure to copy it before you close or refresh this page.
+                </BaseAlert>
             </section>
 
             <template #actions>

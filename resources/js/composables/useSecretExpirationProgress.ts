@@ -2,7 +2,7 @@ import type { ComputedRef, Ref } from 'vue';
 import type { Secret } from '@/types';
 import { computed, onUnmounted, ref, watch } from 'vue';
 
-export function useSecretExpirationProgress(secret: Ref<Secret | null>, onFinish?: () => void): ComputedRef<number> {
+export function useSecretExpirationProgress(secret: Ref<Secret | null | undefined>, onFinish?: () => void): ComputedRef<number> {
     const now = ref(Date.now());
     let interval: ReturnType<typeof setInterval> | null = null;
 
@@ -40,7 +40,7 @@ export function useSecretExpirationProgress(secret: Ref<Secret | null>, onFinish
 
     let finished = false;
 
-    const handleSecretChange = (value: Secret | null): void => {
+    const handleSecretChange = (value: Secret | null | undefined): void => {
         if (!value) return;
 
         finished = false;

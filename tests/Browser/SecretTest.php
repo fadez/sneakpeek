@@ -24,9 +24,9 @@ it('can create and reveal a secret without passphrase', function () {
 
     $page->screenshot(filename: screenshot_name('2_secret_revealed'));
 
-    // Check that the secret is no longer accessible and the user was redirected back to the home page
+    // Check that the secret is no longer accessible
     $page->refresh()
-        ->assertPathIs('/');
+        ->assertSee('This secret is nowhere to be found. Maybe it was deleted. Maybe it never existed. We recommend asking for a new one.');
 
     $page->screenshot(filename: screenshot_name('3_secret_no_longer_available_user_redirected_to_home_page'));
 })->flaky();

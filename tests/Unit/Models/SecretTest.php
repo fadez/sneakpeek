@@ -17,10 +17,10 @@ test('toArray', function () {
         'revealed_at',
         'created_at',
         'updated_at',
-        'is_passphrase_protected',
-        'is_expired',
-        'is_revealed',
         'is_available',
+        'is_expired',
+        'is_passphrase_protected',
+        'is_revealed',
     ]);
 
     expect($model->toArray())->not->toHaveKeys([
@@ -38,6 +38,7 @@ test('toResource', function () {
 
 test('content', function () {
     $content = 'Secret content.';
+
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
     // Let's imagine someone got access to our DB, we need to ensure that content is encrypted

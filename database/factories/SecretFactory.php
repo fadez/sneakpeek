@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Models\Secret;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -37,7 +36,7 @@ class SecretFactory extends Factory
     public function passphraseProtected(string $passphrase = 'secret'): static
     {
         return $this->state(fn (array $attributes): array => [
-            'passphrase' => Hash::make($passphrase),
+            'passphrase' => $passphrase,
         ]);
     }
 

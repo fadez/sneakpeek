@@ -22,6 +22,8 @@ final class ShowSecretRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
+        // Accept the access token via header rather than query string to avoid
+        // exposing it in server access logs, proxy logs, and browser history
         if ($this->hasHeader('X-Access-Token')) {
             $this->merge([
                 'access_token' => $this->header('X-Access-Token'),
@@ -37,8 +39,7 @@ final class ShowSecretRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'access_token' => ['sometimes', 'required', 'string'],
-            'passphrase' => ['nullable', 'string'],
+            'access_token' => ['nullable', 'string'],
         ];
     }
 }

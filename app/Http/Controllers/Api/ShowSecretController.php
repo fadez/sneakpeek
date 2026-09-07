@@ -12,17 +12,14 @@ use App\Services\SecretService;
 final readonly class ShowSecretController
 {
     /**
-     * Get information about a secret.
+     * Get information about a secret before revealing it.
      */
     public function __invoke(ShowSecretRequest $request, Secret $secret, SecretService $secretService): SecretResource
     {
-        // If access token is included we'll also want to check that secret is available before revealing it
-        if ($request->has('access_token')) {
-            $secretService->validateAccessToken(
-                secret: $secret,
-                accessToken: $request->string('access_token')->value(),
-            );
-        }
+        $secretService->validateAccessToken(
+            secret: $secret,
+            accessToken: $request->string('access_token')->value(),
+        );
 
         $secretService->validateAvailability(secret: $secret);
 

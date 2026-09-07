@@ -11,7 +11,7 @@ it('loads easter egg page successfully', function () {
 });
 
 test(':dataset route returns no-store cache header for API route', function (array $route) {
-    $this->getJson($route['url'])
+    $this->getJson($route['url'], $route['headers'] ?? [])
         ->assertOk()
         ->assertHeaderContains('Cache-Control', 'no-store');
 })->with('routes_api_not_cached');

@@ -12,8 +12,18 @@ dataset('routes_web_public', [
 ]);
 
 dataset('routes_api_not_cached', [
-    'api.secrets.show' => [fn (): array => [
-        'name' => 'api.secrets.show',
-        'url' => route('api.secrets.show', ['secret' => Secret::factory()->createFresh()->getKey()], false),
+    'api.secrets.receipt' => [fn (): array => [
+        'name' => 'api.secrets.receipt',
+        'url' => route('api.secrets.receipt', ['secret' => Secret::factory()->createFresh()->getKey()], false),
     ]],
+    'api.secrets.show' => [function (): array {
+        $accessToken = 'secret_access_token';
+
+        $secret = Secret::factory()->createFresh(['access_token' => $accessToken]);
+
+        return [
+            'url' => route('api.secrets.show', ['secret' => $secret->getKey()], false),
+            'headers' => ['X-Access-Token' => $accessToken],
+        ];
+    }],
 ]);

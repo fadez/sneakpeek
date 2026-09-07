@@ -7,12 +7,13 @@ use App\Http\Controllers\Api\DestroySecretController;
 use App\Http\Controllers\Api\ListFeaturesController;
 use App\Http\Controllers\Api\RevealSecretController;
 use App\Http\Controllers\Api\ShowSecretController;
+use App\Http\Controllers\Api\ShowSecretReceiptController;
 use App\Http\Controllers\Api\StatisticsSnapshotController;
 use App\Http\Controllers\Api\StoreSecretController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('api.')->middleware(['throttle:api'])->group(function () {
-    // The "cache.headers:no_store" middleware is needed to prevent sensitive data from being cached in the browser's Back-Forward Cache (bfcache).
+    // The "cache.headers:no_store" middleware is needed to prevent sensitive data from being cached in the browser's back/forward cache (bfcache).
     // This ensures secrets aren't accessible when navigating via the browser's back or forward buttons and forces the app to always fetch fresh data from API.
     Route::name('secrets.')->prefix('secrets')->middleware('cache.headers:no_store')->group(function () {
         Route::post('/', StoreSecretController::class)
@@ -23,6 +24,10 @@ Route::name('api.')->middleware(['throttle:api'])->group(function () {
             ->whereAlphaNumeric('secret')
             ->name('show');
 
+        Route::get('/{secret}/receipt', ShowSecretReceiptController::class)
+            ->whereAlphaNumeric('secret')
+            ->name('receipt');
+
         Route::post('/{secret}/reveal', RevealSecretController::class)
             ->whereAlphaNumeric('secret')
             ->middleware('throttle:10,1')
@@ -30,6 +35,7 @@ Route::name('api.')->middleware(['throttle:api'])->group(function () {
 
         Route::delete('/{secret}', DestroySecretController::class)
             ->whereAlphaNumeric('secret')
+            ->middleware('throttle:10,1')
             ->name('destroy');
     });
 

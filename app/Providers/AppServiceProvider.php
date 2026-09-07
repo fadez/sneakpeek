@@ -9,6 +9,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
@@ -84,9 +85,10 @@ final class AppServiceProvider extends ServiceProvider
          *
          * @param  (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed>  $attributes
          * @param  Model|null  $parent
+         * @return DatabaseCollection<int, Model>|Model|null
          */
         Factory::macro('createFresh', function (callable|array $attributes = [], ?Model $parent = null) {
-            /** @var array<string, mixed> $attributes */
+            /** @var (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed> $attributes */
             return $this->create($attributes, $parent)->fresh();
         });
     }

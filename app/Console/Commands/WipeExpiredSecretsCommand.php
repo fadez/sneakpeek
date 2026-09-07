@@ -11,6 +11,7 @@ use App\Services\StatisticService;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 #[Signature('secrets:wipe-expired')]
 #[Description('Wipe the content of expired secrets')]
@@ -31,7 +32,7 @@ final class WipeExpiredSecretsCommand extends Command
 
         $statisticService->incrementValue(StatisticKey::SecretsExpired, $wipedCount);
 
-        $this->components->info('Wiped ' . $wipedCount . ' expired ' . str('secret')->plural($wipedCount) . '.');
+        $this->components->info('Wiped ' . $wipedCount . ' expired ' . Str::plural('secret', $wipedCount) . '.');
 
         return self::SUCCESS;
     }
