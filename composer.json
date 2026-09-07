@@ -7,7 +7,7 @@
     "license": "proprietary",
     "require": {
         "php": "^8.5",
-        "laravel/framework": "^13.29.0",
+        "laravel/framework": "^13.30.1",
         "laravel/head": "^0.1.0",
         "laravel/pao": "^1.1.4",
         "laravel/pennant": "^1.26",
@@ -18,11 +18,11 @@
         "pusher/pusher-php-server": "^7.3.0"
     },
     "require-dev": {
-        "driftingly/rector-laravel": "^2.6.1",
+        "driftingly/rector-laravel": "^2.6.2",
         "fakerphp/faker": "^1.24.1",
-        "fruitcake/laravel-debugbar": "^4.4.2",
-        "larastan/larastan": "^3.10.0",
-        "laravel/boost": "^2.7.0",
+        "fruitcake/laravel-debugbar": "^4.4.3",
+        "larastan/larastan": "^3.11.0",
+        "laravel/boost": "^2.7.1",
         "laravel/pail": "^1.2.7",
         "laravel/pint": "^1.30.5",
         "mockery/mockery": "^1.6.15",
@@ -31,7 +31,7 @@
         "pestphp/pest-plugin-agent": "^5.0",
         "pestphp/pest-plugin-browser": "^5.0.1",
         "pestphp/pest-plugin-laravel": "^5.0.1",
-        "pestphp/pest-plugin-phpstan": ">=5.2.0",
+        "pestphp/pest-plugin-phpstan": ">=5.2.1",
         "pestphp/pest-plugin-rector": ">=5.0.4",
         "pestphp/pest-plugin-type-coverage": "^5.0.2"
     },
