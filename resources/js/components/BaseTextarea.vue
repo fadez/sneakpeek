@@ -2,7 +2,7 @@
 import type { Ref } from 'vue';
 import { computed, useAttrs, useTemplateRef } from 'vue';
 
-const model = defineModel<string>();
+const model = defineModel<string>({ default: '' });
 
 const attrs = useAttrs();
 

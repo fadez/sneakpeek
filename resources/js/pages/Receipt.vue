@@ -4,6 +4,7 @@ import type { Ref } from 'vue';
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
+import { StorageSerializers, useSessionStorage } from '@vueuse/core';
 import { LucideCopy, LucideFlame } from '@lucide/vue';
 import { DateTime } from 'luxon';
 import { burnSecret, getSecretReceipt } from '@/api';
@@ -76,20 +77,16 @@ const secretUrl = computed<string>(() => {
 });
 
 const fetchSecret = async (): Promise<void> => {
-    const state = window.history.state as any;
+    const key = `secret-receipt-${route.params.id}`;
 
-    // Retrieve secret from history state (passed during redirect)
-    // and immediately clear it to prevent access via browser navigation
-    if (typeof state?.secret === 'string') {
-        const secretFromState = JSON.parse(state.secret) as SecretWithAccessToken;
+    const recentlyCreatedSecret = useSessionStorage<SecretWithAccessToken | null>(key, null, {
+        serializer: StorageSerializers.object,
+    });
 
-        secret.value = secretFromState;
-        accessToken.value = secretFromState.access_token;
-
-        const newState = { ...state };
-        delete newState.secret;
-        window.history.replaceState(newState, '');
-
+    if (recentlyCreatedSecret.value) {
+        secret.value = recentlyCreatedSecret.value;
+        accessToken.value = recentlyCreatedSecret.value.access_token;
+        recentlyCreatedSecret.value = null;
         return;
     }
 
@@ -197,7 +194,11 @@ const resetPage = (): void => {
 
 const handlePageShow = (event: PageTransitionEvent): void => {
     // event.persisted is true when the page is restored from the browser's back/forward cache (bfcache)
-    if (event.persisted) fetchSecret();
+    if (event.persisted) {
+        accessToken.value = undefined;
+
+        fetchSecret();
+    }
 };
 
 const secretExpirationProgress = useSecretExpirationProgress(secret, fetchSecret);

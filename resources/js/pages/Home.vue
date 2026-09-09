@@ -2,7 +2,8 @@
 import type { Ref } from 'vue';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import { useRouter } from 'vue-router';
-import { LucideCircleStar, LucideLockKeyhole, LucideLockKeyholeOpen } from '@lucide/vue';
+import { LucideCircleStar, LucideLockKeyhole } from '@lucide/vue';
+import { useSessionStorage } from '@vueuse/core';
 import { SECRET_TTL_OPTIONS } from '@/constants';
 import { storeSecret } from '@/api';
 import { useElementFocus } from '@/composables/useElementFocus';
@@ -45,11 +46,9 @@ const createSecret = async (): Promise<void> => {
 
         notify.secretCreated();
 
-        await router.push({
-            name: 'receipt',
-            params: { id: secret.id },
-            state: { secret: JSON.stringify(secret) },
-        });
+        useSessionStorage(`secret-receipt-${secret.id}`, secret).value = secret;
+
+        await router.push({ name: 'receipt', params: { id: secret.id } });
     } catch {
         //
     } finally {

@@ -7,7 +7,7 @@ defineOptions({
     inheritAttrs: false,
 });
 
-const model = defineModel<string | number>();
+const model = defineModel<string>({ default: '' });
 
 const attrs = useAttrs();
 

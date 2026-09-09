@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Secret } from '@/types';
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
 import { LucideCopy, LucideLockKeyholeOpen } from '@lucide/vue';
@@ -37,16 +37,12 @@ const hasAccessToken = computed<boolean>(() => {
 });
 
 const fetchSecret = async (): Promise<void> => {
-    router.replace({
-        name: 'secret',
-        params: { id: route.params.id },
-        hash: '',
-    });
-
     try {
         secret.value = await getSecret(route.params.id as string, accessToken.value);
 
         if (secret.value?.is_passphrase_protected) {
+            await nextTick();
+
             focusPassphraseInput();
         }
     } catch {
@@ -76,6 +72,16 @@ const handleSecretReveal = async (): Promise<void> => {
 
 const extractAccessToken = (): void => {
     accessToken.value = route.hash.slice(1);
+
+    // Secret access tokens are stored in the URL hash fragment to prevent server-side logging, analytics tracking, or accidental leakage via Referer header,
+    // so here we capture and strip it from the URL to minimize its exposure
+    if (accessToken.value) {
+        router.replace({
+            name: 'secret',
+            params: { id: route.params.id },
+            hash: '',
+        });
+    }
 };
 
 const focusPassphraseInput = (): void => {
@@ -106,6 +112,7 @@ const resetPage = (): void => {
 };
 
 const handleAccessTokenChange = async (): Promise<void> => {
+    // Guard against the loop caused when extractAccessToken() strips the hash, retriggering this watcher
     if (!route.hash) return;
 
     resetPage();
@@ -116,6 +123,8 @@ const handleAccessTokenChange = async (): Promise<void> => {
 };
 
 const handleSecretIdChange = async (newId: string | string[] | undefined, oldId: string | string[] | undefined): Promise<void> => {
+    console.log('handleSecretIdChange');
+
     resetPage();
 
     extractAccessToken();
