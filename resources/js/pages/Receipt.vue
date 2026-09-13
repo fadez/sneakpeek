@@ -249,8 +249,7 @@ onBeforeUnmount(() => {
                     v-else
                     type="info"
                 >
-                    Secret is not yet revealed. It is available until
-                    {{ formatDate(secret.expires_at) }}.
+                    Secret hasn't been revealed yet. It's available until {{ formatDate(secret.expires_at) }}.
                 </BaseAlert>
             </section>
 

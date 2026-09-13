@@ -3,6 +3,7 @@ import type { Secret } from '@/types';
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { echo } from '@laravel/echo-vue';
+import { onKeyStroke } from '@vueuse/core';
 import { LucideCopy, LucideLockKeyholeOpen } from '@lucide/vue';
 import { getSecret, revealSecret } from '@/api';
 import { useNotificationStore } from '@/stores/notifications';
@@ -62,6 +63,10 @@ const handleSecretReveal = async (): Promise<void> => {
         });
 
         notify.secretRevealed();
+
+        await nextTick();
+
+        focusSecretContentTextarea();
     } catch {
         clearPassphraseInput();
         focusPassphraseInput();
@@ -84,6 +89,14 @@ const extractAccessToken = (): void => {
     }
 };
 
+const focusSecretContentTextarea = (): void => {
+    focus(secretContentTextarea);
+};
+
+const focusAndSelectSecretContentTextarea = (): void => {
+    focusAndSelect(secretContentTextarea);
+};
+
 const focusPassphraseInput = (): void => {
     focus(passphraseInput);
 };
@@ -93,7 +106,7 @@ const clearPassphraseInput = (): void => {
 };
 
 const copySecret = (): void => {
-    focusAndSelect(secretContentTextarea);
+    focusAndSelectSecretContentTextarea();
 
     if (secretContent.value == null) return;
 
@@ -158,6 +171,14 @@ const handlePageShow = (event: PageTransitionEvent): void => {
     // event.persisted is true when the page is restored from the browser's back/forward cache (bfcache)
     if (event.persisted) fetchSecret();
 };
+
+onKeyStroke(
+    (event) => event.key === 'a' && (event.metaKey || event.ctrlKey) && !!secretContent.value,
+    (event) => {
+        event.preventDefault();
+        focusAndSelectSecretContentTextarea();
+    },
+);
 
 useSecretExpirationProgress(secret, fetchSecret);
 
