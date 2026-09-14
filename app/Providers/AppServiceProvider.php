@@ -55,6 +55,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureRequests();
         $this->configureRateLimits();
         $this->configureFeatures();
+        $this->configureMacros();
         $this->configureVite();
         $this->configureHead();
     }
@@ -79,18 +80,6 @@ final class AppServiceProvider extends ServiceProvider
 
         // Enforce strict behavior to prevent lazy loading and accessing missing attributes
         Model::shouldBeStrict();
-
-        /**
-         * Add "createFresh" method to all model factories to avoid calling "fresh" on every created instance.
-         *
-         * @param  (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed>  $attributes
-         * @param  Model|null  $parent
-         * @return DatabaseCollection<int, Model>|Model|null
-         */
-        Factory::macro('createFresh', function (callable|array $attributes = [], ?Model $parent = null) {
-            /** @var (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed> $attributes */
-            return $this->create($attributes, $parent)->fresh();
-        });
     }
 
     /**
@@ -155,6 +144,24 @@ final class AppServiceProvider extends ServiceProvider
 
         // Assign users randomly to either the control or variant group for A/B testing
         Feature::define('ab-group', fn () => Arr::random(['control', 'variant']));
+    }
+
+    /**
+     * Register custom macros used across the app.
+     */
+    private function configureMacros(): void
+    {
+        /**
+         * Add "createFresh" method to all model factories to avoid calling "fresh" on every created instance.
+         *
+         * @param  (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed>  $attributes
+         * @param  Model|null  $parent
+         * @return DatabaseCollection<int, Model>|Model|null
+         */
+        Factory::macro('createFresh', function (callable|array $attributes = [], ?Model $parent = null) {
+            /** @var (callable(array<string, mixed>): array<string, mixed>)|array<string, mixed> $attributes */
+            return $this->create($attributes, $parent)->fresh();
+        });
     }
 
     /**
