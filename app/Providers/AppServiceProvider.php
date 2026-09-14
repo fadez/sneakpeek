@@ -50,6 +50,7 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureCommands();
         $this->configureModels();
         $this->configureSession();
         $this->configureRequests();
@@ -61,12 +62,26 @@ final class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure default behaviors for production-ready applications.
+     * Configure default behaviors for the application.
      */
     private function configureDefaults(): void
     {
         Date::use(CarbonImmutable::class);
+    }
 
+    /**
+     * Configure Artisan commands.
+     */
+    private function configureCommands(): void
+    {
+        /**
+         * Prohibit running the following commands in the production environment:
+         * db:wipe
+         * migrate:fresh
+         * migrate:refresh
+         * migrate:reset
+         * migrate:rollback
+         */
         DB::prohibitDestructiveCommands(app()->isProduction());
     }
 
@@ -147,7 +162,9 @@ final class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register custom macros used across the app.
+     * Register custom macros used across the application.
+     *
+     * @see ../../_ide_helper_macros.php
      */
     private function configureMacros(): void
     {
