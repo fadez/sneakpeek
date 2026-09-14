@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "@laravel/echo-vue": "^2.5.0",
-        "@lucide/vue": "^1.45.0",
+        "@lucide/vue": "^1.46.0",
         "@number-flow/vue": "^0.5.2",
         "@vueuse/core": "^14.4.0",
         "laravel-echo": "^2.5.0",
@@ -39,7 +39,7 @@
         "@tailwindcss/vite": "^4.3.3",
         "@types/luxon": "^3.7.5",
         "@types/node": "^26.5.1",
-        "@vitejs/plugin-vue": "^6.0.8",
+        "@vitejs/plugin-vue": "^6.0.9",
         "fontaine": "^0.8.1",
         "laravel-vite-plugin": "^3.2.0",
         "npm-check-updates": "^23.1.0",
