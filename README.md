@@ -21,9 +21,9 @@
 
 Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)**.
 
-**SneakPeek** is a showcase of my full-stack development expertise.
+SneakPeek lets you share passwords, API keys, and other sensitive data securely via a link that self-destructs after being viewed once.
 
-I built it entirely from scratch — from UI and architecture to CI/CD and production deployment — always on a cutting-edge stack and following industry best practices throughout.
+This project is a showcase of my full-stack engineering skills. I built it entirely from scratch — from UI and architecture to CI/CD and production deployment — always on a cutting-edge stack and following industry best practices throughout.
 
 ## Live demo
 
@@ -88,7 +88,7 @@ I built it entirely from scratch — from UI and architecture to CI/CD and produ
     - Fully custom UI/UX design crafted from scratch, with no third-party UI component libraries
     - Modern utility-first styling for mobile-first responsive design
     - Light and dark mode support with automatic switching
-    - Comprehensive support for seamless keyboard-only navigation, ensuring full accessibility compliance and superior user experience for power users
+    - Comprehensive support for seamless keyboard-only navigation, offering an exceptional user experience for power users
 - **Vite+**
     - Lightning-fast builds with **[Vite](https://viteplus.dev/guide/build)** and production optimization with intelligent code splitting and chunk optimization for optimal load performance
     - Lightning-fast linting with **[Oxlint](https://viteplus.dev/guide/lint)**, enforcing correctness rules across the frontend codebase
@@ -117,15 +117,23 @@ I built it entirely from scratch — from UI and architecture to CI/CD and produ
 - **Deployment**
     - Zero-friction deployment with included **[deployment script](deploy.sh)** and NGINX server **[configuration template](nginx/sneakpeek.conf)**
     - Live demo is deployed on **Google Cloud**, protected by **Cloudflare** using best practices:
-        - **[Full (Strict) SSL/TLS](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/full-strict)** to eliminate man-in-the-middle vulnerabilities by requiring a trusted **[Cloudflare origin CA](https://developers.cloudflare.com/ssl/origin-configuration/origin-ca)** certificate
-        - **[Authenticated Origin Pulls (mTLS)](https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull)** to ensure that only connections routed through **[Cloudflare WAF](https://www.cloudflare.com/application-services/products/waf)** can reach the server, effectively cloaking the origin server from direct IP-based attacks
-        - Region-based **[Cloudflare security rules](https://developers.cloudflare.com/security/rules)** to restrict network access from undesired geographic areas
+        - **[Full (Strict) SSL/TLS](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/full-strict)** is used to authenticate the origin and encrypt the Cloudflare-to-origin connection by requiring a valid, trusted **[Cloudflare origin CA](https://developers.cloudflare.com/ssl/origin-configuration/origin-ca)** certificate
+        - **[Authenticated Origin Pulls (mTLS)](https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull)** is used to ensure that only connections routed through **[Cloudflare WAF](https://www.cloudflare.com/application-services/products/waf)** can reach the server, effectively cloaking the origin server from direct IP-based attacks
+        - Region-based **[Cloudflare security rules](https://developers.cloudflare.com/security/rules)** are used to restrict network access from undesired geographic areas
         - Both **[restoring original visitor IPs](https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips)** and all web server logging are deliberately disabled to maximize visitor privacy by ensuring IP addresses are never retained or logged, eliminating associated risks
 - **Developer Experience (DX)**
     - Custom `composer.json` scripts streamline application setup, linting, testing, and automated code refactoring/upgrades, enabling a smooth and modern developer workflow
     - Easy onboarding with a single `composer setup` command that handles environment setup, creates the SQLite database, and installs dependencies
     - **[Laravel Boost](https://laravel.com/ai/boost)** integration that runs the **[MCP](https://modelcontextprotocol.io)** server to accelerate AI-assisted development by providing the essential context and structure that AI needs
     - **[Laravel Debugbar](https://github.com/fruitcake/laravel-debugbar)** is included for local debugging and profiling
+
+</details>
+
+<details>
+<summary><strong>Easter eggs</strong></summary>
+
+- A **1% chance** to see a lucky message on the home page, persisted for the duration of the visitor's session
+- The true identity of the creator is revealed at **[/who-is-aleks-fadez](https://sneakpeek.alexfadez.com/who-is-aleks-fadez)**
 
 </details>
 
