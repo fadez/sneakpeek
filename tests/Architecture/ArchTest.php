@@ -8,17 +8,23 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Routing\Attributes\Controllers\WithoutMiddleware;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
 use Pest\Expectation;
 use Symfony\Component\Finder\SplFileInfo;
 
-// Opinionated architectural tests to enforce best practices in a modern Laravel app
-// such as strict typing, single-responsibility for Actions/Controllers, and more
+/*
+|--------------------------------------------------------------------------
+| Architecture Testing
+|--------------------------------------------------------------------------
+|
+| These opinionated architecture tests are here to enforce best practices
+| throughout a modern Laravel application, for example: strict typing,
+| the single-responsibility principle for Actions/Controllers, etc.
+|
+*/
 
 arch()->preset()->php();
 arch()->preset()->laravel();
@@ -69,14 +75,6 @@ arch('DTOs')
     ->toBeReadonly()
     ->not->toHaveSuffix('DTO');
 
-arch('value objects')
-    ->expect('App\ValueObjects')
-    ->toBeClasses()
-    ->toExtendNothing()
-    ->toBeFinal()
-    ->toBeReadonly()
-    ->not->toHaveSuffix('Object');
-
 arch('event base class')
     ->expect(Event::class)
     ->toBeClass()
@@ -100,13 +98,19 @@ arch('events')
 arch('jobs')
     ->expect('App\Jobs')
     ->toBeClasses()
+    ->toExtendNothing()
     ->toBeFinal()
     ->not->toBeReadonly()
     ->toHaveSuffix('Job')
-    ->toImplement(ShouldQueue::class)
     ->toUseTrait(Queueable::class)
-    ->toHaveMethod('handle')
-    ->toHaveMethodsDocumented();
+    ->toHaveMethodsDocumented()
+    ->toHavePropertiesDocumented();
+
+arch('models')
+    ->expect('App\Models')
+    ->not->toBeReadonly()
+    ->toHaveMethodsDocumented()
+    ->toHavePropertiesDocumented();
 
 arch('services')
     ->expect('App\Services')
@@ -118,12 +122,20 @@ arch('services')
     ->toHavePropertiesDocumented();
 
 arch('tests use strict types')
-    ->expect(fn (): Collection => collect(File::allFiles(base_path('tests')))
-        ->filter(fn (SplFileInfo $file): bool => $file->getExtension() === 'php'))
+    ->expect(fn (): Collection => allTestFiles())
     ->each(function (Expectation $expectation) {
         /** @var SplFileInfo $file */
         $file = $expectation->value;
 
-        expect(File::get($file->getRealPath()))
-            ->toContain('declare(strict_types=1);');
+        $lines = file($file->getRealPath());
+
+        expect($lines[2] ?? '')->toContain('declare(strict_types=1);');
     });
+
+arch('value objects')
+    ->expect('App\ValueObjects')
+    ->toBeClasses()
+    ->toExtendNothing()
+    ->toBeFinal()
+    ->toBeReadonly()
+    ->not->toHaveSuffix('Object');

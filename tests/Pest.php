@@ -3,7 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Symfony\Component\Finder\SplFileInfo;
 use Tests\TestCase;
 
 /*
@@ -65,4 +68,14 @@ function testName(): string
 function screenshotName(string $name): string
 {
     return testName() . '_' . Str::of($name)->replace('.', '_')->slug('_');
+}
+
+/**
+ * Get all PHP test files in the tests directory.
+ *
+ * @return Collection<int, SplFileInfo>
+ */
+function allTestFiles(): Collection
+{
+    return collect(File::allFiles(base_path('tests')))->filter(fn (SplFileInfo $file): bool => $file->getExtension() === 'php');
 }
