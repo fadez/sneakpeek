@@ -41,6 +41,14 @@ final class Secret extends Model
     use Prunable;
 
     /**
+     * Length of generated secure tokens, in characters.
+     *
+     * 64 characters generated from a 62-character pool (a–z, A–Z, 0–9) give approximately 381 bits of entropy,
+     * which is much better than, for example, a UUID v4, which has only 122 bits of entropy.
+     */
+    public const int TOKEN_LENGTH = 64;
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

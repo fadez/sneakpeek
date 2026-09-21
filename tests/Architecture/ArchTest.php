@@ -102,8 +102,9 @@ arch('jobs')
     ->toBeClasses()
     ->toBeFinal()
     ->not->toBeReadonly()
+    ->toHaveSuffix('Job')
     ->toImplement(ShouldQueue::class)
-    ->toUse(Queueable::class)
+    ->toUseTrait(Queueable::class)
     ->toHaveMethod('handle')
     ->toHaveMethodsDocumented();
 

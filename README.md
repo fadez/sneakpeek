@@ -56,8 +56,10 @@ This project is a showcase of my full-stack engineering skills. I built it entir
     - **[Laravel Sanctum](https://laravel.com/docs/sanctum)** integration for robust CSRF protection and secure API state management
     - Hardened session management using JSON serialization to eliminate deserialization risks and strict cookie attributes (`Secure`, `HttpOnly`, `SameSite`) to prevent token leakage and hijacking
 - **Clean architecture**
-    - Readable, maintainable code with scoped responsibilities
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
+    - Readable, maintainable code with scoped responsibilities
+    - Actions encapsulate a single business logic operation into its own dedicated class
+    - Services colocate and orchestrate business logic, reusing code across the application for better maintainability and readability
 - **Quality Assurance (QA)**
     - Strict code consistency and PSR-12 compliance, enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
     - Strict static analysis with maximum type safety across the entire codebase, enforced by **[PHPStan](https://phpstan.org)** level 10 (maximum strictness) via **[Larastan](https://larastan.org)**

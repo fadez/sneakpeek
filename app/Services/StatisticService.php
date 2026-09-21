@@ -9,6 +9,9 @@ use App\Events\StatisticsUpdated;
 use App\Models\Statistic;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * A centralized service for accessing and updating application statistics.
+ */
 final readonly class StatisticService
 {
     /**
@@ -47,7 +50,7 @@ final readonly class StatisticService
             return;
         }
 
-        // Warning: this syntax is supported only by SQLite and PostgreSQL
+        // This syntax is supported only by SQLite and PostgreSQL
         Statistic::upsert(
             [['key' => $key->value, 'value' => $amount]],
             uniqueBy: ['key'],

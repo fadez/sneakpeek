@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Config;
 
-class SiteManifestController
+final readonly class SiteManifestController
 {
     /**
      * Handle the incoming request.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Actions\GenerateSecureToken;
 use App\DTOs\CreateSecretData;
 use App\DTOs\CreateSecretResult;
 use App\Enums\StatisticKey;
@@ -13,7 +14,6 @@ use App\Models\Secret;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -25,7 +25,8 @@ final readonly class SecretService
      * Create a new service instance.
      */
     public function __construct(
-        private StatisticService $statisticService
+        private StatisticService $statisticService,
+        private GenerateSecureToken $generateSecureToken,
     ) {
         //
     }
@@ -36,17 +37,19 @@ final readonly class SecretService
     public function createSecret(CreateSecretData $data): CreateSecretResult
     {
         return DB::transaction(function () use ($data): CreateSecretResult {
-            $accessToken = Str::random(64);
+            $accessToken = $this->generateSecureToken->handle(length: Secret::TOKEN_LENGTH);
 
             $secret = Secret::create([
-                'id' => Str::random(64),
+                'id' => $this->generateSecureToken->handle(length: Secret::TOKEN_LENGTH),
                 'access_token' => $accessToken,
                 'content' => $data->content,
                 'passphrase' => $data->passphrase,
                 'expires_at' => now()->addSeconds($data->ttl),
             ]);
 
-            $this->statisticService->incrementValue(StatisticKey::SecretsCreated);
+            $this->statisticService->incrementValue(
+                StatisticKey::SecretsCreated,
+            );
 
             return new CreateSecretResult($secret, $accessToken);
         });
