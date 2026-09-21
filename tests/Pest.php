@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /*
@@ -50,14 +51,18 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-// Get the current test name
-function test_name(): string
+/**
+ * Get the current test name.
+ */
+function testName(): string
 {
     return str_replace('__pest_evaluable_', '', test()->name());
 }
 
-// Get the screenshot filename prefixed with the current test name
-function screenshot_name(string $name): string
+/**
+ * Get the screenshot filename prefixed with the current test name.
+ */
+function screenshotName(string $name): string
 {
-    return test_name() . '_' . str($name)->replace('.', '_')->slug('_');
+    return testName() . '_' . Str::of($name)->replace('.', '_')->slug('_');
 }

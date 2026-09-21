@@ -8,6 +8,8 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Routing\Attributes\Controllers\WithoutMiddleware;
 use Illuminate\Support\Collection;
@@ -41,7 +43,10 @@ arch('actions')
 
 arch('controllers')
     ->expect('App\Http\Controllers')
+    ->toBeClasses()
     ->toExtendNothing()
+    ->toBeFinal()
+    ->toBeReadonly()
     ->toHaveMethod('__invoke')
     ->toHaveMethodsDocumented()
     ->not->toHavePublicMethodsBesides(['__construct', '__invoke'])
@@ -64,6 +69,14 @@ arch('DTOs')
     ->toBeReadonly()
     ->not->toHaveSuffix('DTO');
 
+arch('value objects')
+    ->expect('App\ValueObjects')
+    ->toBeClasses()
+    ->toExtendNothing()
+    ->toBeFinal()
+    ->toBeReadonly()
+    ->not->toHaveSuffix('Object');
+
 arch('event base class')
     ->expect(Event::class)
     ->toBeClass()
@@ -83,6 +96,16 @@ arch('events')
     ->toExtend(Event::class)
     ->toBeFinal()
     ->ignoring([Event::class, BroadcastableEvent::class]);
+
+arch('jobs')
+    ->expect('App\Jobs')
+    ->toBeClasses()
+    ->toBeFinal()
+    ->not->toBeReadonly()
+    ->toImplement(ShouldQueue::class)
+    ->toUse(Queueable::class)
+    ->toHaveMethod('handle')
+    ->toHaveMethodsDocumented();
 
 arch('services')
     ->expect('App\Services')

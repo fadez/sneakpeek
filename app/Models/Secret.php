@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Database\Factories\SecretFactory;
 use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -14,17 +15,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Support\Carbon;
 
 /**
  * @property string $id
  * @property string $access_token
  * @property string|null $content
  * @property string|null $passphrase
- * @property Carbon $expires_at
- * @property Carbon|null $revealed_at
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property CarbonImmutable $expires_at
+ * @property CarbonImmutable|null $revealed_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable $updated_at
  * @property-read bool $is_available
  * @property-read bool $is_expired
  * @property-read bool $is_passphrase_protected
@@ -51,8 +51,8 @@ final class Secret extends Model
             'access_token' => 'hashed',
             'content' => 'encrypted',
             'passphrase' => 'hashed',
-            'expires_at' => 'datetime',
-            'revealed_at' => 'datetime',
+            'expires_at' => 'immutable_datetime',
+            'revealed_at' => 'immutable_datetime',
         ];
     }
 

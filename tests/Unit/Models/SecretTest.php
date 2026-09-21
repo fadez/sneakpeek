@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Resources\SecretResource;
 use App\Models\Secret;
-use Carbon\CarbonInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -87,13 +87,13 @@ test('passphrase :dataset', function (string $driver) {
 test('revealed_at', function () {
     $secret = Secret::factory()->revealed()->createFresh();
 
-    expect($secret->revealed_at)->toBeInstanceOf(CarbonInterface::class);
+    expect($secret->revealed_at)->toBeInstanceOf(CarbonImmutable::class);
 });
 
 test('expires_at', function () {
     $secret = Secret::factory()->expiresIn(60)->createFresh();
 
-    expect($secret->expires_at)->toBeInstanceOf(CarbonInterface::class);
+    expect($secret->expires_at)->toBeInstanceOf(CarbonImmutable::class);
 });
 
 test('scopeAvailable', function () {
