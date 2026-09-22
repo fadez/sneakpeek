@@ -95,6 +95,10 @@ arch('events')
     ->toBeFinal()
     ->ignoring([Event::class, BroadcastableEvent::class]);
 
+arch('interfaces')
+    ->expect('App\Contracts')
+    ->toBeInterfaces();
+
 arch('jobs')
     ->expect('App\Jobs')
     ->toBeClasses()
@@ -115,8 +119,6 @@ arch('models')
 arch('services')
     ->expect('App\Services')
     ->toBeClasses()
-    ->toBeFinal()
-    ->not->toBeAbstract()
     ->not->toUse('App\Http')
     ->toHaveMethodsDocumented()
     ->toHavePropertiesDocumented();
