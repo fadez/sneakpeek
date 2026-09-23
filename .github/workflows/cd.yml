@@ -24,6 +24,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
-          script: |
-            cd /var/www/sneakpeek
-            bash deploy.sh
+          script: cd /var/www/sneakpeek/bin && bash deploy.sh
