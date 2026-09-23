@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Extensions\Routing\Middleware\ThrottleRequests;
 use App\Http\Middleware\RequireHttps;
-use App\Http\Middleware\ThrottleRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

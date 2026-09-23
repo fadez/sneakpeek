@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Middleware;
+namespace App\Extensions\Routing\Middleware;
 
-use Illuminate\Routing\Middleware\ThrottleRequests as BaseThrottleRequests;
+use Illuminate\Routing\Middleware\ThrottleRequests as IlluminateThrottleRequests;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ThrottleRequests extends BaseThrottleRequests
+final class ThrottleRequests extends IlluminateThrottleRequests
 {
     /**
      * Get the limit headers information.
