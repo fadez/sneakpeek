@@ -17,14 +17,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 
 /**
- * @property string $id
- * @property string $access_token
- * @property string|null $content
- * @property string|null $passphrase
- * @property CarbonImmutable $expires_at
- * @property CarbonImmutable|null $revealed_at
- * @property CarbonImmutable $created_at
- * @property CarbonImmutable $updated_at
+ * @property-read string $id
+ * @property-read string $access_token
+ * @property-read string|null $content
+ * @property-read string|null $passphrase
+ * @property-read CarbonImmutable $expires_at
+ * @property-read CarbonImmutable|null $revealed_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  * @property-read bool $is_available
  * @property-read bool $is_expired
  * @property-read bool $is_passphrase_protected
@@ -56,11 +56,14 @@ final class Secret extends Model
     protected function casts(): array
     {
         return [
+            'id' => 'string',
             'access_token' => 'hashed',
             'content' => 'encrypted',
             'passphrase' => 'hashed',
             'expires_at' => 'immutable_datetime',
             'revealed_at' => 'immutable_datetime',
+            'created_at' => 'immutable_datetime',
+            'updated_at' => 'immutable_datetime',
         ];
     }
 

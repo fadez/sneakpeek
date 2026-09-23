@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('statistics', function (Blueprint $table) {
             $table->string('key')->primary();
-            $table->unsignedBigInteger('value')->default(0);
+            $table->unsignedBigInteger('value');
             $table->timestamps();
         });
     }
