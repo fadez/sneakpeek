@@ -3,6 +3,9 @@
 # Exit immediately if any command exits with a non-zero status
 set -e
 
+# Go to the project root
+cd "$(dirname "$0")/.."
+
 # Put the application into maintenance mode
 php artisan down --refresh=15
 
@@ -25,8 +28,8 @@ npm ci
 npm run build
 
 # Reload PHP-FPM and NGINX
-./reload-php.sh
-./reload-nginx.sh
+./bin/reload-php.sh
+./bin/reload-nginx.sh
 
 # Bring the application out of maintenance mode
 php artisan up
