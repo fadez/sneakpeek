@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Extensions\Session;
 
-use Illuminate\Session\DatabaseSessionHandler as IlluminateDatabaseSessionHandler;
+use Illuminate\Session\DatabaseSessionHandler as BaseDatabaseSessionHandler;
 
-final class DatabaseSessionHandler extends IlluminateDatabaseSessionHandler
+final class DatabaseSessionHandler extends BaseDatabaseSessionHandler
 {
     /**
      * Add the user information to the session payload.

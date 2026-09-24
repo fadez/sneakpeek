@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Extensions\Routing\Middleware;
 
-use Illuminate\Routing\Middleware\ThrottleRequests as IlluminateThrottleRequests;
+use Illuminate\Routing\Middleware\ThrottleRequests as BaseThrottleRequests;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ThrottleRequests extends IlluminateThrottleRequests
+final class ThrottleRequests extends BaseThrottleRequests
 {
     /**
      * Get the limit headers information.

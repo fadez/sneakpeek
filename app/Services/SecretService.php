@@ -26,7 +26,7 @@ final readonly class SecretService
      */
     public function __construct(
         private StatisticService $statisticService,
-        private GenerateSecureToken $generateSecureToken,
+        private GenerateSecureToken $generateSecureTokenAction,
     ) {
         //
     }
@@ -37,10 +37,10 @@ final readonly class SecretService
     public function createSecret(CreateSecretData $data): CreateSecretResult
     {
         return DB::transaction(function () use ($data): CreateSecretResult {
-            $accessToken = $this->generateSecureToken->handle(length: Secret::TOKEN_LENGTH);
+            $accessToken = $this->generateSecureTokenAction->handle(length: Secret::TOKEN_LENGTH);
 
             $secret = Secret::create([
-                'id' => $this->generateSecureToken->handle(length: Secret::TOKEN_LENGTH),
+                'id' => $this->generateSecureTokenAction->handle(length: Secret::TOKEN_LENGTH),
                 'access_token' => $accessToken,
                 'content' => $data->content,
                 'passphrase' => $data->passphrase,

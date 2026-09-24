@@ -79,3 +79,11 @@ function allTestFiles(): Collection
 {
     return collect(File::allFiles(base_path('tests')))->filter(fn (SplFileInfo $file): bool => $file->getExtension() === 'php');
 }
+
+/**
+ * @return array{author: array{name: string, url: string}, repository: array{url: string}}
+ */
+function packageJsonData(): array
+{
+    return json_decode(file_get_contents(base_path('package.json')), true);
+}

@@ -42,6 +42,7 @@ This project is a showcase of my full-stack engineering skills. I built it entir
     - Custom error response handling
     - A/B testing and feature flags, powered by **[Laravel Pennant](https://laravel.com/docs/pennant)**
     - Real-time event broadcasting and a live statistics dashboard
+    - All Eloquent model attributes are explicitly cast to their native PHP types to guarantee type safety and eliminate inconsistencies between different database drivers
 - **Maximum privacy & security**
     - End-to-end privacy — no authentication, no logs
     - **[Custom privacy-first session handler](app/Extensions/Session/DatabaseSessionHandler.php)** that doesn't store any user information
@@ -57,9 +58,10 @@ This project is a showcase of my full-stack engineering skills. I built it entir
     - Hardened session management using JSON serialization to eliminate deserialization risks and strict cookie attributes (`Secure`, `HttpOnly`, `SameSite`) to prevent token leakage and hijacking
 - **Clean architecture**
     - **[SOLID](https://en.wikipedia.org/wiki/SOLID)** principles applied throughout
-    - Readable, maintainable code with scoped responsibilities
+    - Readable, maintainable code with scoped responsibilities that favors composability over inheritance
     - Actions encapsulate a single business logic operation into its own dedicated class
     - Services colocate and orchestrate business logic, reusing code across the application for better maintainability and readability
+    - All classes, properties, and methods are documented with comprehensive PHPDoc annotations, ensuring clear intent, robust type safety, and seamless IDE support across the entire codebase
 - **Quality Assurance (QA)**
     - Strict code consistency and PSR-12 compliance, enforced by **[Laravel Pint](https://laravel.com/docs/pint)**
     - Strict static analysis with maximum type safety across the entire codebase, enforced by **[PHPStan](https://phpstan.org)** level 10 (maximum strictness) via **[Larastan](https://larastan.org)**

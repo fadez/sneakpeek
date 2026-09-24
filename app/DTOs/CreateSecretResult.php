@@ -8,6 +8,9 @@ use App\Models\Secret;
 
 final readonly class CreateSecretResult
 {
+    /**
+     * Create a new DTO instance.
+     */
     public function __construct(
         public Secret $secret,
         public string $accessToken,

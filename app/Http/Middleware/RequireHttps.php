@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class RequireHttps
+final readonly class RequireHttps
 {
     /**
      * Handle an incoming request.

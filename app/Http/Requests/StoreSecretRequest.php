@@ -33,9 +33,9 @@ final class StoreSecretRequest extends FormRequest
     }
 
     /**
-     * Map the validated request data to a DTO.
+     * Get the validated input for the request as a DTO.
      */
-    public function validatedToDTO(): CreateSecretData
+    public function toDto(): CreateSecretData
     {
         return new CreateSecretData(
             content: $this->string('content')->value(),

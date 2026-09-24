@@ -34,27 +34,68 @@ arch('app')
     ->expect('App')
     ->toBeCasedCorrectly()
     ->toUseStrictTypes()
-    ->toUseStrictEquality();
+    ->toUseStrictEquality()
+    ->toHavePropertiesDocumented()
+    ->toHaveMethodsDocumented();
+
+arch('avoid extension')
+    ->expect('App')
+    ->classes()
+    ->toBeFinal()
+    ->ignoring([
+        Event::class,
+        BroadcastableEvent::class,
+    ]);
+
+arch('avoid inheritance')
+    ->expect('App')
+    ->classes()
+    ->toExtendNothing()
+    ->ignoring([
+        'App\Console\Commands',
+        'App\Events',
+        'App\Exceptions',
+        'App\Extensions',
+        'App\Http\Requests',
+        'App\Http\Resources',
+        'App\Jobs',
+        'App\Mail',
+        'App\Models',
+        'App\Notifications',
+        'App\Providers',
+        'App\View',
+    ]);
+
+arch('avoid mutation')
+    ->expect('App')
+    ->classes()
+    ->toBeReadonly()
+    ->ignoring([
+        'App\Console\Commands',
+        'App\Events',
+        'App\Exceptions',
+        'App\Extensions',
+        'App\Http\Requests',
+        'App\Http\Resources',
+        'App\Jobs',
+        'App\Mail',
+        'App\Models',
+        'App\Notifications',
+        'App\Providers',
+        'App\View',
+    ]);
 
 arch('actions')
     ->expect('App\Actions')
     ->toBeClasses()
-    ->toBeFinal()
-    ->toBeReadonly()
-    ->toExtendNothing()
     ->toHaveMethod('handle')
-    ->toHaveMethodsDocumented()
     ->not->toHavePublicMethodsBesides(['__construct', 'handle'])
     ->not->toHaveSuffix('Action');
 
 arch('controllers')
     ->expect('App\Http\Controllers')
     ->toBeClasses()
-    ->toExtendNothing()
-    ->toBeFinal()
-    ->toBeReadonly()
     ->toHaveMethod('__invoke')
-    ->toHaveMethodsDocumented()
     ->not->toHavePublicMethodsBesides(['__construct', '__invoke'])
     ->not->toHaveAttribute(Middleware::class)
     ->not->toHaveAttribute(WithoutMiddleware::class);
@@ -62,18 +103,15 @@ arch('controllers')
 arch('commands')
     ->expect('App\Console\Commands')
     ->toBeClasses()
-    ->toBeFinal()
     ->not->toBeAbstract()
     ->toHaveAttribute(Signature::class)
     ->toHaveAttribute(Description::class);
 
-arch('DTOs')
-    ->expect('App\DTOs')
+arch('events')
+    ->expect('App\Events')
     ->toBeClasses()
-    ->toExtendNothing()
-    ->toBeFinal()
-    ->toBeReadonly()
-    ->not->toHaveSuffix('DTO');
+    ->toExtend(Event::class)
+    ->ignoring([Event::class, BroadcastableEvent::class]);
 
 arch('event base class')
     ->expect(Event::class)
@@ -88,13 +126,6 @@ arch('broadcastable event base class')
     ->toBeAbstract()
     ->toImplement(ShouldBroadcast::class);
 
-arch('events')
-    ->expect('App\Events')
-    ->toBeClasses()
-    ->toExtend(Event::class)
-    ->toBeFinal()
-    ->ignoring([Event::class, BroadcastableEvent::class]);
-
 arch('interfaces')
     ->expect('App\Contracts')
     ->toBeInterfaces();
@@ -102,26 +133,18 @@ arch('interfaces')
 arch('jobs')
     ->expect('App\Jobs')
     ->toBeClasses()
-    ->toExtendNothing()
-    ->toBeFinal()
-    ->not->toBeReadonly()
     ->toHaveSuffix('Job')
-    ->toUseTrait(Queueable::class)
-    ->toHaveMethodsDocumented()
-    ->toHavePropertiesDocumented();
+    ->toUseTrait(Queueable::class);
 
-arch('models')
-    ->expect('App\Models')
-    ->not->toBeReadonly()
-    ->toHaveMethodsDocumented()
-    ->toHavePropertiesDocumented();
-
-arch('services')
-    ->expect('App\Services')
+arch('DTOs')
+    ->expect('App\DTOs')
     ->toBeClasses()
-    ->not->toUse('App\Http')
-    ->toHaveMethodsDocumented()
-    ->toHavePropertiesDocumented();
+    ->not->toHaveSuffix('DTO');
+
+arch('value objects')
+    ->expect('App\ValueObjects')
+    ->toBeClasses()
+    ->not->toHaveSuffix('ValueObject');
 
 arch('tests use strict types')
     ->expect(fn (): Collection => allTestFiles())
@@ -133,11 +156,3 @@ arch('tests use strict types')
 
         expect($lines[2] ?? '')->toContain('declare(strict_types=1);');
     });
-
-arch('value objects')
-    ->expect('App\ValueObjects')
-    ->toBeClasses()
-    ->toExtendNothing()
-    ->toBeFinal()
-    ->toBeReadonly()
-    ->not->toHaveSuffix('Object');

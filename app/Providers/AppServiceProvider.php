@@ -49,7 +49,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configureDefaults();
+        $this->configureDates();
         $this->configureCommands();
         $this->configureModels();
         $this->configureSession();
@@ -62,9 +62,9 @@ final class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure default behaviors for the application.
+     * Configure the application to use CarbonImmutable for all date instances.
      */
-    private function configureDefaults(): void
+    private function configureDates(): void
     {
         Date::use(CarbonImmutable::class);
     }

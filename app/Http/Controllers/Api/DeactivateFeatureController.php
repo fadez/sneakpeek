@@ -15,10 +15,7 @@ final readonly class DeactivateFeatureController
      */
     public function __invoke(DeactivateFeatureRequest $request): Response
     {
-        /** @var string $feature */
-        $feature = $request->validated('feature');
-
-        Feature::deactivate($feature);
+        Feature::deactivate($request->string('feature')->value());
 
         return response()->noContent();
     }

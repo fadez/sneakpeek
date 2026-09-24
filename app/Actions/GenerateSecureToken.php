@@ -10,7 +10,9 @@ use InvalidArgumentException;
 final readonly class GenerateSecureToken
 {
     /**
-     * Generate a cryptographically secure, random token suitable for use in URLs.
+     * Generate a cryptographically secure, random alphanumeric token (a-z, A-Z, 0-9).
+     *
+     * @throws InvalidArgumentException
      */
     public function handle(int $length): string
     {

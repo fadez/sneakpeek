@@ -3,33 +3,27 @@
 declare(strict_types=1);
 
 use App\Actions\GenerateSecureToken;
-use Tests\TestCase;
 
-beforeEach(function () {
-    /** @var TestCase $this */
-    $this->generateSecureToken = resolve(GenerateSecureToken::class);
-});
+it('generates a token of the given length', function (int $length) {
+    $token = new GenerateSecureToken()->handle(length: $length);
 
-it('generates a token of the given length', function () {
-    $token = $this->generateSecureToken->handle(length: 123);
+    expect($token)->toHaveLength($length);
+})->with([1, 16, 64, 123]);
 
-    expect($token)->toHaveLength(123);
-});
-
-it('generates only URL-safe characters', function () {
-    $token = $this->generateSecureToken->handle(length: 64);
+it('generates only alphanumeric characters', function () {
+    $token = new GenerateSecureToken()->handle(length: 256);
 
     expect($token)->toMatch('/^[a-zA-Z0-9]+$/');
 });
 
 it('generates a different token on each call', function () {
-    $tokens = collect(range(1, 20))
-        ->map(fn () => $this->generateSecureToken->handle(length: 64))
-        ->unique();
+    $generateSecureTokenAction = new GenerateSecureToken;
 
-    expect($tokens->count())->toBe(20);
+    $tokens = array_map(fn (): string => $generateSecureTokenAction->handle(length: 64), range(1, 20));
+
+    expect(array_unique($tokens))->toHaveCount(20);
 });
 
 it('throws when given a non-positive length', function (int $length) {
-    $this->generateSecureToken->handle(length: $length);
+    new GenerateSecureToken()->handle(length: $length);
 })->with([0, -1, -64])->throws(InvalidArgumentException::class, 'Token length must be greater than zero.');

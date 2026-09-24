@@ -16,7 +16,7 @@ final readonly class StoreSecretController
      */
     public function __invoke(StoreSecretRequest $request, SecretService $secretService): SecretResource
     {
-        $result = $secretService->createSecret($request->validatedToDTO());
+        $result = $secretService->createSecret($request->toDto());
 
         return new SecretResource($result->secret)
             ->additional([
