@@ -2,6 +2,12 @@ import type { RouteDefinition } from '@/wayfinder';
 import { useNotificationStore } from '@/stores/notifications';
 import { echo } from '@laravel/echo-vue';
 
+export type RequestError = {
+    status: number;
+    message: string;
+    [key: string]: unknown;
+};
+
 type RequestOpts = Omit<RequestInit, 'headers' | 'body'> & {
     headers?: HeadersInit;
     body?: unknown;
@@ -10,12 +16,6 @@ type RequestOpts = Omit<RequestInit, 'headers' | 'body'> & {
 type Method = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options';
 
 type WayfinderRoute = RouteDefinition<Method>;
-
-type RequestError = {
-    status: number;
-    message: string;
-    [key: string]: unknown;
-};
 
 function getCookie(name: string): string | null {
     const match = document.cookie.match(new RegExp(`(^|;\\s*)${name}=([^;]*)`));
@@ -63,7 +63,11 @@ async function request<T = unknown>(url: string, { body, headers, ...opts }: Req
     const requestHeaders = buildHeaders(headers);
 
     if (hasBody) {
-        requestHeaders.set('Content-Type', 'application/json');
+        if (body instanceof FormData) {
+            // Browser sets multipart boundary itself
+        } else {
+            requestHeaders.set('Content-Type', 'application/json');
+        }
     }
 
     let response: Response;
@@ -72,7 +76,7 @@ async function request<T = unknown>(url: string, { body, headers, ...opts }: Req
         response = await fetch(url, {
             credentials: 'include',
             headers: requestHeaders,
-            body: hasBody ? JSON.stringify(body) : undefined,
+            body: hasBody ? (body instanceof FormData ? body : JSON.stringify(body)) : undefined,
             ...opts,
         });
     } catch (cause) {
