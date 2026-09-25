@@ -80,7 +80,8 @@ async function request<T = unknown>(url: string, { body, headers, ...opts }: Req
     }
 
     if (!response.ok) {
-        throwRequestError({ ...(await response.json()), status: response.status });
+        const body = await response.json().catch(() => ({}));
+        throwRequestError({ message: 'Request failed', ...body, status: response.status });
     }
 
     const text = await response.text();

@@ -23,8 +23,8 @@ use Illuminate\Database\Eloquent\Prunable;
  * @property-read string|null $passphrase
  * @property-read CarbonImmutable $expires_at
  * @property-read CarbonImmutable|null $revealed_at
- * @property-read CarbonImmutable $created_at
- * @property-read CarbonImmutable $updated_at
+ * @property-read CarbonImmutable|null $created_at
+ * @property-read CarbonImmutable|null $updated_at
  * @property-read bool $is_available
  * @property-read bool $is_expired
  * @property-read bool $is_passphrase_protected

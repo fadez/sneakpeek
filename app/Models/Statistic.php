@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property-read string $key
  * @property-read int $value
- * @property-read CarbonImmutable $created_at
- * @property-read CarbonImmutable $updated_at
+ * @property-read CarbonImmutable|null $created_at
+ * @property-read CarbonImmutable|null $updated_at
  */
 #[Table(key: 'key', keyType: 'string', incrementing: false)]
 final class Statistic extends Model
