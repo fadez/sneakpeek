@@ -43,6 +43,8 @@ final readonly class StatisticService
      * Increment a statistic key by the given amount.
      *
      * The operation is performed atomically using upsert to prevent race conditions.
+     *
+     * This method is supported only by SQLite and PostgreSQL database drivers.
      */
     public function incrementValue(StatisticKey $key, int $amount = 1): void
     {
@@ -50,11 +52,13 @@ final readonly class StatisticService
             return;
         }
 
-        // This syntax is supported only by SQLite and PostgreSQL
+        /** @var literal-string $qualifiedValueColumn */
+        $qualifiedValueColumn = (new Statistic)->qualifyColumn('value');
+
         Statistic::upsert(
             [['key' => $key->value, 'value' => $amount]],
             uniqueBy: ['key'],
-            update: ['value' => DB::raw('value + excluded.value')],
+            update: ['value' => DB::raw($qualifiedValueColumn . ' + excluded.value')],
         );
 
         event(new StatisticsUpdated($this->getSnapshot()));

@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Prunable;
  * @property-read bool $is_passphrase_protected
  * @property-read bool $is_revealed
  */
-#[Table(key: 'id', keyType: 'string', incrementing: false)]
+#[Table(name: 'secrets', key: 'id', keyType: 'string', incrementing: false)]
 #[Appends(['is_available', 'is_expired', 'is_passphrase_protected', 'is_revealed'])]
 #[Hidden(['access_token', 'content', 'passphrase'])]
 final class Secret extends Model

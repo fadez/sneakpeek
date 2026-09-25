@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read CarbonImmutable|null $created_at
  * @property-read CarbonImmutable|null $updated_at
  */
-#[Table(key: 'key', keyType: 'string', incrementing: false)]
+#[Table(name: 'statistics', key: 'key', keyType: 'string', incrementing: false)]
 final class Statistic extends Model
 {
     /** @use HasFactory<StatisticFactory> */
