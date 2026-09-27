@@ -43,12 +43,13 @@ This project is a showcase of my full-stack engineering skills. I built it entir
     - A/B testing and feature flags, powered by **[Laravel Pennant](https://laravel.com/docs/pennant)**
     - Real-time event broadcasting and a live statistics dashboard
     - All Eloquent model attributes are explicitly cast to their native PHP types to guarantee type safety and eliminate inconsistencies between different database drivers
+    - API responses follow the **[JSON:API](https://jsonapi.org)** specification
 - **Maximum privacy & security**
     - End-to-end privacy — no authentication, no logs
     - **[Custom privacy-first session handler](app/Extensions/Session/DatabaseSessionHandler.php)** that doesn't store any user information
     - Secrets can only be accessed once, then wiped permanently
     - Secret content encrypted using Laravel's built-in encryption
-    - Argon2id is used as the hashing algorithm
+    - Argon2id is used as the hashing algorithm because it's memory-hard, making it far more resistant to GPU/ASIC brute-force attacks than bcrypt
     - Secret access tokens (hashed in DB) stored in the URL `#` hash fragment to prevent server-side logging, analytics tracking, or accidental leakage via `Referer` header
     - Secrets have optional passphrase (hashed in DB)
     - Mandatory expiration time for secrets

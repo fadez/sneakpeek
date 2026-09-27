@@ -107,6 +107,11 @@ arch('commands')
     ->toHaveAttribute(Signature::class)
     ->toHaveAttribute(Description::class);
 
+arch('DTOs')
+    ->expect('App\DTOs')
+    ->toBeClasses()
+    ->not->toHaveSuffix('DTO');
+
 arch('events')
     ->expect('App\Events')
     ->toBeClasses()
@@ -136,16 +141,6 @@ arch('jobs')
     ->toHaveSuffix('Job')
     ->toUseTrait(Queueable::class);
 
-arch('DTOs')
-    ->expect('App\DTOs')
-    ->toBeClasses()
-    ->not->toHaveSuffix('DTO');
-
-arch('value objects')
-    ->expect('App\ValueObjects')
-    ->toBeClasses()
-    ->not->toHaveSuffix('ValueObject');
-
 arch('tests use strict types')
     ->expect(fn (): Collection => allTestFiles())
     ->each(function (Expectation $expectation) {
@@ -156,3 +151,8 @@ arch('tests use strict types')
 
         expect($lines[2] ?? '')->toContain('declare(strict_types=1);');
     });
+
+arch('value objects')
+    ->expect('App\ValueObjects')
+    ->toBeClasses()
+    ->not->toHaveSuffix('ValueObject');

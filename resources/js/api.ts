@@ -24,10 +24,10 @@ export const listFeatures = () => http.wayfinderRequest<ListFeaturesResponse>(fe
 export const deactivateFeature = (feature: string) => http.wayfinderRequest<void>(featuresDeactivateRoute({ feature }));
 
 export const storeSecret = (data: object) =>
-    http.wayfinderRequest<StoreSecretResponse>(secretsStoreRoute(), { body: data }).then((response) => response.secret);
+    http.wayfinderRequest<StoreSecretResponse>(secretsStoreRoute(), { body: data }).then((response) => response.data.attributes);
 
 export const getSecretReceipt = (id: string) =>
-    http.wayfinderRequest<GetSecretReceiptResponse>(secretsReceiptRoute({ secret: id })).then((response) => response.secret);
+    http.wayfinderRequest<GetSecretReceiptResponse>(secretsReceiptRoute({ secret: id })).then((response) => response.data.attributes);
 
 export const getSecret = (id: string, accessToken: string) =>
     http
@@ -36,7 +36,7 @@ export const getSecret = (id: string, accessToken: string) =>
                 'X-Access-Token': accessToken,
             },
         })
-        .then((response) => response.secret);
+        .then((response) => response.data.attributes);
 
 export const revealSecret = (id: string, data: object) =>
     http.wayfinderRequest<RevealSecretResponse>(secretsRevealRoute({ secret: id }), { body: data }).then((response) => response.content);

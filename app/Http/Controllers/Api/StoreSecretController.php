@@ -18,11 +18,6 @@ final readonly class StoreSecretController
     {
         $result = $secretService->createSecret($request->toDto());
 
-        return new SecretResource($result->secret)
-            ->additional([
-                'secret' => [
-                    'access_token' => $result->accessToken,
-                ],
-            ]);
+        return new SecretResource($result->secret)->withAccessToken($result->accessToken);
     }
 }

@@ -1,17 +1,17 @@
 export type Secret = {
-    id: string;
-    created_at: string;
-    expires_at: string;
-    revealed_at: string | null;
-    is_passphrase_protected: boolean;
-    is_expired: boolean;
-    is_revealed: boolean;
-    is_available: boolean;
-    is_burned?: boolean;
+    readonly id: string;
+    readonly created_at: string;
+    readonly expires_at: string;
+    readonly revealed_at: string | null;
+    readonly is_passphrase_protected: boolean;
+    readonly is_expired: boolean;
+    readonly is_revealed: boolean;
+    readonly is_available: boolean;
+    readonly is_burned?: boolean;
 };
 
 export type SecretWithAccessToken = Secret & {
-    access_token: string;
+    readonly access_token: string;
 };
 
 export type SecretContent = {
@@ -32,8 +32,8 @@ export type StatisticsData = {
 export type SelectOptions = ReadonlyArray<SelectOption>;
 
 export type SelectOption = {
-    value: string | number;
-    label: string;
+    readonly value: string | number;
+    readonly label: string;
 };
 
 export type ButtonType = 'primary' | 'secondary' | 'success' | 'danger' | 'light';
@@ -50,10 +50,18 @@ export type GetStatisticsResponse = StatisticsData;
 
 export type ListFeaturesResponse = FeaturesMap;
 
-export type GetSecretResponse = { secret: Secret };
+export type GetSecretResponse = JsonApiResource<Secret>;
 
-export type GetSecretReceiptResponse = { secret: Secret };
+export type GetSecretReceiptResponse = JsonApiResource<Secret>;
+
+export type StoreSecretResponse = JsonApiResource<SecretWithAccessToken>;
 
 export type RevealSecretResponse = SecretContent;
 
-export type StoreSecretResponse = { secret: SecretWithAccessToken };
+export type JsonApiResource<TAttributes> = {
+    data: {
+        id: string;
+        type: string;
+        attributes: TAttributes;
+    };
+};

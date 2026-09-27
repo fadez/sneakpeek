@@ -24,6 +24,6 @@ it('generates a different token on each call', function () {
     expect(array_unique($tokens))->toHaveCount(20);
 });
 
-it('throws when given a non-positive length', function (int $length) {
+it('throws an exception when given a non-positive length', function (int $length) {
     new GenerateSecureToken()->handle(length: $length);
 })->with([0, -1, -64])->throws(InvalidArgumentException::class, 'Token length must be greater than zero.');

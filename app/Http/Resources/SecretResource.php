@@ -6,26 +6,36 @@ namespace App\Http\Resources;
 
 use App\Models\Secret;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 
 /**
  * @mixin Secret
+ *
+ * @phpstan-type JsonApiResourceData array{data: array{id: string, type: string, attributes: object}}
  */
-final class SecretResource extends JsonResource
+final class SecretResource extends JsonApiResource
 {
     /**
-     * The "data" wrapper that should be applied.
-     *
-     * @var string|null
+     * The access token, set only when the secret was just created.
      */
-    public static $wrap = 'secret';
+    private ?string $accessToken = null;
 
     /**
-     * Transform the resource into an array.
-     *
-     * @return array<int|string, mixed>
+     * Include the access token in the attributes.
      */
-    public function toArray(Request $request): array
+    public function withAccessToken(string $accessToken): static
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get the resource's attributes.
+     *
+     * @return array<string, mixed>
+     */
+    public function toAttributes(Request $request): array
     {
         return [
             'id' => $this->getKey(),
@@ -36,6 +46,7 @@ final class SecretResource extends JsonResource
             'is_expired' => $this->is_expired,
             'is_passphrase_protected' => $this->is_passphrase_protected,
             'is_revealed' => $this->is_revealed,
+            'access_token' => $this->when($this->accessToken !== null, $this->accessToken),
         ];
     }
 }

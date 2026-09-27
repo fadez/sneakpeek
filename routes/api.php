@@ -13,8 +13,10 @@ use App\Http\Controllers\Api\StoreSecretController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('api.')->middleware(['throttle:api'])->group(function () {
-    // The "cache.headers:no_store" middleware is needed to prevent sensitive data from being cached in the browser's back/forward cache (bfcache).
-    // This ensures secrets aren't accessible when navigating via the browser's back or forward buttons and forces the app to always fetch fresh data from API.
+    /**
+     * The "cache.headers:no_store" middleware is needed to prevent sensitive data from being cached in the browser's back/forward cache (bfcache),
+     * this ensures secrets aren't accessible when navigating via the browser's back or forward buttons and forces the app to always fetch fresh data from API.
+     */
     Route::name('secrets.')->prefix('secrets')->middleware('cache.headers:no_store')->group(function () {
         Route::post('/', StoreSecretController::class)
             ->middleware('throttle:10,1')

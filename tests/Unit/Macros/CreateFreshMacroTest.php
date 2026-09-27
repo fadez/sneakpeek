@@ -14,6 +14,7 @@ test('createFresh returns a single model when creating one model', function () {
 test('createFresh returns a collection when creating multiple models', function () {
     $models = Secret::factory()->count(3)->createFresh();
 
-    expect($models)->toBeInstanceOf(DatabaseCollection::class)
-        ->and($models)->toHaveCount(3);
+    expect($models)->toBeInstanceOf(DatabaseCollection::class);
+
+    expect($models)->toHaveCount(3);
 });
