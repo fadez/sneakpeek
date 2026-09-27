@@ -11,24 +11,26 @@ final class DatabaseSessionHandler extends BaseDatabaseSessionHandler
     /**
      * Add the user information to the session payload.
      *
+     * Do not add user_id to payload.
+     *
      * @param  array<string, mixed>  $payload
      */
     protected function addUserInformation(
         &$payload // @pest-ignore-type
     ): static {
-        // Do not add user_id to payload
         return $this;
     }
 
     /**
      * Add the request information to the session payload.
      *
+     * Do not add ip_address and user_agent to payload.
+     *
      * @param  array<string, mixed>  $payload
      */
     protected function addRequestInformation(
         &$payload // @pest-ignore-type
     ): static {
-        // Do not add ip_address and user_agent to payload
         return $this;
     }
 }
