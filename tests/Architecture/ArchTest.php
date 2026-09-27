@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Events\BroadcastableEvent;
 use App\Events\Event;
+use App\Services\Snitching\IntelligenceAgencies\IntelligenceAgency;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -45,6 +46,8 @@ arch('avoid extension')
     ->ignoring([
         Event::class,
         BroadcastableEvent::class,
+        // Project-specific rules
+        IntelligenceAgency::class,
     ]);
 
 arch('avoid inheritance')
@@ -64,6 +67,8 @@ arch('avoid inheritance')
         'App\Notifications',
         'App\Providers',
         'App\View',
+        // Project-specific rules
+        'App\Services\Snitching\IntelligenceAgencies',
     ]);
 
 arch('avoid mutation')

@@ -45,7 +45,7 @@ This project is a showcase of my full-stack engineering skills. I built it entir
     - All Eloquent model attributes are explicitly cast to their native PHP types to guarantee type safety and eliminate inconsistencies between different database drivers
     - API responses follow the **[JSON:API](https://jsonapi.org)** specification
 - **Maximum privacy & security**
-    - End-to-end privacy — no authentication, no logs
+    - Zero-knowledge of visitor identity — no authentication, no logs, no analytics trackers
     - **[Custom privacy-first session handler](app/Extensions/Session/DatabaseSessionHandler.php)** that doesn't store any user information
     - Secrets can only be accessed once, then wiped permanently
     - Secret content encrypted using Laravel's built-in encryption
@@ -137,8 +137,10 @@ This project is a showcase of my full-stack engineering skills. I built it entir
 <details>
 <summary><strong>Easter eggs</strong></summary>
 
-- A **1% chance** to see a lucky message on the home page, persisted for the duration of the visitor's session
 - The true identity of the creator is revealed at **[/who-is-aleks-fadez](https://sneakpeek.alexfadez.com/who-is-aleks-fadez)**
+- A **1% chance** for a visitor to see a lucky message on the home page, rolled once per session
+- A **5% chance** for a visitor to see a satirical **[motto](resources/js/composables/useMotto.ts)** in the app header when they navigate to the home page
+- A satirical **[Snitch](app/Actions/Snitch.php)** action and **[IntelligenceAgency](app/Services/Snitching/IntelligenceAgencies/IntelligenceAgency.php)** class structure demonstrating Template Method pattern, polymorphism, interface segregation, tagged dependency injection, job idempotency, `Override` attribute, and more
 
 </details>
 

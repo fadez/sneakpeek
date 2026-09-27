@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router';
+import { rerollMotto } from '@/composables/useMotto';
 import { useNotificationStore } from '@/stores/notifications';
 
 // Eager-loaded: users arrive at these pages directly via external links
@@ -64,6 +65,12 @@ const router = createRouter({
             return { top: 0 };
         }
     },
+});
+
+router.afterEach((to) => {
+    if (to.name === 'home') {
+        rerollMotto();
+    }
 });
 
 export default router;

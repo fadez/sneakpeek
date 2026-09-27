@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Actions\GenerateSecureToken;
+use App\Actions\Snitch;
 use App\DTOs\CreateSecretData;
 use App\DTOs\CreateSecretResult;
 use App\Enums\StatisticKey;
@@ -26,6 +27,7 @@ final readonly class SecretService
      */
     public function __construct(
         private StatisticService $statisticService,
+        private Snitch $snitchAction,
         private GenerateSecureToken $generateSecureTokenAction,
     ) {
         //
@@ -36,7 +38,7 @@ final readonly class SecretService
      */
     public function createSecret(CreateSecretData $data): CreateSecretResult
     {
-        return DB::transaction(function () use ($data): CreateSecretResult {
+        $result = DB::transaction(function () use ($data): CreateSecretResult {
             $accessToken = $this->generateSecureTokenAction->handle(length: Secret::TOKEN_LENGTH);
 
             $secret = Secret::create([
@@ -53,6 +55,10 @@ final readonly class SecretService
 
             return new CreateSecretResult($secret, $accessToken);
         });
+
+        $this->snitchAction->handle($result->secret);
+
+        return $result;
     }
 
     /**

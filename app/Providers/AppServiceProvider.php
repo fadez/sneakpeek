@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Extensions\Session\DatabaseSessionHandler;
+use App\Services\Snitching\IntelligenceAgencies\Cia;
+use App\Services\Snitching\IntelligenceAgencies\Fbi;
+use App\Services\Snitching\IntelligenceAgencies\Mi5;
+use App\Services\Snitching\IntelligenceAgencies\Mi6;
+use App\Services\Snitching\IntelligenceAgencies\Mossad;
+use App\Services\Snitching\IntelligenceAgencies\Nsa;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
@@ -41,7 +47,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->registerIntelligenceAgencies();
     }
 
     /**
@@ -59,6 +65,24 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureMacros();
         $this->configureVite();
         $this->configureHead();
+    }
+
+    /**
+     * Register intelligence agencies with the service container for dependency injection.
+     */
+    private function registerIntelligenceAgencies(): void
+    {
+        $this->app->tag(
+            [
+                Cia::class,
+                Fbi::class,
+                Mi5::class,
+                Mi6::class,
+                Mossad::class,
+                Nsa::class,
+            ],
+            'intelligence-agencies',
+        );
     }
 
     /**

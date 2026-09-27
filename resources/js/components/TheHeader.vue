@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useMotto } from '@/composables/useMotto';
 import AppLogo from '@/components/AppLogo.vue';
+
+const { motto } = useMotto();
 </script>
 
 <template>
@@ -14,7 +17,7 @@ import AppLogo from '@/components/AppLogo.vue';
                 </div>
 
                 <div class="mt-2 flex flex-col md:mt-0">
-                    <div class="text-secondary">Secure, one-time secret sharing made simple.</div>
+                    <div class="text-secondary">{{ motto }}</div>
                 </div>
             </div>
         </div>
