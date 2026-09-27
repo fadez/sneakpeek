@@ -125,7 +125,9 @@ export const useNotificationStore = defineStore('notifications', {
         internetReconnected() {
             this.success('You are back online!', { closeButton: false });
 
-            if (this.internetDisconnectedToastId) this.dismiss(this.internetDisconnectedToastId, 'internetDisconnectedToastId');
+            if (this.internetDisconnectedToastId != null) {
+                this.dismiss(this.internetDisconnectedToastId, 'internetDisconnectedToastId');
+            }
         },
     },
 });
