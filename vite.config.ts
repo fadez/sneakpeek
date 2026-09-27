@@ -32,12 +32,15 @@ export default defineConfig({
             fonts: [
                 bunny('Rubik', {
                     weights: [700],
+                    optimizedFallbacks: false,
                 }),
                 bunny('Outfit', {
                     weights: [400, 500, 600, 700, 900],
+                    optimizedFallbacks: false,
                 }),
                 bunny('JetBrains Mono', {
                     weights: [400, 600, 700],
+                    optimizedFallbacks: false,
                 }),
             ],
         }),
@@ -100,7 +103,7 @@ export default defineConfig({
         htmlWhitespaceSensitivity: 'css',
         sortTailwindcss: {
             functions: ['clsx', 'cn', 'cva'],
-            entryPoint: 'resources/css/app.css',
+            stylesheet: 'resources/css/app.css',
         },
         ignorePatterns: ['.github/**', 'composer.json', 'resources/js/components/ui/*', 'resources/views/mail/*'],
     },

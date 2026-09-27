@@ -217,7 +217,7 @@ onBeforeUnmount(() => {
                 </BaseAlert>
             </section>
 
-            <section class="bg-zinc-75 border-t-2 border-zinc-200 p-4 dark:border-zinc-700 dark:bg-zinc-800">
+            <section class="border-t-2 border-zinc-200 bg-zinc-75 p-4 dark:border-zinc-700 dark:bg-zinc-800">
                 <BaseTextarea
                     id="secret-content-textarea"
                     ref="secret-content-textarea"
@@ -277,7 +277,7 @@ onBeforeUnmount(() => {
             </section>
 
             <section
-                class="bg-zinc-75 border-t-2 border-zinc-200 p-4 dark:border-zinc-700 dark:bg-zinc-800"
+                class="border-t-2 border-zinc-200 bg-zinc-75 p-4 dark:border-zinc-700 dark:bg-zinc-800"
                 :class="{ 'rounded-b-sm': secret && !secret.is_available }"
             >
                 <SecretPreview :passphrase-protected="secret != null && secret.is_passphrase_protected" />

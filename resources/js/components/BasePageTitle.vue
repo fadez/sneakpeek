@@ -25,7 +25,7 @@ const { title, description } = defineProps<{
 }
 
 .page-title {
-    @apply text-title text-2xl font-semibold;
+    @apply text-2xl font-semibold text-title;
 }
 
 .page-description {

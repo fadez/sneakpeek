@@ -44,7 +44,7 @@ watch(
     >
         <div
             v-if="label"
-            class="text-muted flex justify-between text-sm"
+            class="flex justify-between text-sm text-muted"
         >
             <span>{{ label }}</span>
             <span
