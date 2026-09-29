@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
         path: '/:pathMatch(.*)*',
         name: '404',
         component: Home,
-        beforeEnter: (to, from, next) => {
+        beforeEnter: (_to, _from, next) => {
             const notify = useNotificationStore();
 
             notify.pageNotFound();

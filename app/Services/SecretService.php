@@ -185,9 +185,7 @@ final readonly class SecretService
      */
     public function wipeContent(Secret $secret): void
     {
-        DB::transaction(function () use ($secret) {
-            $secret->update(['content' => null]);
-        });
+        $secret->update(['content' => null]);
     }
 
     /**
