@@ -6,9 +6,13 @@ namespace App\DTOs;
 
 use App\Services\Snitching\IntelligenceAgencies\IntelligenceAgency;
 use App\ValueObjects\SurveillanceReportCaseNumber;
+use Illuminate\Contracts\Support\Arrayable;
 use Stringable;
 
-final readonly class SurveillanceReport implements Stringable
+/**
+ * @implements Arrayable<string, string>
+ */
+final readonly class SurveillanceReport implements Arrayable, Stringable
 {
     /**
      * The subject line for the surveillance report.
