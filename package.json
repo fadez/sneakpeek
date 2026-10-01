@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "@laravel/echo-vue": "^2.5.0",
-        "@lucide/vue": "^1.48.0",
+        "@lucide/vue": "^1.49.0",
         "@number-flow/vue": "^0.5.2",
         "@vueuse/core": "^15.0.0",
         "class-variance-authority": "^0.7.1",
@@ -38,7 +38,7 @@
         "vue-toastification": "^2.0.0-rc.5"
     },
     "devDependencies": {
-        "@laravel/multiplex": "^0.4.4",
+        "@laravel/multiplex": "^0.4.5",
         "@laravel/vite-plugin-wayfinder": "^0.1.10",
         "@tailwindcss/vite": "^4.3.3",
         "@types/luxon": "^3.7.6",
