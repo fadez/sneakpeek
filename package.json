@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "@laravel/echo-vue": "^2.5.0",
-        "@lucide/vue": "^1.51.0",
+        "@lucide/vue": "^1.52.0",
         "@number-flow/vue": "^0.5.2",
         "@vueuse/core": "^15.0.0",
         "class-variance-authority": "^0.7.1",
