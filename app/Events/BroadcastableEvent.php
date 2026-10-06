@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Events;
 
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldRescue;
 
-abstract class BroadcastableEvent extends Event implements ShouldBroadcast
+abstract class BroadcastableEvent extends Event implements ShouldBroadcast, ShouldRescue
 {
     /**
      * The channels the event should broadcast on.

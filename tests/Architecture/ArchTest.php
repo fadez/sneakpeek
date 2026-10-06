@@ -8,6 +8,7 @@ use App\Services\Snitching\IntelligenceAgencies\IntelligenceAgency;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldRescue;
 use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
@@ -132,8 +133,9 @@ arch('event base class')
 arch('broadcastable event base class')
     ->expect(BroadcastableEvent::class)
     ->toBeClass()
-    ->toExtend(Event::class)
     ->toBeAbstract()
+    ->toExtend(Event::class)
+    ->toImplement(ShouldRescue::class)
     ->toImplement(ShouldBroadcast::class);
 
 arch('interfaces')
