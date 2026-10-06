@@ -135,8 +135,8 @@ arch('broadcastable event base class')
     ->toBeClass()
     ->toBeAbstract()
     ->toExtend(Event::class)
-    ->toImplement(ShouldRescue::class)
-    ->toImplement(ShouldBroadcast::class);
+    ->toImplement(ShouldBroadcast::class)
+    ->toImplement(ShouldRescue::class);
 
 arch('interfaces')
     ->expect('App\Contracts')
