@@ -1,3 +1,4 @@
+import { defineConfig, lazyPlugins } from 'vite-plus';
 import { execSync } from 'child_process';
 import { readFileSync } from 'fs';
 import tailwindcss from '@tailwindcss/vite';
@@ -5,7 +6,6 @@ import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import { wayfinder } from '@laravel/vite-plugin-wayfinder';
-import { defineConfig, lazyPlugins } from 'vite-plus';
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
 
