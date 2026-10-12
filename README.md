@@ -23,7 +23,7 @@ Designed, developed and maintained by **[Aleks Fadez](https://github.com/fadez)*
 
 SneakPeek lets you share passwords, API keys, and other sensitive data securely via a link that self-destructs after being viewed once.
 
-This project is a showcase of my full-stack engineering skills. I built it entirely from scratch — from UI and architecture to CI/CD and production deployment — always on a cutting-edge stack and following industry best practices throughout.
+Built entirely from scratch, SneakPeek showcases my full-stack engineering skills across the entire SDLC, emphasizing security, strict type safety, modern tooling, comprehensive testing, and industry best practices.
 
 ## Live demo
 
