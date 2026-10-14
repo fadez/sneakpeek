@@ -1,8 +1,6 @@
 import type { RouteDefinition } from '@/wayfinder';
 
-type Method = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options';
-
-type WayfinderRoute = RouteDefinition<Method>;
+type WayfinderRoute = RouteDefinition<'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options'>;
 
 type RequestOpts = Omit<RequestInit, 'headers' | 'body'> & {
     headers?: HeadersInit;
@@ -162,8 +160,6 @@ async function request<T = unknown>(url: string, { body, headers, method = 'GET'
     const payload = buildRequestBody(body);
     const requestHeaders = buildHeaders(headers);
 
-    method = method.toUpperCase();
-
     if (payload instanceof FormData) {
         // PHP only parses multipart on POST, so we need to spoof PUT/PATCH/DELETE via the "_method" field
         if (['PUT', 'PATCH', 'DELETE'].includes(method)) {
@@ -239,6 +235,10 @@ export const http = {
 
     delete<T = unknown>(url: string, body?: unknown, opts?: Omit<RequestOpts, 'method' | 'body'>): Promise<T> {
         return request<T>(url, { method: 'DELETE', body, ...opts });
+    },
+
+    query<T = unknown>(url: string, body?: unknown, opts?: Omit<RequestOpts, 'method' | 'body'>): Promise<T> {
+        return request<T>(url, { method: 'QUERY', body, ...opts });
     },
 
     beacon: (path: string, data?: BeaconData) => beaconRequest(path, data),
