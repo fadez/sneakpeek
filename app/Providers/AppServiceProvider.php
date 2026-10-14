@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
@@ -107,6 +108,9 @@ final class AppServiceProvider extends ServiceProvider
          * migrate:rollback
          */
         DB::prohibitDestructiveCommands(app()->isProduction());
+
+        // Apply onOneServer() to all scheduled tasks by default
+        Schedule::alwaysOnOneServer();
     }
 
     /**
