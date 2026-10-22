@@ -131,6 +131,7 @@ Built entirely from scratch, SneakPeek showcases my full-stack engineering skill
     - Easy onboarding with a single `composer setup` command that handles environment setup, creates the SQLite database, and installs dependencies
     - **[Laravel Boost](https://laravel.com/ai/boost)** integration that runs the **[MCP](https://modelcontextprotocol.io)** server to accelerate AI-assisted development by providing the essential context and structure that AI needs
     - **[Laravel Debugbar](https://github.com/fruitcake/laravel-debugbar)** is included for local debugging and profiling
+    - **[Log Viewer](https://github.com/opcodesio/log-viewer)** is included for browsing and searching application logs in the browser
 
 </details>
 
