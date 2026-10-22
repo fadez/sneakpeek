@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
+use Database\Factories\SentSurveillanceReportFactory;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -18,6 +20,9 @@ use Illuminate\Database\Eloquent\Model;
 #[Table(name: 'sent_surveillance_reports', key: 'id', keyType: 'string', incrementing: false, timestamps: false)]
 final class SentSurveillanceReport extends Model
 {
+    /** @use HasFactory<SentSurveillanceReportFactory> */
+    use HasFactory;
+
     use HasUuids;
 
     /**

@@ -36,7 +36,17 @@ test('toResource', function () {
     expect($model->toResource())->toBeInstanceOf(SecretResource::class);
 });
 
-test('content', function () {
+test('prunable', function () {
+    $this->freezeSecond();
+
+    Secret::factory()->createFresh(['expires_at' => now()->minus(days: 89)]);
+    Secret::factory()->createFresh(['expires_at' => now()->minus(days: 90)]);
+    Secret::factory()->createFresh(['expires_at' => now()->minus(days: 91)]);
+
+    expect(new Secret()->prunable()->count())->toBeOne();
+});
+
+test('cast: content', function () {
     $content = 'Secret content.';
 
     $secret = Secret::factory()->createFresh(['content' => $content]);
@@ -48,7 +58,7 @@ test('content', function () {
     expect($rawContent)->not->toBe($content);
 });
 
-test('access_token :dataset', function (string $driver) {
+test('cast: access_token :dataset', function (string $driver) {
     config(['hashing.driver' => $driver]);
 
     $accessToken = 'secret_access_token';
@@ -66,7 +76,7 @@ test('access_token :dataset', function (string $driver) {
     expect(Hash::needsRehash($rawAccessToken))->toBeFalse();
 })->with('hashing_drivers');
 
-test('passphrase :dataset', function (string $driver) {
+test('cast: passphrase :dataset', function (string $driver) {
     config(['hashing.driver' => $driver]);
 
     $passphrase = 'secret';
@@ -84,52 +94,60 @@ test('passphrase :dataset', function (string $driver) {
     expect(Hash::needsRehash($rawPassphrase))->toBeFalse();
 })->with('hashing_drivers');
 
-test('revealed_at', function () {
+test('cast: revealed_at', function () {
     $secret = Secret::factory()->revealed()->createFresh();
 
     expect($secret->revealed_at)->toBeInstanceOf(CarbonImmutable::class);
 });
 
-test('expires_at', function () {
+test('cast: expires_at', function () {
     $secret = Secret::factory()->expiresIn(60)->createFresh();
 
     expect($secret->expires_at)->toBeInstanceOf(CarbonImmutable::class);
 });
 
-test('scopeAvailable', function () {
+test('scope: available', function () {
     Secret::factory()->createFresh();
+    Secret::factory()->wiped()->createFresh();
+    Secret::factory()->expired()->createFresh();
+    Secret::factory()->revealed()->createFresh(['content' => 'Revealed, yet somehow unwiped.']);
 
     expect(Secret::available()->count())->toBeOne();
 });
 
-test('scopeHasContent', function () {
+test('scope: hasContent', function () {
     Secret::factory()->createFresh();
+    Secret::factory()->wiped()->createFresh();
 
     expect(Secret::hasContent()->count())->toBeOne();
     expect(Secret::hasContent()->first()->content)->not->toBeNull();
 });
 
-test('scopeExpired', function () {
+test('scope: expired', function () {
+    Secret::factory()->createFresh();
     Secret::factory()->expired()->createFresh();
 
     expect(Secret::expired()->count())->toBeOne();
 });
 
-test('scopeNotExpired', function () {
+test('scope: notExpired', function () {
     $this->freezeSecond();
 
+    Secret::factory()->createFresh();
     Secret::factory()->expiresNow()->createFresh();
+    Secret::factory()->expired()->createFresh();
 
-    expect(Secret::notExpired()->count())->toBeOne();
+    expect(Secret::notExpired()->count())->toBe(2);
 });
 
-test('scopeUnrevealed', function () {
+test('scope: unrevealed', function () {
     Secret::factory()->createFresh();
+    Secret::factory()->revealed()->createFresh();
 
     expect(Secret::unrevealed()->count())->toBeOne();
 });
 
-test('scopeToBeWiped', function () {
+test('scope: toBeWiped', function () {
     Secret::factory()->createFresh();
     Secret::factory()->expired()->createFresh();
     Secret::factory()->expired()->wiped()->createFresh();
@@ -137,26 +155,33 @@ test('scopeToBeWiped', function () {
     expect(Secret::toBeWiped()->count())->toBeOne();
 });
 
-test('isAvailable', function () {
+test('attribute: is_available', function () {
     $secretAvailable = Secret::factory()->createFresh();
     $secretRevealed = Secret::factory()->revealed()->createFresh();
+    $secretRevealedWithContent = Secret::factory()->revealed()->createFresh(['content' => 'Revealed, yet somehow unwiped.']);
     $secretExpiredWithContent = Secret::factory()->expired()->createFresh();
     $secretExpiredWiped = Secret::factory()->expired()->wiped()->createFresh();
+    $secretWiped = Secret::factory()->wiped()->createFresh();
 
     expect($secretAvailable->is_available)->toBeTrue();
     expect($secretRevealed->is_available)->toBeFalse();
+    expect($secretRevealedWithContent->is_available)->toBeFalse();
     expect($secretExpiredWithContent->is_available)->toBeFalse();
     expect($secretExpiredWiped->is_available)->toBeFalse();
+    expect($secretWiped->is_available)->toBeFalse();
 });
 
-test('isRevealed', function () {
-    $secret = Secret::factory()->revealed()->createFresh();
-
-    expect($secret->is_revealed)->toBeTrue();
+test('attribute: is_expired', function () {
+    expect(Secret::factory()->expired()->createFresh()->is_expired)->toBeTrue();
+    expect(Secret::factory()->createFresh()->is_expired)->toBeFalse();
 });
 
-test('isExpired', function () {
-    $secret = Secret::factory()->expired()->createFresh();
+test('attribute: is_passphrase_protected', function () {
+    expect(Secret::factory()->passphraseProtected()->createFresh()->is_passphrase_protected)->toBeTrue();
+    expect(Secret::factory()->createFresh()->is_passphrase_protected)->toBeFalse();
+});
 
-    expect($secret->is_expired)->toBeTrue();
+test('attribute: is_revealed', function () {
+    expect(Secret::factory()->revealed()->createFresh()->is_revealed)->toBeTrue();
+    expect(Secret::factory()->createFresh()->is_revealed)->toBeFalse();
 });

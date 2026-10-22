@@ -74,7 +74,7 @@ final class Secret extends Model
      * @return Builder<Secret>
      */
     #[Scope]
-    protected function scopeExpired(Builder $query): Builder
+    protected function expired(Builder $query): Builder
     {
         return $query->where('expires_at', '<', now());
     }
@@ -86,7 +86,7 @@ final class Secret extends Model
      * @return Builder<Secret>
      */
     #[Scope]
-    protected function scopeNotExpired(Builder $query): Builder
+    protected function notExpired(Builder $query): Builder
     {
         return $query->where('expires_at', '>=', now());
     }
@@ -98,7 +98,7 @@ final class Secret extends Model
      * @return Builder<Secret>
      */
     #[Scope]
-    protected function scopeHasContent(Builder $query): Builder
+    protected function hasContent(Builder $query): Builder
     {
         return $query->whereNotNull('content');
     }
@@ -110,7 +110,7 @@ final class Secret extends Model
      * @return Builder<Secret>
      */
     #[Scope]
-    protected function scopeUnrevealed(Builder $query): Builder
+    protected function unrevealed(Builder $query): Builder
     {
         return $query->whereNull('revealed_at');
     }
@@ -122,7 +122,7 @@ final class Secret extends Model
      * @return Builder<Secret>
      */
     #[Scope]
-    protected function scopeAvailable(Builder $query): Builder
+    protected function available(Builder $query): Builder
     {
         return $query->hasContent()->unrevealed()->notExpired();
     }
@@ -134,7 +134,7 @@ final class Secret extends Model
      * @return Builder<Secret>
      */
     #[Scope]
-    protected function scopeToBeWiped(Builder $query): Builder
+    protected function toBeWiped(Builder $query): Builder
     {
         return $query->whereNotNull('content')->expired();
     }

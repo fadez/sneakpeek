@@ -25,7 +25,7 @@ class SecretFactory extends Factory
             'access_token' => Str::random(Secret::TOKEN_LENGTH),
             'content' => fake()->sentence(),
             'passphrase' => null,
-            'expires_at' => now()->addDay(),
+            'expires_at' => fake()->dateTimeBetween('+1 minute', '+1 day'),
             'revealed_at' => null,
         ];
     }
