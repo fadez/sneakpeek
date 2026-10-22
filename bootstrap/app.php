@@ -8,7 +8,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,7 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         // When debug mode is enabled, we'll use Laravel's default exception handler for detailed error output
-        if (Config::boolean('app.debug')) {
+        if (app()->hasDebugModeEnabled()) {
             return;
         }
 

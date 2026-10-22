@@ -12,12 +12,14 @@ use App\Services\Snitching\IntelligenceAgencies\Mi6;
 use App\Services\Snitching\IntelligenceAgencies\Mossad;
 use App\Services\Snitching\IntelligenceAgencies\Nsa;
 use Carbon\CarbonImmutable;
+use Exception;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
@@ -25,6 +27,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Session;
@@ -32,6 +35,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Lottery;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Laravel\Head\Enums\ImageType;
 use Laravel\Head\Enums\OgType;
 use Laravel\Head\Enums\TwitterCard;
@@ -57,6 +61,7 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDates();
+        $this->configureDatabases();
         $this->configureCommands();
         $this->configureModels();
         $this->configureSession();
@@ -95,18 +100,44 @@ final class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure Artisan commands.
+     * Configure the application's database layer.
+     */
+    private function configureDatabases(): void
+    {
+        // Log slow queries
+        if (! app()->runningUnitTests()) {
+            DB::listen(function (QueryExecuted $query) {
+                if ($query->time > Config::integer('database.slow_query_duration_threshold')) {
+                    // Trace the query back to the application code that triggered it
+                    $trace = collect((new Exception)->getTrace())
+                        ->filter(fn (array $frame): bool => isset($frame['file'], $frame['line']))
+                        ->reject(fn (array $frame): bool => Str::startsWith($frame['file'], base_path('vendor') . DIRECTORY_SEPARATOR))
+                        ->map(fn (array $frame): string => Str::after($frame['file'], base_path() . DIRECTORY_SEPARATOR) . ':' . $frame['line'])
+                        ->values()
+                        ->all();
+
+                    // Replace binding values with their types so no sensitive values reach the logs
+                    $bindings = array_map(get_debug_type(...), $query->bindings);
+
+                    Log::warning('Slow query', [
+                        'connection' => $query->connectionName,
+                        'duration_ms' => $query->time,
+                        'sql' => $query->sql,
+                        'bindings' => $bindings,
+                        'trace' => $trace,
+                    ]);
+                }
+            });
+        }
+    }
+
+    /**
+     * Configure the application's console layer.
      */
     private function configureCommands(): void
     {
-        /**
-         * Prohibit running the following commands in the production environment:
-         * db:wipe
-         * migrate:fresh
-         * migrate:refresh
-         * migrate:reset
-         * migrate:rollback
-         */
+        // Prohibit destructive commands in production:
+        // db:wipe, migrate:fresh, migrate:refresh, migrate:reset, migrate:rollback
         DB::prohibitDestructiveCommands(app()->isProduction());
 
         // Apply onOneServer() to all scheduled tasks by default

@@ -184,4 +184,17 @@ return [
 
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Slow Query Duration Threshold
+    |--------------------------------------------------------------------------
+    |
+    | Queries that take longer than this many milliseconds will be written
+    | to the application log as warnings, along with useful debug info.
+    | The listener is registered only in the production environment.
+    |
+    */
+
+    'slow_query_duration_threshold' => (int) env('DB_SLOW_QUERY_DURATION_THRESHOLD', 100),
+
 ];
