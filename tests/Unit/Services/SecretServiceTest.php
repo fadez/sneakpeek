@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Enums\StatisticKey;
 use App\Models\Secret;
 use App\Services\SecretService;
+use App\Services\StatisticService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 it('passes passphrase check with an empty passphrase when secret is not passphrase-protected', function () {
@@ -33,17 +35,26 @@ it('passes passphrase check for passphrase-protected secret only when the correc
     expect($secretService->checkPassphrase(secret: $secret, passphrase: ' tricky § passphrase 😏 '))->toBeTrue();
 });
 
-it('wipes content of the secret but preserves the model', function () {
-    $secretService = resolve(SecretService::class);
+it('wipes content of expired secrets but preserves the models', function () {
+    $secretAvailable = Secret::factory()->createFresh();
+    $secretExpiredOne = Secret::factory()->expired()->createFresh();
+    $secretExpiredTwo = Secret::factory()->expired()->createFresh();
 
-    $secret = Secret::factory()->createFresh();
+    resolve(SecretService::class)->wipeExpiredSecrets();
 
-    $secretService->wipeContent($secret);
+    expect($secretExpiredOne->refresh()->content)->toBeNull();
+    expect($secretExpiredTwo->refresh()->content)->toBeNull();
+    expect($secretAvailable->refresh()->content)->not->toBeNull();
+});
 
-    $secret->refresh();
+it('increments the expired secrets statistic by the number of wiped secrets', function () {
+    Secret::factory()->createFresh();
+    Secret::factory()->expired()->wiped()->createFresh();
+    Secret::factory()->expired()->count(2)->createFresh();
 
-    expect($secret->exists)->toBeTrue();
-    expect($secret->content)->toBeNull();
+    resolve(SecretService::class)->wipeExpiredSecrets();
+
+    expect(resolve(StatisticService::class)->getValue(StatisticKey::SecretsExpired))->toBe(2);
 });
 
 it('reveals secret content and wipes it', function () {

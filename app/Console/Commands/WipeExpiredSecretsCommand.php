@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\StatisticKey;
-use App\Models\Secret;
 use App\Services\SecretService;
 use App\Services\StatisticService;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 
 #[Signature('secrets:wipe-expired')]
 #[Description('Wipe the content of expired secrets')]
@@ -22,17 +19,9 @@ final class WipeExpiredSecretsCommand extends Command
      */
     public function handle(SecretService $secretService, StatisticService $statisticService): int
     {
-        $wipedCount = 0;
+        $secretService->wipeExpiredSecrets();
 
-        Secret::toBeWiped()->cursor()->each(function (Secret $secret) use ($secretService, &$wipedCount) {
-            $secretService->wipeContent($secret);
-
-            $wipedCount++;
-        });
-
-        $statisticService->incrementValue(StatisticKey::SecretsExpired, $wipedCount);
-
-        $this->components->info('Wiped ' . $wipedCount . ' expired ' . Str::plural('secret', $wipedCount) . '.');
+        $this->components->info('Wiped expired secrets.');
 
         return self::SUCCESS;
     }

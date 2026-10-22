@@ -179,13 +179,17 @@ final readonly class SecretService
     }
 
     /**
-     * Wipe the content of the secret from the database permanently.
+     * Wipe the content of expired secrets from the database permanently.
      *
-     * The Secret model is preserved so the creator can still view its status on the receipt page.
+     * The secret model is preserved so the creator can still view its status on the receipt page.
      */
-    public function wipeContent(Secret $secret): void
+    public function wipeExpiredSecrets(): void
     {
-        $secret->update(['content' => null]);
+        DB::transaction(function () {
+            $wipedCount = Secret::toBeWiped()->update(['content' => null]);
+
+            $this->statisticService->incrementValue(StatisticKey::SecretsExpired, $wipedCount);
+        });
     }
 
     /**

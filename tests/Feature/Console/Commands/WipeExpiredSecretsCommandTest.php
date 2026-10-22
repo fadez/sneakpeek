@@ -21,19 +21,17 @@ it('wipes content only for expired secrets that still have content', function ()
 it('does not wipe content for available secrets expiring now', function () {
     $this->freezeSecond();
 
-    $secret = Secret::factory()->expiresNow()->createFresh();
+    $content = 'Secret content.';
 
-    expect($secret->content)->toBeTruthy();
+    $secret = Secret::factory()->expiresNow()->createFresh(['content' => $content]);
 
     $this->artisan(WipeExpiredSecretsCommand::class)->assertOk();
 
-    expect($secret->refresh()->content)->toBeTruthy();
+    expect($secret->refresh()->content)->toBe($content);
 
     $this->travel(1)->second();
 
-    $this->artisan(WipeExpiredSecretsCommand::class)
-        ->expectsOutputToContain('Wiped 1 expired secret.')
-        ->assertOk();
+    $this->artisan(WipeExpiredSecretsCommand::class)->assertOk();
 
     expect($secret->refresh()->content)->toBeNull();
 });
