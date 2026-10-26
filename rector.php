@@ -9,7 +9,6 @@ use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsPar
 use Rector\Config\RectorConfig;
 use Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector;
 use Rector\TypeDeclaration\Rector\Closure\AddClosureVoidReturnTypeWhereNoReturnRector;
-use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
 use RectorLaravel\Rector\Class_\AddHasFactoryToModelsRector;
 use RectorLaravel\Set\LaravelSetList;
 
@@ -44,7 +43,7 @@ return RectorConfig::configure()
         __DIR__ . '/tests',
     ])
     ->withRules([
-        DeclareStrictTypesRector::class,
+        //
     ])
     ->withSkip([
         AddClosureVoidReturnTypeWhereNoReturnRector::class,

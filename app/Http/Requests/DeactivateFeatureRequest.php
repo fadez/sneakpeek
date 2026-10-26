@@ -11,14 +11,6 @@ use Illuminate\Validation\Rule;
 final class DeactivateFeatureRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    /**
      * Prepare the data for validation.
      */
     protected function prepareForValidation(): void

@@ -17,10 +17,10 @@
         "pusher/pusher-php-server": "^7.3.0"
     },
     "require-dev": {
-        "driftingly/rector-laravel": "^2.7.0",
+        "driftingly/rector-laravel": "^2.7.2",
         "fakerphp/faker": "^1.24.1",
         "fruitcake/laravel-debugbar": "^4.4.4",
-        "larastan/larastan": "^3.13.0",
+        "larastan/larastan": "^3.13.2",
         "laravel/boost": "^2.10.3",
         "laravel/pail": "^1.2.7",
         "laravel/pao": "^1.1.5",
