@@ -24,4 +24,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT || 22 }}
-          script: cd /var/www/sneakpeek/bin && bash deploy.sh
+          script: cd /var/www/sneakpeek/bin && bash deploy.sh ${{ github.event.workflow_run.head_sha }}
