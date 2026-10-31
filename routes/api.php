@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\ListFeaturesController;
 use App\Http\Controllers\Api\RevealSecretController;
 use App\Http\Controllers\Api\ShowSecretController;
 use App\Http\Controllers\Api\ShowSecretReceiptController;
-use App\Http\Controllers\Api\StatisticsSnapshotController;
+use App\Http\Controllers\Api\ShowStatisticsSnapshotController;
 use App\Http\Controllers\Api\StoreSecretController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,7 +50,7 @@ Route::name('api.')->middleware(['throttle:api'])->group(function () {
     });
 
     Route::name('statistics.')->prefix('statistics')->group(function () {
-        Route::get('/', StatisticsSnapshotController::class)
+        Route::get('/', ShowStatisticsSnapshotController::class)
             ->name('snapshot');
     });
 });

@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api;
 use App\Services\StatisticService;
 use Illuminate\Http\JsonResponse;
 
-final readonly class StatisticsSnapshotController
+final readonly class ShowStatisticsSnapshotController
 {
     /**
      * Get a snapshot of the current application statistics.

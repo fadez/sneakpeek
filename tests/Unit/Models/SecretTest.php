@@ -7,6 +7,7 @@ use App\Models\Secret;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 test('toArray', function () {
     $model = Secret::factory()->createFresh();
@@ -47,7 +48,7 @@ test('prunable', function () {
 });
 
 test('cast: content', function () {
-    $content = 'Secret content.';
+    $content = Str::random(32);
 
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
@@ -61,7 +62,7 @@ test('cast: content', function () {
 test('cast: access_token :dataset', function (string $driver) {
     config(['hashing.driver' => $driver]);
 
-    $accessToken = 'secret_access_token';
+    $accessToken = Str::random(Secret::TOKEN_LENGTH);
     $secret = Secret::factory()->createFresh(['access_token' => $accessToken]);
 
     // Verify that passphrase is hashed
@@ -79,7 +80,8 @@ test('cast: access_token :dataset', function (string $driver) {
 test('cast: passphrase :dataset', function (string $driver) {
     config(['hashing.driver' => $driver]);
 
-    $passphrase = 'secret';
+    $passphrase = Str::random(16);
+
     $secret = Secret::factory()->passphraseProtected(passphrase: $passphrase)->createFresh();
 
     // Verify that passphrase is hashed

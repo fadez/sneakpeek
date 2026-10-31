@@ -14,6 +14,9 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Routing\Attributes\Controllers\WithoutMiddleware;
 use Illuminate\Support\Collection;
+use Pest\ArchPresets\Laravel as PestLaravelPreset;
+use Pest\ArchPresets\Php as PestPhpPreset;
+use Pest\ArchPresets\Security as PestSecurityPreset;
 use Pest\Expectation;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -28,8 +31,27 @@ use Symfony\Component\Finder\SplFileInfo;
 |
 */
 
+/**
+ * Disallow debugging functions and other discouraged PHP functions.
+ *
+ * @see PestPhpPreset
+ */
 arch()->preset()->php();
-arch()->preset()->laravel();
+
+/**
+ * Enforce common Laravel conventions.
+ *
+ * Allow MCP tools to reuse the HTTP layer's resources and request rules.
+ *
+ * @see PestLaravelPreset
+ */
+arch()->preset()->laravel()->ignoring('App\Mcp');
+
+/**
+ * Disallow insecure functions.
+ *
+ * @see PestSecurityPreset
+ */
 arch()->preset()->security();
 
 arch('app')
@@ -64,6 +86,7 @@ arch('avoid inheritance')
         'App\Http\Resources',
         'App\Jobs',
         'App\Mail',
+        'App\Mcp',
         'App\Models',
         'App\Notifications',
         'App\Providers',
@@ -85,6 +108,7 @@ arch('avoid mutation')
         'App\Http\Resources',
         'App\Jobs',
         'App\Mail',
+        'App\Mcp',
         'App\Models',
         'App\Notifications',
         'App\Providers',

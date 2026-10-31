@@ -75,11 +75,10 @@ const handleSecretReveal = async (): Promise<void> => {
     }
 };
 
+// Capture secret access token and strip it from the URL to minimize its exposure
 const extractAccessToken = (): void => {
     accessToken.value = route.hash.slice(1);
 
-    // Secret access tokens are stored in the URL hash fragment to prevent server-side logging, analytics tracking, or accidental leakage via Referer header,
-    // so here we capture and strip it from the URL to minimize its exposure
     if (accessToken.value) {
         router.replace({
             name: 'secret',

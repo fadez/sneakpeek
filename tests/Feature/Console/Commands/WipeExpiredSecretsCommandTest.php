@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Console\Commands\WipeExpiredSecretsCommand;
 use App\Models\Secret;
+use Illuminate\Support\Str;
 
 it('wipes content only for expired secrets that still have content', function () {
     $secretWithContentExpired = Secret::factory()->expired()->createFresh();
@@ -21,7 +22,7 @@ it('wipes content only for expired secrets that still have content', function ()
 it('does not wipe content for available secrets expiring now', function () {
     $this->freezeSecond();
 
-    $content = 'Secret content.';
+    $content = Str::random(32);
 
     $secret = Secret::factory()->expiresNow()->createFresh(['content' => $content]);
 

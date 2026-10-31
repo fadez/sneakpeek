@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', AppController::class)
     ->name('home');
 
+Route::get('/secrets/{secret}', AppController::class)
+    ->whereAlphaNumeric('secret')
+    ->name('secret');
+
 Route::get('/favicon/site.webmanifest', SiteManifestController::class)
     ->name('favicon.manifest');
 

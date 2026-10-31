@@ -2,16 +2,17 @@ export type Secret = {
     readonly id: string;
     readonly created_at: string;
     readonly expires_at: string;
-    readonly revealed_at: string | null;
+    revealed_at: string | null;
     readonly is_passphrase_protected: boolean;
-    readonly is_expired: boolean;
-    readonly is_revealed: boolean;
-    readonly is_available: boolean;
-    readonly is_burned?: boolean;
+    is_expired: boolean;
+    is_available: boolean;
+    is_revealed: boolean;
+    is_burned?: boolean;
 };
 
 export type SecretWithAccessToken = Secret & {
     readonly access_token: string;
+    readonly secret_url: string;
 };
 
 export type SecretContent = {

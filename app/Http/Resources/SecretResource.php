@@ -47,6 +47,10 @@ final class SecretResource extends JsonApiResource
             'is_passphrase_protected' => $this->is_passphrase_protected,
             'is_revealed' => $this->is_revealed,
             'access_token' => $this->when($this->accessToken !== null, $this->accessToken),
+            'secret_url' => $this->when(
+                $this->accessToken !== null,
+                fn (): string => route('secret', ['secret' => $this->getKey()]) . '#' . $this->accessToken,
+            ),
         ];
     }
 }

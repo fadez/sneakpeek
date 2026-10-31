@@ -56,12 +56,7 @@ const expiresInDiffForHumans = computed<string>(() => {
     );
 });
 
-/**
- * The access token is placed after the "#" fragment in the URL for security reasons:
- * - The hash fragment is never sent to the server
- * - Prevents token logging in server, proxy, and analytics logs
- * - Prevents accidental leakage via HTTP Referer headers
- */
+// Secret access token is stored in the URL hash fragment to prevent server-side logging, analytics tracking, or accidental leakage via Referer header
 const secretUrl = computed<string>(() => {
     if (!hasAccessToken.value || !secret.value) return '';
 
@@ -288,7 +283,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <BaseAlert type="warning">
-                    This link is shown only once. Make sure to copy it before you close or refresh this page.
+                    This link is shown only once, so make sure you copy it before you close or refresh this page.
                 </BaseAlert>
             </section>
 

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Secret;
+use Illuminate\Support\Str;
 
 dataset('routes_web_public', [
     'home' => [fn (): array => [
@@ -17,7 +18,7 @@ dataset('routes_api_not_cached', [
         'url' => route('api.secrets.receipt', ['secret' => Secret::factory()->createFresh()->getKey()], false),
     ]],
     'api.secrets.show' => [function (): array {
-        $accessToken = 'secret_access_token';
+        $accessToken = Str::random(Secret::TOKEN_LENGTH);
 
         $secret = Secret::factory()->createFresh(['access_token' => $accessToken]);
 

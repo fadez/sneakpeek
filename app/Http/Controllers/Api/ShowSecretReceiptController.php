@@ -10,7 +10,9 @@ use App\Models\Secret;
 final readonly class ShowSecretReceiptController
 {
     /**
-     * Get information about a secret.
+     * Get a secret's status for the receipt page.
+     *
+     * No access token is needed, since the id is unguessable and the response never includes the secret's content.
      */
     public function __invoke(Secret $secret): SecretResource
     {

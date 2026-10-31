@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Collection as DatabaseCollection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Foundation\DevCommands;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
@@ -142,6 +143,9 @@ final class AppServiceProvider extends ServiceProvider
 
         // Apply onOneServer() to all scheduled tasks by default
         Schedule::alwaysOnOneServer();
+
+        // Register MCP inspector as a dev command
+        DevCommands::artisan('mcp:inspector mcp', 'mcp');
     }
 
     /**
@@ -199,7 +203,14 @@ final class AppServiceProvider extends ServiceProvider
     {
         // Set global rate limit for all API requests per client IP
         RateLimiter::for('api', function (Request $request) {
-            $limit = app()->isProduction() ? 60 : 600;
+            $limit = app()->isProduction() ? 60 : 1000;
+
+            return Limit::perMinute($limit)->by($request->ip());
+        });
+
+        // Set global rate limit for all MCP requests per client IP
+        RateLimiter::for('mcp', function (Request $request) {
+            $limit = app()->isProduction() ? 60 : 1000;
 
             return Limit::perMinute($limit)->by($request->ip());
         });

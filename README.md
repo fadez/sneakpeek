@@ -50,7 +50,7 @@ I've built SneakPeek entirely from scratch to showcase my full-stack engineering
     - Secrets can only be accessed once, then wiped permanently
     - Secret content encrypted using Laravel's built-in encryption
     - Argon2id is used as the hashing algorithm because it's memory-hard, making it far more resistant to GPU/ASIC brute-force attacks than bcrypt
-    - Secret access tokens (hashed in DB) stored in the URL `#` hash fragment to prevent server-side logging, analytics tracking, or accidental leakage via `Referer` header
+    - Secret access tokens (hashed in DB) stored in the URL hash fragment (`#`) to prevent server-side logging, analytics tracking, or accidental leakage via `Referer` header
     - Secrets have optional passphrase (hashed in DB)
     - Mandatory expiration time for secrets
     - Minimized framework headers and error masking to prevent framework identification, fingerprinting, and targeted exploits
@@ -69,6 +69,11 @@ I've built SneakPeek entirely from scratch to showcase my full-stack engineering
     - Comprehensive test suite using **[Pest](https://pestphp.com)** with unit, feature, and architectural tests
     - 100% type coverage enforced by **[Pest's type coverage plugin](https://pestphp.com/docs/type-coverage)**
     - Automated code upgrades and modernization by **[Rector](https://getrector.com)** using **[Laravel-specific rules](https://github.com/driftingly/rector-laravel)** and **[Pest's Rector plugin](https://pestphp.com/docs/rector)** for idiomatic refactoring
+- **AI-ready with MCP server**
+    - Built-in **[Model Context Protocol](https://modelcontextprotocol.io)** server powered by **[Laravel MCP](https://github.com/laravel/mcp)**, letting AI assistants interact with the application
+    - Full feature parity with the web UI, so AI assistants can do everything a visitor can
+    - Tools use the same unified business logic layer
+    - Served over HTTP at `/mcp`, with the same rate limiting as the rest of the API
 
 </details>
 
@@ -232,24 +237,26 @@ If you're using **[Laravel Herd](https://herd.laravel.com)**, you access the app
 <details>
 <summary><strong>Code quality</strong></summary>
 
-- `composer lint` - Runs Rector, Laravel Pint, Oxlint and Oxfmt
-- `composer test:lint` - Runs Rector, Laravel Pint, Oxlint and Oxfmt in dry-run mode for CI/CD pipelines
+- `composer lint` — Runs Rector, Laravel Pint, Oxlint and Oxfmt
+- `composer test:lint` — Runs Rector, Laravel Pint, Oxlint and Oxfmt in dry-run mode for CI/CD pipelines
 
 </details>
 
 <details>
 <summary><strong>Testing</strong></summary>
 
-- `composer test` - Runs the complete test suite (type coverage, static analysis, linting, formatting and all Pest tests)
-- `composer test:unit` - Runs all Pest tests (unit, feature, browser and architecture tests)
-- `composer test:types` - Runs PHPStan at level 10 (maximum strictness) and TypeScript compiler
-- `composer test:type-coverage` - Runs Pest type coverage checks (ensures 100% type coverage)
+- `composer test` — Runs the complete test suite (type coverage, static analysis, linting, formatting and all Pest tests)
+- `composer test:unit` — Runs all Pest tests (unit, feature, browser and architecture tests)
+- `composer test:types` — Runs PHPStan at level 10 (maximum strictness) and TypeScript compiler
+- `composer test:type-coverage` — Runs Pest type coverage checks (ensures 100% type coverage)
 
 </details>
 
 <details>
-<summary><strong>Maintenance</strong></summary>
+<summary><strong>Development</strong></summary>
 
-- `composer update:requirements` - Updates all Composer and npm dependencies, rebuilds frontend assets and runs the complete test suite (runs automatically after `composer update`)
+- `php artisan dev` — Starts all of the processes needed for local development in a single terminal window
+- `php artisan mcp:inspector mcp` — Runs the **[MCP inspector](https://modelcontextprotocol.io/docs/tools/inspector)** tool for testing and debugging the MCP server
+- `composer update:requirements` — Updates all Composer and npm dependencies, rebuilds frontend assets and runs the complete test suite (runs automatically after `composer update`)
 
 </details>

@@ -33,7 +33,7 @@ it('can create and reveal a secret without passphrase', function () {
 
 it('can create and reveal a secret with passphrase', function () {
     $content = 'Secret content protected by passphrase.';
-    $passphrase = 'Very secret passphrase.';
+    $passphrase = 'Very secret passphrase 🤫';
 
     // Create the secret
     $page = visit('/')

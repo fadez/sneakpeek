@@ -7,6 +7,7 @@ use App\Models\Secret;
 use App\Services\SecretService;
 use App\Services\StatisticService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
 it('passes passphrase check with an empty passphrase when secret is not passphrase-protected', function () {
     $secretService = resolve(SecretService::class);
@@ -21,18 +22,21 @@ it('passes passphrase check with any passphrase when secret is not passphrase-pr
 
     $secret = Secret::factory()->createFresh();
 
-    expect($secretService->checkPassphrase(secret: $secret, passphrase: 'some passphrase'))->toBeTrue();
+    expect($secretService->checkPassphrase(secret: $secret, passphrase: 'secret passphrase'))->toBeTrue();
 });
 
 it('passes passphrase check for passphrase-protected secret only when the correct passphrase is provided', function () {
+    // Multibyte characters and surrounding whitespace to make sure the passphrase is stored and verified byte-for-byte
+    $passphrase = ' tricky § passphrase 😏 ';
+
     $secretService = resolve(SecretService::class);
 
-    $secret = Secret::factory()->passphraseProtected(passphrase: ' tricky § passphrase 😏 ')->createFresh();
+    $secret = Secret::factory()->passphraseProtected(passphrase: $passphrase)->createFresh();
 
     expect($secretService->checkPassphrase(secret: $secret))->toBeFalse();
     expect($secretService->checkPassphrase(secret: $secret, passphrase: ''))->toBeFalse();
     expect($secretService->checkPassphrase(secret: $secret, passphrase: 'incorrect passphrase'))->toBeFalse();
-    expect($secretService->checkPassphrase(secret: $secret, passphrase: ' tricky § passphrase 😏 '))->toBeTrue();
+    expect($secretService->checkPassphrase(secret: $secret, passphrase: $passphrase))->toBeTrue();
 });
 
 it('wipes content of expired secrets but preserves the models', function () {
@@ -60,7 +64,7 @@ it('increments the expired secrets statistic by the number of wiped secrets', fu
 it('reveals secret content and wipes it', function () {
     $secretService = resolve(SecretService::class);
 
-    $content = 'Secret content.';
+    $content = Str::random(32);
 
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
@@ -89,7 +93,7 @@ it('fails to reveal an expired secret', function () {
 it('throws when revealing a secret that has already been revealed', function () {
     $secretService = resolve(SecretService::class);
 
-    $content = 'Secret content.';
+    $content = Str::random(32);
 
     $secret = Secret::factory()->createFresh(['content' => $content]);
 
