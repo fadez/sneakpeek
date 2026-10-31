@@ -16,7 +16,7 @@ use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Name('get_secret')]
-#[Description('Get the status of a secret. Returns secret metadata only, such as whether it is still available, has been revealed, or has expired.')]
+#[Description("Get a secret's details, such as whether it is passphrase-protected and still available, and if not, whether it was revealed or expired, and when. Never returns the content.")]
 #[IsReadOnly]
 final class GetSecretTool extends Tool
 {

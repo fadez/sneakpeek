@@ -18,7 +18,7 @@ use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
 #[Name('reveal_secret')]
-#[Description('Reveal a secret and permanently wipe its content from the database.')]
+#[Description('Reveal a secret and return its content. Each secret can be revealed only once.')]
 #[IsDestructive]
 final class RevealSecretTool extends Tool
 {

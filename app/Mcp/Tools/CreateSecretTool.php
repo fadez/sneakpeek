@@ -17,7 +17,7 @@ use Laravel\Mcp\Server\Attributes\Name;
 use Laravel\Mcp\Server\Tool;
 
 #[Name('create_secret')]
-#[Description('Create a one-time, expiring link for sharing a password, API key or other secret content. The secret content can be revealed only once. Only set a passphrase if the user explicitly provided one.')]
+#[Description('Create an expiring secret for sharing a password, API key or other sensitive content. The secret can be revealed only once, through the returned link.')]
 final class CreateSecretTool extends Tool
 {
     /**
