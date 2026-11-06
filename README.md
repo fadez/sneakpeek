@@ -131,6 +131,8 @@ I've built SneakPeek entirely from scratch to showcase my full-stack engineering
         - **[Authenticated Origin Pulls (mTLS)](https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull)** is used to ensure that only connections routed through **[Cloudflare WAF](https://www.cloudflare.com/application-services/products/waf)** can reach the server, effectively cloaking the origin server from direct IP-based attacks
         - Region-based **[Cloudflare security rules](https://developers.cloudflare.com/security/rules)** are used to restrict network access from undesired geographic areas
         - Both **[restoring original visitor IPs](https://developers.cloudflare.com/support/troubleshooting/restoring-visitor-ips/restoring-original-visitor-ips)** and all web server logging are deliberately disabled to maximize visitor privacy by ensuring IP addresses are never retained or logged, eliminating associated risks
+        - **[HTTP Strict Transport Security (HSTS)](https://developers.cloudflare.com/ssl/edge-certificates/additional-options/http-strict-transport-security)** is enabled to force browsers to always use HTTPS, preventing protocol downgrade and SSL-stripping attacks
+        - **[TLS 1.3](https://developers.cloudflare.com/ssl/edge-certificates/additional-options/minimum-tls)** is required, rejecting legacy protocol versions and cipher suites
 - **Developer Experience (DX)**
     - Custom `composer.json` scripts streamline application setup, linting, testing, and automated code refactoring/upgrades, enabling a smooth and modern developer workflow
     - Easy onboarding with a single `composer setup` command that handles environment setup, creates the SQLite database, and installs dependencies
